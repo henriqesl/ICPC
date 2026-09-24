@@ -1,0 +1,9 @@
+# C++ outputs
+*.exe
+*.out
+*.o
+*.obj
+*.pdb
+.vscode/
+.idea/
+
