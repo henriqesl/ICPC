@@ -1,4 +1,6 @@
-// Aplicação: ordenação crescente e decrescente.
+// Aplicação: ordenar para facilitar buscas, agrupamentos, pareamentos
+// ou comparações entre valores vizinhos.
+// Complexidade: O(N log N) tempo.
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -8,12 +10,11 @@ int main() {
     vector<int> v(n);
     for (int& x : v) cin >> x;
 
-    sort(v.begin(), v.end());
+    sort(v.begin(), v.end()); // crescente
     for (int x : v) cout << x << ' ';
     cout << '\n';
 
-    sort(v.rbegin(), v.rend());
+    sort(v.rbegin(), v.rend()); // decrescente
     for (int x : v) cout << x << ' ';
     cout << '\n';
 }
-

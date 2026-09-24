@@ -1,4 +1,6 @@
-// Aplicação: verifica se os delimitadores estão balanceados.
+// Aplicação: verificar parênteses, colchetes e chaves balanceados.
+// Use stack porque o último símbolo aberto deve ser o primeiro a fechar.
+// Complexidade: O(N) tempo e O(N) memória.
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -8,7 +10,7 @@ bool balanced(const string& s) {
         if (c == '(' || c == '[' || c == '{') st.push(c);
         else if (c == ')' || c == ']' || c == '}') {
             if (st.empty()) return false;
-            char open = st.top();
+            char open = st.top(); // compara com o fechamento atual
             st.pop();
             if ((c == ')' && open != '(') ||
                 (c == ']' && open != '[') ||
@@ -23,4 +25,3 @@ int main() {
     cin >> expression;
     cout << (balanced(expression) ? "balanceado" : "desbalanceado") << '\n';
 }
-

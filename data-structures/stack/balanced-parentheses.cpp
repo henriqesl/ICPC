@@ -1,4 +1,6 @@
-// Delimitadores balanceados. Tempo O(N), espaço O(N).
+// Função reutilizável para delimitadores balanceados.
+// Use quando símbolos precisam ser fechados na ordem inversa da abertura.
+// Tempo O(N), espaço O(N). Este arquivo não possui main().
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -17,4 +19,3 @@ bool balanced(const string& s) {
     }
     return st.empty();
 }
-

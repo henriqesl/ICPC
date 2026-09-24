@@ -1,4 +1,7 @@
-// Aplicação: processa primeiro o maior valor.
+// Aplicação: sempre processar primeiro o maior valor disponível.
+// Use em prioridades, maiores pontuações, tarefas urgentes ou top K.
+// Para obter o menor no topo: priority_queue<int, vector<int>, greater<int>>.
+// Complexidade: push/pop O(log N), top O(1).
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -10,7 +13,7 @@ int main() {
     for (int i = 0; i < n; i++) {
         int x;
         cin >> x;
-        pq.push(x);
+        pq.push(x); // o maior valor fica acessível por pq.top()
     }
 
     while (!pq.empty()) {
@@ -19,4 +22,3 @@ int main() {
     }
     cout << '\n';
 }
-

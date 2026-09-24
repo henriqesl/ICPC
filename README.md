@@ -1,35 +1,22 @@
 # ICPC Library
 
-Biblioteca pessoal de programação competitiva em C++17, feita para consulta rápida durante contests e estudo em casa.
+Biblioteca de consulta rápida para programação competitiva em C++17.
 
-## Contest Quick Reference
+## Conteúdo por pasta
 
-| Preciso lembrar... | Consulte |
+| Pasta | O que você encontra |
 |---|---|
-| STL | [cpp-stl](cheatsheets/cpp-stl.md) |
-| Strings | [strings](cheatsheets/strings.md) |
-| Vetores e índices | [vectors](cheatsheets/vectors.md) |
-| Complexidade | [complexity](cheatsheets/complexity.md) |
-| Debug | [debugging](cheatsheets/debugging.md) |
-| Template | [template.cpp](templates/template.cpp) |
-| Estruturas | [data-structures](data-structures/README.md) |
-| Algoritmos | [algorithms](algorithms/README.md) |
-| Matemática | [math](math/README.md) |
+| [`cheatsheets/`](cheatsheets/) | Resumos de STL, strings, vectors, matemática, complexidade e debugging. |
+| [`cpp/`](cpp/) | Operações da linguagem e exemplos da STL. |
+| [`data-structures/`](data-structures/) | `vector`, `stack`, `queue`, `set`, `map` e `priority_queue`. |
+| [`algorithms/`](algorithms/) | Ordenação, busca binária e prefix sum. |
+| [`math/`](math/) | Paridade, teoria dos números, combinatória e probabilidade. |
+| [`problem-solving/`](problem-solving/) | Padrões para reconhecer a técnica adequada. |
+| [`debugging/`](debugging/) | VS Code, MSYS2, GDB, erros comuns e checklist. |
+| [`templates/`](templates/) | Template mínimo para começar uma solução. |
+| [`problems/`](problems/) | Registro de problemas e diário de erros. |
 
-## Índice
+## Onde aplicar cada exemplo
 
-- [C++ essencial](cpp/README.md)
-- [Estruturas de dados](data-structures/README.md)
-- [Algoritmos](algorithms/README.md)
-- [Matemática](math/README.md)
-- [Problem solving](problem-solving/README.md)
-- [Debugging](debugging/README.md)
-- [Templates](templates/README.md)
-- [Problemas resolvidos](problems/README.md)
-
-## Ordem de estudo
-
-1. **Básico:** entrada/saída, tipos, strings, arrays, vectors, funções e STL.
-2. **Intermediário:** stack, queue, set, map, sorting, busca binária, prefix sum e dois ponteiros.
-3. **Próximo passo:** grafos, programação dinâmica, geometria e técnicas avançadas.
+Consulte [`APPLICATIONS.md`](APPLICATIONS.md) para escolher rapidamente o arquivo `.cpp` adequado ao tipo de problema.
 
