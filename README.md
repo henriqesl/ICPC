@@ -20,3 +20,13 @@ Biblioteca de consulta rápida para programação competitiva em C++17.
 
 Consulte [`APPLICATIONS.md`](APPLICATIONS.md) para escolher rapidamente o arquivo `.cpp` adequado ao tipo de problema.
 
+## Nível de dificuldade
+
+| Nível | Conteúdos |
+|---|---|
+| **Básico** | Entrada e saída, tipos, strings, arrays, `vector`, funções, STL, `sort`, `stack` e `queue`. |
+| **Intermediário** | `set`, `map`, `priority_queue`, busca binária, prefix sum, dois ponteiros, guloso e recursão. |
+| **Avançado** | Grafos, programação dinâmica, geometria e técnicas matemáticas avançadas. |
+
+Os conteúdos avançados ainda serão adicionados gradualmente; eles não representam implementações completas neste momento.
+
