@@ -1,4 +1,4 @@
-"""Contagem: equivalente a c++/data-structures/map/frequency-map.cpp (raiz icpc).
+"""Contagem: equivalente a c++/basics/map.cpp (raiz icpc).
 Entrada: N e N inteiros. Ex.: 4 3 3 8 3. Saída: 3: 3 / 8: 1.
 Contagem O(N) média; saída ordenada O(K log K); memória O(N+K) com leitura total.
 """

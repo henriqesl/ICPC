@@ -162,11 +162,31 @@ class LibraryTests(unittest.TestCase):
 
     def test_local_links(self):
         # Verifica destinos de links; as âncoras são conferidas na revisão.
-        docs = [ROOT / "README.md", *PYTHON.rglob("*.md"), *(ROOT / "c++").rglob("*.md")]
+        docs = [*ROOT.glob("*.md"), *PYTHON.rglob("*.md"), *(ROOT / "c++").rglob("*.md")]
         for path in docs:
             for target in re.findall(r"\]\(([^)]+)\)", path.read_text(encoding="utf-8")):
                 if "://" not in target:
                     self.assertTrue((path.parent / target.split("#")[0]).exists(), f"{path}: {target}")
+
+    def test_windows_against_brute_force(self):
+        rng = random.Random(12)
+        for _ in range(25):
+            n = rng.randrange(1, 10)
+            k = rng.randrange(1, n + 1)
+            values = [rng.randrange(-7, 8) for _ in range(n)]
+            fixed = max(sum(values[i:i+k]) for i in range(n-k+1))
+            cases = [("sliding_window_fixed.py", [n, k, *values], fixed)]
+            values = [rng.randrange(7) for _ in range(n)]
+            limit = rng.randrange(15)
+            variable = max([0] + [r-l for l in range(n) for r in range(l+1,n+1)
+                                  if sum(values[l:r]) <= limit])
+            cases.append(("sliding_window_variable.py", [n, limit, *values], variable))
+            for filename, data, expected in cases:
+                proc = subprocess.run(
+                    [sys.executable, "-B", str(PYTHON / "algorithms" / filename)],
+                    input=" ".join(map(str, data)), text=True, capture_output=True, timeout=5)
+                self.assertEqual(proc.returncode, 0, proc.stderr)
+                self.assertEqual(proc.stdout.strip(), str(expected))
 
 
 if __name__ == "__main__":

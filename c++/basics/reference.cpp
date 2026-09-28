@@ -2,7 +2,7 @@
     REFERÊNCIA RÁPIDA DE C++
 
     Índice completo: ../README.md.
-    Referências detalhadas: ../cheatsheets/cpp.md, collections.md e strings.md.
+    Referências detalhadas: ../basics/cpp.md, collections.md e strings.md.
     Trechos abaixo são consulta; este arquivo não tem main.
 
     VECTOR

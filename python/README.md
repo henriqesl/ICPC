@@ -13,6 +13,7 @@ fornecida. Custos de algoritmos assumem inteiros de tamanho moderado.
 | Fila / pilha / prioridade | [Deque](collections/queue.py), [delimitadores](collections/balanced.py), [heap](collections/heap.py) |
 | Leitura rápida | [I/O](basics/io.py) |
 | Algoritmos e aplicações | [Índice](algorithms/README.md) |
+| Aprender prefix sum e sliding window | [Passo a passo](../c++/algorithms/prefix-and-window.md), [janela fixa](algorithms/sliding_window_fixed.py), [janela variável](algorithms/sliding_window_variable.py) |
 | Primos, divisores, MDC | [Matemática](math/README.md) |
 | Tempo e memória | [Performance](basics/performance.md) |
 | Diagnosticar erro | [Debugging e erros comuns](debugging/README.md) |

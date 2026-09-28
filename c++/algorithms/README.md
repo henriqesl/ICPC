@@ -1,25 +1,20 @@
-# Algoritmos: quando aplicar
+# Algoritmos — arquivos diretos nesta pasta
 
-| Necessidade | Arquivo | Pré-condição / custo |
+| Preciso... | Abra | Condição |
 |---|---|---|
-| Posição exata em sequência qualquer | [Busca linear](searching/linear-search.cpp) | O(N); retorna -1 se ausente |
-| Primeiro valor >= alvo | [Busca binária](searching/binary-search-main.cpp) | crescente; busca O(log N) |
-| Ordenar / comparar vizinhos | [Ordenação](sorting/sorting-example.cpp) | O(N log N); altera índices |
-| Muitas somas de intervalos | [Prefix sum](prefix-sum/prefix-sum-main.cpp) | valores fixos; construção O(N), consulta O(1) |
-| Dois valores com soma alvo | [Dois ponteiros](two-pointers/two-pointers.cpp) | crescente; O(N) |
-| Máximo número de intervalos sem conflito | [Guloso](greedy/intervals.cpp) | sem pesos, início < fim; O(N log N) |
+| Localizar primeira ocorrência exata | [linear-search.cpp](linear-search.cpp) | qualquer ordem; O(N) |
+| Primeiro valor >= alvo | [binary-search.cpp](binary-search.cpp) | vetor ordenado; O(log N) na busca |
+| Ordenar crescente/decrescente | [sorting.cpp](sorting.cpp) | O(N log N); muda índices |
+| Somar muitos intervalos | [prefix-sum.cpp](prefix-sum.cpp) | dados fixos; O(N)+O(1) por consulta |
+| Maior soma de K consecutivos | [sliding-window-fixed.cpp](sliding-window-fixed.cpp) | 1 <= K <= N; O(N) |
+| Maior trecho com soma limitada | [sliding-window-variable.cpp](sliding-window-variable.cpp) | não negativos; O(N) |
+| Dois valores somam alvo | [two-pointers.cpp](two-pointers.cpp) | ordenado; O(N) |
+| Máximo número de atividades compatíveis | [greedy.cpp](greedy.cpp) | sem pesos; O(N log N) |
 
-Em busca binária, resultado len(v) significa ausência de valor >= alvo;
-para igualdade, confira índice válido E v[i]==alvo.
-lower_bound/upper_bound retornam iteradores; a diferença entre eles conta
-ocorrências em vetor ordenado.
+Começando agora: [prefix sum e sliding window passo a passo](prefix-and-window.md).
 
-sort não é estável; stable_sort preserva ordem dos empates. Para decrescente
-use rbegin/rend ou greater<int>(). Comparador deve usar <, nunca <=.
-
-Prefix sum usa prefix[r+1]-prefix[l] para intervalo inclusivo base zero.
-Se valores mudarem, o pré-processamento fica desatualizado.
-
-Dois ponteiros descarta uma ponta porque os dados estão ordenados.
-Guloso precisa de prova da escolha local; o exemplo contém o argumento de troca.
+Todos os exemplos acima estão diretamente no main; leia de cima para baixo.
+Busca binária devolve um limite, não necessariamente igualdade. Ordenação
+não é estável com sort; use stable_sort quando a ordem dos empates importar.
+Guloso exige justificar a escolha local — o comentário do arquivo faz isso.
 [Equivalentes Python](../../python/algorithms/README.md).

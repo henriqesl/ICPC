@@ -1,34 +1,47 @@
-// Divisores, primalidade, MDC/MMC de inteiros positivos moderados.
-// Entrada: a b positivos. Ex.: 12 18 -> 1 2 3 4 6 12 / false / 6 36.
-// Divisores/primo O(sqrt(a)); memória O(D) divisores e O(1) primo.
-// MMC sinaliza overflow em vez de multiplicar fora do limite.
+// DIVISORES, PRIMALIDADE e MDC/MMC: três operações separadas dentro do main.
+// Entrada: a b positivos. 12 18 -> 1 2 3 4 6 12 / false / 6 36.
+// Divisores e primalidade O(sqrt(a)); memória O(D) para D divisores.
+// Use para a moderado. Copie apenas o trecho necessário para sua questão.
+#include <algorithm>
 #include <iostream>
 #include <limits>
 #include <numeric>
 #include <vector>
-std::vector<long long> divisors(long long n) {
-    std::vector<long long> small, large;
-    for (long long d = 1; d <= n/d; ++d) if (n%d == 0) {
-        small.push_back(d);
-        if (d != n/d) large.push_back(n/d);
-    }
-    small.insert(small.end(), large.rbegin(), large.rend());
-    return small;
-}
-bool is_prime(long long n) {
-    if (n < 2) return false;
-    if (n%2 == 0) return n == 2;
-    for (long long d = 3; d <= n/d; d += 2) if (n%d == 0) return false;
-    return true;
-}
+using namespace std;
+
 int main() {
-    long long a,b; std::cin >> a >> b;
+    long long a, b;
+    cin >> a >> b;
     if (a <= 0 || b <= 0) return 1;
-    for (auto d : divisors(a)) std::cout << d << ' ';
-    std::cout << '\n' << std::boolalpha << is_prime(a) << '\n';
-    long long g = std::gcd(a,b), reduced = a/g;
-    std::cout << g << ' ';
-    if (reduced > std::numeric_limits<long long>::max()/b) std::cout << "overflow";
-    else std::cout << reduced*b;
-    std::cout << '\n';
+
+    // 1. DIVISORES: se d divide a, a/d também divide.
+    vector<long long> pequenos, grandes;
+    for (long long d = 1; d <= a / d; d++) { // evita overflow de d*d
+        if (a % d == 0) {
+            pequenos.push_back(d);
+            if (d != a / d) grandes.push_back(a / d); // raiz aparece só uma vez
+        }
+    }
+    for (long long d : pequenos) cout << d << ' ';
+    reverse(grandes.begin(), grandes.end()); // grandes foram encontrados decrescentes
+    for (long long d : grandes) cout << d << ' ';
+    cout << '\n';
+
+    // 2. PRIMO: não pode ter divisor entre 2 e sqrt(a).
+    bool primo = a >= 2;
+    for (long long d = 2; d <= a / d; d++) {
+        if (a % d == 0) {
+            primo = false;
+            break;
+        }
+    }
+    cout << boolalpha << primo << '\n';
+
+    // 3. MDC/MMC. gcd é uma função pronta da biblioteca <numeric>.
+    long long mdc = gcd(a, b);
+    long long parte = a / mdc;
+    cout << mdc << ' ';
+    if (parte > numeric_limits<long long>::max() / b) cout << "overflow";
+    else cout << parte * b; // MMC = (a/MDC)*b
+    cout << '\n';
 }

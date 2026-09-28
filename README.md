@@ -14,18 +14,19 @@ para associar o enunciado às técnicas e encontrar os exemplos.
 
 | Preciso... | C++17 | Python 3 |
 |---|---|---|
-| Sintaxe, tipos e funções | [Referência](c++/cheatsheets/cpp.md) | [Referência](python/cheatsheets/python.md) |
-| Vetores/listas, sets, mapas, filas e heap | [Estruturas](c++/cheatsheets/collections.md) | [Coleções](python/cheatsheets/python-collections.md) |
-| Strings e conversões | [Strings](c++/cheatsheets/strings.md) | [Strings](python/cheatsheets/python-strings.md) |
+| Sintaxe, tipos e funções | [Referência](c++/basics/cpp.md) | [Referência](python/cheatsheets/python.md) |
+| Vetores/listas, sets, mapas, filas e heap | [Estruturas](c++/basics/collections.md) | [Coleções](python/cheatsheets/python-collections.md) |
+| Strings e conversões | [Strings](c++/basics/strings.md) | [Strings](python/cheatsheets/python-strings.md) |
 | Algoritmos e aplicações | [Algoritmos](c++/algorithms/README.md) | [Algoritmos](python/algorithms/README.md) |
 | Matemática | [Matemática](c++/math/README.md) | [Matemática](python/math/README.md) |
+| Aprender prefix sum e sliding window | [Guia passo a passo](c++/algorithms/prefix-and-window.md) | [Exemplos](python/algorithms/README.md) |
 | Começar solução | [template.cpp](c++/template.cpp) | [template.py](python/templates/template.py) |
 
 ## Dificuldade
 
 - **Básico:** entrada/saída, strings, sequências, ordenação, pilhas e filas.
-- **Intermediário:** sets/mapas, heaps, busca binária, prefix sum, dois ponteiros, guloso e teoria dos números.
+- **Intermediário:** sets/mapas, heaps, busca binária, prefix sum, sliding window, dois ponteiros, guloso e teoria dos números.
 - **Avançado — futuro:** grafos, programação dinâmica e geometria.
 
-As funções equivalentes usam os mesmos conceitos. Veja [C++ × Python](python/cheatsheets/cpp-python.md)
+As implementações equivalentes usam os mesmos conceitos. Veja [C++ × Python](python/cheatsheets/cpp-python.md)
 para diferenças de comportamento. Cada trilha contém seu índice completo e comandos de teste.

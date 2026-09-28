@@ -1,4 +1,4 @@
-"""Busca linear/binária: c++/algorithms/searching/binary-search-main.cpp (raiz icpc).
+"""Busca linear/binária: c++/algorithms/binary-search.cpp (raiz icpc).
 first_at_least exige ordem crescente (não estrita), retorna len(values) se ausente.
 Busca binária O(log N)/O(1); linear O(N)/O(1). Leitura usa O(N).
 Entrada: N, N valores ORDENADOS e alvo. Ex.: 4 1 3 3 8 3. Saída: 1.

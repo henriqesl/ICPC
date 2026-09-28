@@ -1,5 +1,8 @@
 # Estruturas C++
 
+Aprendendo agora? Comece pela [comparação map, unordered_map, set e multiset](maps-and-sets.md).
+Fila/pilha/deque/heap ficam em [data-structures](../data-structures/), sem subpastas.
+
 ## Vector: índice e remoção
 
 ```cpp
@@ -52,5 +55,5 @@ set_difference(a.begin(),a.end(),b.begin(),b.end(),back_inserter(difference));
 
 Operações entre conjuntos acima: O(N+M); exigem entradas ordenadas.
 Vector preserva ordem e duplicatas; set perde duplicatas; map associa valores.
-[Exemplos](../README.md) · [Deque](../data-structures/deque/deque-example.cpp) ·
-[Pair](../data-structures/pair/pair-example.cpp).
+[Exemplos](../README.md) · [Deque](../data-structures/deque.cpp) ·
+[Pair](../data-structures/pair.cpp).

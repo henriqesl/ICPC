@@ -8,7 +8,11 @@
 int main() {
     std::vector<int> values{3, 1, 3};
     std::vector<std::pair<int,int>> indexed;
-    for (int i = 0; i < int(values.size()); ++i) indexed.emplace_back(values[i], i);
+    for (int i = 0; i < int(values.size()); ++i) {
+        indexed.push_back({values[i], i}); // primeiro campo: valor; segundo: índice
+    }
     std::sort(indexed.begin(), indexed.end());
-    for (auto [value, index] : indexed) std::cout << value << ':' << index << '\n';
+    for (const auto& item : indexed) {
+        std::cout << item.first << ':' << item.second << '\n';
+    }
 }

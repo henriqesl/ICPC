@@ -1,14 +1,19 @@
 # Algoritmos Python: escolha pelo problema
 
+Para aprender: [prefix sum e sliding window passo a passo](../../c++/algorithms/prefix-and-window.md).
+O raciocínio é o mesmo nas duas linguagens.
+
 | Aplicação | Python | Referência C++ existente |
 |---|---|---|
-| Índice exato em dados sem ordenação; O(N) | [linear_search](searching.py) | [find](../../c++/basics/useful-operations/vector-operations.cpp) |
-| Primeiro valor >= alvo em dados ordenados; O(log N) | [first_at_least](searching.py) | [Busca binária](../../c++/algorithms/searching/binary-search-main.cpp) |
-| Somas de intervalos imutáveis; O(N) + O(1)/consulta | [Prefix sum](prefix_sum.py) | [Prefix sum](../../c++/algorithms/prefix-sum/prefix-sum-main.cpp) |
-| Colocar dados em ordem; O(N log N) | [Ordenação](sorting.py) | [sort](../../c++/algorithms/sorting/sorting-example.cpp) |
-| Dois índices com soma alvo; O(N), lista ordenada | [Dois ponteiros](two_pointers.py) | [Dois ponteiros](../../c++/algorithms/two-pointers/two-pointers.cpp) |
-| Máximo número de intervalos compatíveis, sem pesos | [Guloso](greedy.py) | [Intervalos](../../c++/algorithms/greedy/intervals.cpp) |
-| Frequências | [Counter](../collections/frequency.py) | [map](../../c++/data-structures/map/frequency-map.cpp) |
+| Maior soma de K consecutivos, aceita negativos | [Janela fixa](sliding_window_fixed.py) | [Janela fixa](../../c++/algorithms/sliding-window-fixed.cpp) |
+| Maior trecho com soma limitada, valores não negativos | [Janela variável](sliding_window_variable.py) | [Janela variável](../../c++/algorithms/sliding-window-variable.cpp) |
+| Índice exato em dados sem ordenação; O(N) | [linear_search](searching.py) | [find](../../c++/basics/vector.cpp) |
+| Primeiro valor >= alvo em dados ordenados; O(log N) | [first_at_least](searching.py) | [Busca binária](../../c++/algorithms/binary-search.cpp) |
+| Somas de intervalos imutáveis; O(N) + O(1)/consulta | [Prefix sum](prefix_sum.py) | [Prefix sum](../../c++/algorithms/prefix-sum.cpp) |
+| Colocar dados em ordem; O(N log N) | [Ordenação](sorting.py) | [sort](../../c++/algorithms/sorting.cpp) |
+| Dois índices com soma alvo; O(N), lista ordenada | [Dois ponteiros](two_pointers.py) | [Dois ponteiros](../../c++/algorithms/two-pointers.cpp) |
+| Máximo número de intervalos compatíveis, sem pesos | [Guloso](greedy.py) | [Intervalos](../../c++/algorithms/greedy.cpp) |
+| Frequências | [Counter](../collections/frequency.py) | [map](../../c++/basics/map.cpp) |
 | Divisores, primo, MDC/MMC | [Teoria dos números](../math/number_theory.py) | [Referência](../../c++/math/math-reference.cpp) |
 
 Os conceitos dos pares existentes são os mesmos; consulte os comentários C++

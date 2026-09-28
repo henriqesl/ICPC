@@ -29,4 +29,4 @@ find não é O(1), depende de texto/padrão. Comparação é lexicográfica, at�
 C++17 não tem starts_with/ends_with: compare substrings ou use compare.
 Para separar palavras use istringstream de <sstream>; para juntar, acrescente
 separador entre partes. getline preserva espaços, >> lê até espaço.
-[Conversões executáveis](../strings/conversions.cpp).
+[Conversões executáveis](strings.cpp).

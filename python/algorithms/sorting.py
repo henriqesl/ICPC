@@ -1,4 +1,4 @@
-"""Ordenação: mesma aplicação de c++/algorithms/sorting/sorting-example.cpp (raiz icpc).
+"""Ordenação: mesma aplicação de c++/algorithms/sorting.cpp (raiz icpc).
 sorted cria lista, list.sort altera no lugar e retorna None.
 Ambas estáveis: empates preservam ordem anterior; key escolhe critério.
 Tempo O(N log N), memória auxiliar até O(N).

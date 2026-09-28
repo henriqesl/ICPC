@@ -100,7 +100,7 @@ if stack:
 ```
 
 append O(1) amortizado, top/pop O(1). LIFO; mesma ideia da
-[pilha C++](../../c++/data-structures/stack/balanced-parentheses.cpp).
+[pilha C++](../../c++/data-structures/stack.cpp).
 [Delimitadores em Python](../collections/balanced.py).
 
 ## Heap

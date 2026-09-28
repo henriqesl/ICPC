@@ -13,12 +13,14 @@ int main() {
     int n, x;
     cin >> n;
     vector<int> v(n);
-    for (int& value : v) cin >> value;
+    for (int i = 0; i < n; i++) cin >> v[i];
     cin >> x;
 
     // find retorna um iterador; a distância até begin() é o índice.
     auto it = find(v.begin(), v.end(), x);
-    int index = it == v.end() ? -1 : int(it - v.begin());
+    // end() significa que não encontrou. Não podemos ler *end().
+    int index = -1;
+    if (it != v.end()) index = int(it - v.begin());
 
     cout << "indice=" << index << '\n';
     cout << "ocorrencias=" << count(v.begin(), v.end(), x) << '\n';

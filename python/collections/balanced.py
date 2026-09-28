@@ -1,4 +1,4 @@
-"""LIFO: equivalente a c++/data-structures/stack/balanced-parentheses.cpp (raiz icpc).
+"""LIFO: equivalente a c++/data-structures/stack.cpp (raiz icpc).
 Entrada: uma linha; saída: balanceado ou desbalanceado.
 Ex.: ([{}]) -> balanceado; ([)] -> desbalanceado.
 Tempo O(N), espaço O(N). Ignora caracteres que não são delimitadores.

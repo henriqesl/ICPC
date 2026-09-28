@@ -7,23 +7,30 @@ Use o mapa para levantar hipóteses. Antes de copiar um exemplo, confirme suas p
 
 ## Mapa rápido
 
+Novo assunto: [prefix sum × sliding window, com execução passo a passo](c++/algorithms/prefix-and-window.md).
+Para melhor soma de exatamente K consecutivos, use janela fixa
+([C++](c++/algorithms/sliding-window-fixed.cpp), [Python](python/algorithms/sliding_window_fixed.py)).
+Para maior trecho com soma limitada e valores não negativos, use a variante
+de janela variável ([C++](c++/algorithms/sliding-window-variable.cpp),
+[Python](python/algorithms/sliding_window_variable.py)).
+
 | O que você percebeu | Técnica candidata e condição | C++17 | Python |
 |---|---|---|---|
-| Quantas vezes cada valor aparece | Frequências; vetor se valores forem pequenos e limitados, mapa caso contrário | [Map](c++/data-structures/map/frequency-map.cpp) | [Counter](python/collections/frequency.py) |
-| Quais valores existem ou quantos são diferentes | Set; duplicatas não precisam ser preservadas | [Set](c++/data-structures/set/set-example.cpp) | [Set](python/collections/sets.py) |
-| Localizar um valor sem dados ordenados | Busca linear; para poucas consultas pode bastar | [Busca linear](c++/algorithms/searching/linear-search.cpp) | [Busca](python/algorithms/searching.py) |
-| Primeiro valor que atinge um limite | Busca binária; vetor ordenado ou predicado monotônico | [Busca binária](c++/algorithms/searching/binary-search-main.cpp) | [Bisect](python/algorithms/searching.py) |
-| Muitas somas de intervalos | Prefix sum; valores fixos entre consultas | [Prefix sum](c++/algorithms/prefix-sum/prefix-sum-main.cpp) | [Prefix sum](python/algorithms/prefix_sum.py) |
-| Dois valores cuja soma é um alvo | Dois ponteiros; exemplo exige sequência ordenada | [Dois ponteiros](c++/algorithms/two-pointers/two-pointers.cpp) | [Dois ponteiros](python/algorithms/two_pointers.py) |
-| Primeiro que chega deve sair primeiro | Fila (FIFO) | [Queue](c++/data-structures/queue/queue-example.cpp) | [Deque](python/collections/queue.py) |
-| Último item pendente deve ser resolvido primeiro | Pilha (LIFO); fechamento de símbolos é um exemplo | [Stack](c++/data-structures/stack/balanced-parentheses-main.cpp) | [Pilha](python/collections/balanced.py) |
-| Inserir/remover nas duas extremidades | Deque; acesso ao meio tem custos diferentes nas linguagens | [Deque](c++/data-structures/deque/deque-example.cpp) | [Operações](python/cheatsheets/python-collections.md#deque) |
-| Retirar repetidamente o maior/menor disponível | Heap; útil com inserções entre retiradas | [Priority queue](c++/data-structures/priority-queue/priority-queue-example.cpp) | [Heap](python/collections/heap.py) |
-| Agrupar iguais ou comparar vizinhos por valor | Ordenação; preserve índices originais se necessários | [Sort](c++/algorithms/sorting/sorting-example.cpp) | [Sort](python/algorithms/sorting.py) |
-| Máximo número de intervalos sem conflito | Guloso pelo menor fim; intervalos sem pesos | [Guloso](c++/algorithms/greedy/intervals.cpp) | [Guloso](python/algorithms/greedy.py) |
+| Quantas vezes cada valor aparece | Frequências; vetor se valores forem pequenos e limitados, mapa caso contrário | [Map](c++/basics/map.cpp) | [Counter](python/collections/frequency.py) |
+| Quais valores existem ou quantos são diferentes | Set; duplicatas não precisam ser preservadas | [Set](c++/basics/set.cpp) | [Set](python/collections/sets.py) |
+| Localizar um valor sem dados ordenados | Busca linear; para poucas consultas pode bastar | [Busca linear](c++/algorithms/linear-search.cpp) | [Busca](python/algorithms/searching.py) |
+| Primeiro valor que atinge um limite | Busca binária; vetor ordenado ou predicado monotônico | [Busca binária](c++/algorithms/binary-search.cpp) | [Bisect](python/algorithms/searching.py) |
+| Muitas somas de intervalos | Prefix sum; valores fixos entre consultas | [Prefix sum](c++/algorithms/prefix-sum.cpp) | [Prefix sum](python/algorithms/prefix_sum.py) |
+| Dois valores cuja soma é um alvo | Dois ponteiros; exemplo exige sequência ordenada | [Dois ponteiros](c++/algorithms/two-pointers.cpp) | [Dois ponteiros](python/algorithms/two_pointers.py) |
+| Primeiro que chega deve sair primeiro | Fila (FIFO) | [Queue](c++/data-structures/queue.cpp) | [Deque](python/collections/queue.py) |
+| Último item pendente deve ser resolvido primeiro | Pilha (LIFO); fechamento de símbolos é um exemplo | [Stack](c++/data-structures/stack.cpp) | [Pilha](python/collections/balanced.py) |
+| Inserir/remover nas duas extremidades | Deque; acesso ao meio tem custos diferentes nas linguagens | [Deque](c++/data-structures/deque.cpp) | [Operações](python/cheatsheets/python-collections.md#deque) |
+| Retirar repetidamente o maior/menor disponível | Heap; útil com inserções entre retiradas | [Priority queue](c++/data-structures/priority-queue.cpp) | [Heap](python/collections/heap.py) |
+| Agrupar iguais ou comparar vizinhos por valor | Ordenação; preserve índices originais se necessários | [Sort](c++/algorithms/sorting.cpp) | [Sort](python/algorithms/sorting.py) |
+| Máximo número de intervalos sem conflito | Guloso pelo menor fim; intervalos sem pesos | [Guloso](c++/algorithms/greedy.cpp) | [Guloso](python/algorithms/greedy.py) |
 | Divisibilidade, primos ou divisores | Teoria dos números; testar até a raiz só cabe para N moderado | [Matemática](c++/math/number-theory.cpp) | [Matemática](python/math/number_theory.py) |
 | Potência enorme com resposta módulo M | Exponenciação modular; confira limites da multiplicação | [Potência modular](c++/math/modular-power.cpp) | [pow(a,b,mod)](python/math/README.md) |
-| Transformar caracteres ou contar letras | Conversão + frequência; confirme alfabeto e maiúsculas | [Strings](c++/cheatsheets/strings.md) | [Strings](python/cheatsheets/python-strings.md) |
+| Transformar caracteres ou contar letras | Conversão + frequência; confirme alfabeto e maiúsculas | [Strings](c++/basics/strings.md) | [Strings](python/cheatsheets/python-strings.md) |
 
 Os exemplos de busca binária do repositório trabalham com vetores ordenados.
 Busca binária sobre uma resposta exige escrever e justificar outro predicado.

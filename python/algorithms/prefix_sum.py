@@ -1,4 +1,4 @@
-"""Intervalos imutáveis: c++/algorithms/prefix-sum/prefix-sum-main.cpp (raiz icpc).
+"""Intervalos imutáveis: c++/algorithms/prefix-sum.cpp (raiz icpc).
 Construção O(N), consulta O(1), memória O(N), contando inteiros como custo fixo.
 Entrada: N, valores, Q e Q pares l r inclusivos (base zero).
 Ex.: 3 2 -1 4 2 0 2 1 1. Saída: 5 / -1.

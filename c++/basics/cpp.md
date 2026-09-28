@@ -13,7 +13,7 @@ while (t--) { /* apenas quando houver T no enunciado */ }
 cout << fixed << setprecision(2) << 1.0 / 3 << '\n';
 ```
 
-[Exemplo de I/O](../basics/io.cpp). Para interativo, faça flush quando necessário.
+[Exemplo de I/O](io.cpp). Para interativo, faça flush quando necessário.
 `getline(cin, s)` lê espaços. Após >>, descarte a quebra com
 `cin.ignore(numeric_limits<streamsize>::max(), '\n')`.
 `getline(cin >> ws, s)` é alternativa somente se espaços iniciais/linhas vazias não importarem.

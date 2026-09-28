@@ -1,48 +1,53 @@
-# C++17 — linguagem principal
+# C++17 — comece por aqui
 
-| Preciso... | Consulte |
+Exemplos diretos no `main()`, com entrada, saída e comentários.
+Cada arquivo resolve uma aplicação pequena: compile **um de cada vez**.
+
+| Pasta | O que tem |
 |---|---|
-| Sintaxe, tipos, funções e STL | [Referência rápida](cheatsheets/cpp.md) |
-| Vetores, índice, remoção, set/map/fila/heap | [Estruturas](cheatsheets/collections.md) |
-| Letras, dígitos, conversões e linhas | [Strings](cheatsheets/strings.md) |
-| Escolher algoritmo e aplicação | [Algoritmos](algorithms/README.md) |
-| MDC, divisores, primos e módulo | [Matemática](math/README.md) |
-| Entrada e saída | [Exemplo](basics/io.cpp) |
-| Template | [template.cpp](template.cpp) |
-| Tempo, memória e erros comuns | [Cuidados](basics/performance.md) |
-| Consulta em comentários C++ | [reference.cpp](basics/reference.cpp), [APPLICATIONS.cpp](APPLICATIONS.cpp) |
-| Equivalências Python | [Comparação](../python/cheatsheets/cpp-python.md) |
+| [basics/](basics/) | Entrada, strings, vector, map, unordered_map, set, multiset e referências da linguagem. |
+| [data-structures/](data-structures/) | Fila, pilha, deque, pair e heap. Todos diretamente nessa pasta. |
+| [algorithms/](algorithms/README.md) | Busca, ordenação, prefix sum, sliding window, dois ponteiros e guloso. |
+| [math/](math/README.md) | Divisores, primalidade, MDC/MMC e potência modular. |
 
-## Aplicações de estruturas
+## Encontre pelo que precisa fazer
 
-| Aplicação | Exemplo executável |
+| Preciso... | Abra |
 |---|---|
-| Índice, frequência e ordenação de vetor | [Vector](basics/useful-operations/vector-operations.cpp) |
-| Delimitadores balanceados | [Stack](data-structures/stack/balanced-parentheses-main.cpp) |
-| Atendimento por chegada | [Queue](data-structures/queue/queue-example.cpp) |
-| Duas pontas | [Deque](data-structures/deque/deque-example.cpp) |
-| Valores com índices originais | [Pair](data-structures/pair/pair-example.cpp) |
-| Distintos ordenados | [Set](data-structures/set/set-example.cpp) |
-| Frequência por valor | [Map](data-structures/map/frequency-map.cpp) |
-| Maior prioridade primeiro | [Heap](data-structures/priority-queue/priority-queue-example.cpp) |
-| Letras e dígitos | [Conversões](strings/conversions.cpp) |
+| Entender map, unordered_map, set e multiset | [Comparação com exemplos](basics/maps-and-sets.md) |
+| Contar valores em ordem / consultar rápido | [map.cpp](basics/map.cpp) / [unordered-map.cpp](basics/unordered-map.cpp) |
+| Guardar únicos / permitir repetidos ordenados | [set.cpp](basics/set.cpp) / [multiset.cpp](basics/multiset.cpp) |
+| Atender por chegada | [queue.cpp](data-structures/queue.cpp) |
+| Fechar símbolos na ordem correta | [stack.cpp](data-structures/stack.cpp) |
+| Mexer nas duas pontas / pegar maior prioridade | [deque.cpp](data-structures/deque.cpp) / [priority-queue.cpp](data-structures/priority-queue.cpp) |
+| Guardar valor e índice | [pair.cpp](data-structures/pair.cpp) |
+| Achar índice ou contar num vetor | [vector.cpp](basics/vector.cpp) |
+| Converter letras/dígitos | [strings.cpp](basics/strings.cpp), [referência](basics/strings.md) |
+| Aprender prefix sum e sliding window | [Guia com passo a passo](algorithms/prefix-and-window.md) |
+| Somar intervalos / melhor soma de K consecutivos | [prefix-sum.cpp](algorithms/prefix-sum.cpp) / [janela fixa](algorithms/sliding-window-fixed.cpp) |
+| Maior trecho com soma limitada (não negativos) | [janela variável](algorithms/sliding-window-variable.cpp) |
+| Outros algoritmos | [Índice](algorithms/README.md) |
+| Relembrar STL, tipos ou complexidade | [C++](basics/cpp.md), [estruturas](basics/collections.md), [performance](basics/performance.md) |
+| Começar uma solução | [template.cpp](template.cpp) |
 
-Exemplos com main são programas independentes. Compile um por vez, a partir de icpc:
+`push`, `pop`, `find`, `sort` e `gcd` são operações prontas da biblioteca.
+Não é necessário escrever essas funções. Por exemplo, em queue, `push` insere,
+`front` consulta o primeiro e `pop` remove: o arquivo explica a execução inteira.
+
+## Rodar um exemplo
+
+A partir de icpc:
 
 ```text
-g++ -std=c++17 -Wall -Wextra -Wpedantic -g -O0 "c++/algorithms/searching/binary-search-main.cpp" -o busca
+g++ -std=c++17 -Wall -Wextra -Wpedantic -g -O0 "c++/data-structures/queue.cpp" -o fila
 ```
 
-Windows: execute `./busca.exe`; Linux: `./busca`.
-Digite `4 1 3 3 8 3`; saída: 1. A lista precisa estar ordenada.
+Windows: `./fila.exe`; Linux: `./fila`. Digite `3 Ana Bia Caio`.
+Saída: Ana, Bia, Caio, uma pessoa por linha.
 
-Cabeçalhos descrevem aplicação, pré-condições e entrada/saída.
-reference.cpp, APPLICATIONS.cpp e math-reference.cpp são consulta comentada.
-balanced-parentheses.cpp tem função reutilizável sem main; compile com -c ou copie a função.
-Para submissão use as flags permitidas pelo juiz (normalmente -O2).
-Testes: `python -B "c++/tests/test_library.py"`; precisa de g++ no PATH.
+Arquivos .cpp de referência, contendo só comentários, não são executáveis.
+Os demais têm main. Testes: `python -B "c++/test_library.py"`.
+Não precisa abrir o teste durante o contest.
 
-Básico: I/O, strings, vector, pair, sort, stack, queue e deque.
-Intermediário: set/map/heap, busca binária, prefix sum, dois ponteiros,
-seleção gulosa de intervalos e teoria dos números.
-Grafos, DP e geometria ainda não implementados.
+**Ordem de estudo:** basics → fila/pilha → prefix sum → janela fixa → janela
+variável → busca binária/dois ponteiros/guloso. Grafos, DP e geometria ficam para depois.

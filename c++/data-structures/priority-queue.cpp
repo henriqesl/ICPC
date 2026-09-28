@@ -11,7 +11,7 @@ using namespace std;
 int main() {
     int n;
     cin >> n;
-    priority_queue<int> pq;
+    priority_queue<int> pq; // fila por VALOR: o maior sai primeiro, não quem chegou antes
 
     for (int i = 0; i < n; i++) {
         int x;
@@ -20,8 +20,9 @@ int main() {
     }
 
     while (!pq.empty()) {
-        cout << pq.top() << ' ';
-        pq.pop();
+        int maior = pq.top(); // consulta sem remover
+        cout << maior << ' ';
+        pq.pop(); // remove esse maior; o próximo maior assume o topo
     }
     cout << '\n';
 }
