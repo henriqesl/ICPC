@@ -8,6 +8,8 @@ da sequência; não é a mesma técnica. A janela evita recalcular o trecho inte
 | Muitas consultas de soma [L,R] em dados fixos | Prefix sum | [prefix-sum.cpp](prefix-sum.cpp) |
 | Melhor soma entre trechos de exatamente K consecutivos | Janela fixa | [sliding-window-fixed.cpp](sliding-window-fixed.cpp) |
 | Maior trecho com soma <= limite, valores não negativos | Janela variável | [sliding-window-variable.cpp](sliding-window-variable.cpp) |
+| Maior trecho com até K valores diferentes | Janela com frequências | [sliding-window-distinct.cpp](sliding-window-distinct.cpp) |
+| Somar incrementos a intervalos e ver resultado só no final | Vetor de diferenças | [difference-array.cpp](difference-array.cpp) |
 
 Trecho/subarray é **contíguo**: [2,1,5] é trecho de [2,1,5,1,3]; escolher
 [2,5,3] pulando posições não é.
@@ -88,3 +90,23 @@ podem exigir janela com frequências ou outra condição; não copie este crité
 de soma para qualquer problema com a palavra “janela”.
 
 Exercício: [1,2,1,1], limite 3. Maior tamanho? **2**.
+
+## 4. Outra condição de janela: até K distintos
+
+Em [1,2,1,3], com K=2, o trecho [1,2,1] tem três posições mas só dois valores.
+Use um mapa com as frequências dentro da janela. Ao entrar o 3, há três chaves:
+avance a esquerda até restarem no máximo duas.
+Quando uma frequência chegar a zero, apague a chave; caso contrário size()
+continuará contando um valor que já saiu. Essa variante aceita negativos.
+
+## 5. Prefixos para contar e diferenças para atualizar
+
+Para contar pares em [L,R], transforme cada valor em 1 se for par e 0 caso
+contrário, depois use os mesmos prefixos. Ex.: [2,3,6] vira [1,0,1].
+Para média, divida a soma pelo tamanho convertendo antes para double.
+Não funciona substituir soma por mínimo: não há uma subtração que remova o
+mínimo de um prefixo e revele o mínimo de outro intervalo.
+
+Se o pedido é adicionar 10 a [L,R] muitas vezes e só imprimir os valores finais,
+marque +10 em L e -10 em R+1 num vetor extra de tamanho N+1. Um prefixo dessas
+alterações reconstrói o incremento de cada posição. Veja difference-array.cpp.

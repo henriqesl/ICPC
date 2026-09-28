@@ -62,6 +62,35 @@ Essas estruturas não têm acesso por índice. `*s.begin()` lê o menor,
 somente se não vazio. `s.lower_bound(x)` aponta para o primeiro >= x:
 confira se o resultado é diferente de end antes de usar `*it`.
 
+## Extremos e vizinhos
+
+Para set/multiset/map ordenados crescentes:
+
+| Objetivo | Expressão | Verificação antes de ler |
+|---|---|---|
+| Primeiro/menor | begin() | !empty() |
+| Último/maior | rbegin(), ou prev(end()) | !empty() |
+| Primeiro >= X | lower_bound(X) | it != end() |
+| Primeiro > X | upper_bound(X) | it != end() |
+| Último < X | prev(lower_bound(X)) | lower_bound(X) != begin() |
+| Último <= X | prev(upper_bound(X)) | upper_bound(X) != begin() |
+
+set/multiset: leia *it. map: it->first é a chave e it->second é o valor.
+begin/rbegin dão extremos pela ordem das CHAVES, não pela frequência armazenada.
+end não é o último elemento: é a posição após ele. Nunca leia *end nem prev(begin).
+Inclua <iterator> para prev. Em vazio, begin == end, e nenhum extremo pode ser lido.
+
+[bounds.cpp](../algorithms/bounds.cpp) executa as consultas de limites e vizinhos.
+No vector ordenado, use lower_bound(v.begin(),v.end(),x); it-v.begin() dá índice.
+No set/multiset/map, use s.lower_bound(x), que usa a árvore em O(log N).
+O algoritmo genérico com iteradores de set pode avançar O(N) vezes.
+Em multiset, distance(lower,upper) custa O(quantidade), e upper-lower não compila.
+
+Ex.: [1,3,3,8] com X=3: lower aponta para o primeiro 3, upper para 8.
+O intervalo [lower,upper) contém os dois 3; em vector, upper-lower vale 2.
+Para X=20, ambos são end: isso é uma resposta válida da busca, não um valor acessível.
+Em unordered_map não existem bounds nem extremos por chave.
+
 ## Custos para N elementos
 
 | Operação | map / set / multiset | unordered_map |

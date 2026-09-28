@@ -36,4 +36,10 @@ int main() {
     }
     // Se a entrada usar índices a partir de 1: subtraia 1 de ambos antes.
     // Se os valores forem alterados, os prefixos precisam ser atualizados.
+    // Para contar PARES em intervalos, armazene 1 se valor%2==0, senão 0:
+    // prefixo[i+1] = prefixo[i] + (valor%2 == 0);
+    // A mesma subtração devolve quantidade, não soma dos valores originais.
+    // Para média: double media = double(soma) / (direita-esquerda+1);
+    // Não substitua + por min: mínimos não permitem "desfazer" com subtração.
+    // Muitas adições em intervalos, só resultado final? Veja difference-array.cpp.
 }

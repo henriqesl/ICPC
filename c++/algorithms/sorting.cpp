@@ -16,6 +16,15 @@ int main() {
     for (int x : v) cout << x << ' ';
     cout << '\n';
 
+    // sort(v.begin(), v.end(), greater<int>()) também ordena decrescente.
+    // Para ordenar apenas [L,R) (R exclusivo): sort(v.begin()+L, v.begin()+R).
+    // Exige 0 <= L <= R <= size(). O resto do vetor não muda.
+    // min_element/max_element encontram um extremo em O(N), sem ordenar.
+    // stable_sort preserva ordem anterior em empates; sort não garante isso.
+    // Em pair, compara first e depois second; veja ../data-structures/pair.cpp.
+    // Para remover duplicatas, ordene crescente e use erase(unique(...), end()).
+    // Exemplo executável completo: ../basics/vector.cpp.
+
     sort(v.rbegin(), v.rend()); // decrescente
     for (int x : v) cout << x << ' ';
     cout << '\n';

@@ -17,6 +17,8 @@ Cada arquivo resolve uma aplicação pequena: compile **um de cada vez**.
 | Entender map, unordered_map, set e multiset | [Comparação com exemplos](basics/maps-and-sets.md) |
 | Contar valores em ordem / consultar rápido | [map.cpp](basics/map.cpp) / [unordered-map.cpp](basics/unordered-map.cpp) |
 | Guardar únicos / permitir repetidos ordenados | [set.cpp](basics/set.cpp) / [multiset.cpp](basics/multiset.cpp) |
+| Primeiro/último, begin/end/rbegin e remoção | [Set](basics/set.cpp), [multiset](basics/multiset.cpp), [guia](basics/maps-and-sets.md#extremos-e-vizinhos) |
+| lower_bound, upper_bound, vizinhos e quantidade em intervalo | [bounds.cpp](algorithms/bounds.cpp) |
 | Atender por chegada | [queue.cpp](data-structures/queue.cpp) |
 | Fechar símbolos na ordem correta | [stack.cpp](data-structures/stack.cpp) |
 | Mexer nas duas pontas / pegar maior prioridade | [deque.cpp](data-structures/deque.cpp) / [priority-queue.cpp](data-structures/priority-queue.cpp) |
@@ -26,6 +28,8 @@ Cada arquivo resolve uma aplicação pequena: compile **um de cada vez**.
 | Aprender prefix sum e sliding window | [Guia com passo a passo](algorithms/prefix-and-window.md) |
 | Somar intervalos / melhor soma de K consecutivos | [prefix-sum.cpp](algorithms/prefix-sum.cpp) / [janela fixa](algorithms/sliding-window-fixed.cpp) |
 | Maior trecho com soma limitada (não negativos) | [janela variável](algorithms/sliding-window-variable.cpp) |
+| Maior trecho com até K valores diferentes | [janela com frequências](algorithms/sliding-window-distinct.cpp) |
+| Somar a vários intervalos e obter resultado final | [vetor de diferenças](algorithms/difference-array.cpp) |
 | Outros algoritmos | [Índice](algorithms/README.md) |
 | Relembrar STL, tipos ou complexidade | [C++](basics/cpp.md), [estruturas](basics/collections.md), [performance](basics/performance.md) |
 | Começar uma solução | [template.cpp](template.cpp) |

@@ -7,6 +7,10 @@ Use o mapa para levantar hipóteses. Antes de copiar um exemplo, confirme suas p
 
 ## Mapa rápido
 
+Consultas novas: [vizinhos, lower_bound e upper_bound](c++/algorithms/bounds.cpp);
+[atualizações de intervalos](c++/algorithms/difference-array.cpp);
+[janela com até K distintos](c++/algorithms/sliding-window-distinct.cpp).
+
 Novo assunto: [prefix sum × sliding window, com execução passo a passo](c++/algorithms/prefix-and-window.md).
 Para melhor soma de exatamente K consecutivos, use janela fixa
 ([C++](c++/algorithms/sliding-window-fixed.cpp), [Python](python/algorithms/sliding_window_fixed.py)).

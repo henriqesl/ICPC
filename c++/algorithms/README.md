@@ -4,10 +4,13 @@
 |---|---|---|
 | Localizar primeira ocorrência exata | [linear-search.cpp](linear-search.cpp) | qualquer ordem; O(N) |
 | Primeiro valor >= alvo | [binary-search.cpp](binary-search.cpp) | vetor ordenado; O(log N) na busca |
+| Primeiro >= / >; último < / <=; contar em [L,R] | [bounds.cpp](bounds.cpp) | ordenação/conjunto ordenado; trata ausência |
 | Ordenar crescente/decrescente | [sorting.cpp](sorting.cpp) | O(N log N); muda índices |
 | Somar muitos intervalos | [prefix-sum.cpp](prefix-sum.cpp) | dados fixos; O(N)+O(1) por consulta |
+| Adicionar a muitos intervalos e consultar só no final | [difference-array.cpp](difference-array.cpp) | O(N+Q); não é consulta online |
 | Maior soma de K consecutivos | [sliding-window-fixed.cpp](sliding-window-fixed.cpp) | 1 <= K <= N; O(N) |
 | Maior trecho com soma limitada | [sliding-window-variable.cpp](sliding-window-variable.cpp) | não negativos; O(N) |
+| Maior trecho com até K distintos | [sliding-window-distinct.cpp](sliding-window-distinct.cpp) | aceita negativos; O(N) médio |
 | Dois valores somam alvo | [two-pointers.cpp](two-pointers.cpp) | ordenado; O(N) |
 | Máximo número de atividades compatíveis | [greedy.cpp](greedy.cpp) | sem pesos; O(N log N) |
 

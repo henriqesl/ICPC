@@ -11,4 +11,9 @@ int main() {
     q.pop_front();
     q.pop_back();
     std::cout << q.front() << '\n';
+    // q.back() consulta o último; q[i] acessa índice válido em O(1).
+    // q.at(i) também acessa, mas lança exceção se o índice for inválido.
+    // q.size() = quantidade; q.empty() = está vazia; q.clear() apaga tudo.
+    // push_front/push_back podem invalidar iteradores: obtenha-os novamente.
+    // Diferente de vector, deque não garante todos os elementos contíguos.
 }

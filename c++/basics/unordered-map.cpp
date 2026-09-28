@@ -12,6 +12,7 @@ int main() {
     int n;
     cin >> n;
     unordered_map<int, int> frequencia;
+    frequencia.reserve(n); // antecipa espaço para até n chaves; não cria elementos
 
     for (int i = 0; i < n; i++) {
         int numero;
@@ -31,4 +32,10 @@ int main() {
         consultas--;
     }
     // A sintaxe é parecida com map; a ordem e a complexidade são diferentes.
+    // begin() NÃO significa menor chave. Não há lower_bound/upper_bound.
+    // Se precisar de vizinhos/ordem, use map.
+    // count(chave) é 0 ou 1, não a frequência armazenada.
+    // erase(chave) remove a associação, se existir.
+    // Inserções podem causar rehash e invalidar iteradores: refaça find após inserir.
+    // reserve ajuda no desempenho, mas não elimina o pior caso O(K) da busca.
 }

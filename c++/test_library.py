@@ -28,11 +28,18 @@ def main():
         ("data-structures/stack.cpp", "([)]", "desbalanceado"),
         ("data-structures/stack.cpp", ")", "desbalanceado"),
         ("data-structures/queue.cpp", "2 Ana Bia", "Ana Bia"),
-        ("basics/set.cpp", "4 3 1 3 8", "1 3 8"),
-        ("basics/map.cpp", "4 3 3 8 3", "3: 3 8: 1"),
-        ("data-structures/priority-queue.cpp", "4 -3 9 9 2", "9 9 2 -3"),
-        ("basics/vector.cpp", "4 3 1 3 8 3", "indice=0 ocorrencias=2 1 3 3 8"),
-        ("basics/vector.cpp", "0 3", "indice=-1 ocorrencias=0"),
+        ("basics/set.cpp", "4 3 1 3 8", "1 3 8 menor=1 maior=8"),
+        ("basics/set.cpp", "0", "vazio"),
+        ("basics/set.cpp", "3 -5 -5 -5", "-5 menor=-5 maior=-5"),
+        ("basics/map.cpp", "4 3 3 8 3", "3: 3 8: 1 menor_chave=3 maior_chave=8"),
+        ("basics/map.cpp", "0", "vazio"),
+        ("data-structures/priority-queue.cpp", "4 -3 9 9 2", "9 9 2 -3 -3 2 9 9"),
+        ("data-structures/priority-queue.cpp", "0", ""),
+        ("basics/vector.cpp", "4 3 1 3 8 3",
+         "indice=0 ocorrencias=2 1 3 3 8 primeiro=1 ultimo=8 sem_x: 1 8 distintos: 1 3 8"),
+        ("basics/vector.cpp", "0 3", "indice=-1 ocorrencias=0 vazio sem_x: distintos:"),
+        ("basics/vector.cpp", "3 -2 -2 -2 -2",
+         "indice=0 ocorrencias=3 -2 -2 -2 primeiro=-2 ultimo=-2 sem_x: distintos: -2"),
         ("algorithms/linear-search.cpp", "3 8 1 8 8", "0"),
         ("algorithms/linear-search.cpp", "0 8", "-1"),
         ("algorithms/binary-search.cpp", "4 1 3 3 8 3", "1"),
@@ -45,12 +52,21 @@ def main():
         ("math/number-theory.cpp", "1 1", "1 false 1 1"),
         ("basics/unordered-map.cpp", "4 3 3 8 3 3 3 8 7", "3 1 0"),
         ("basics/unordered-map.cpp", "0 2 7 7", "0 0"),
-        ("basics/multiset.cpp", "5 3 1 3 8 3 3", "1 3 3 8"),
-        ("basics/multiset.cpp", "2 1 1 9", "1 1"),
-        ("basics/multiset.cpp", "1 3 3", ""),
+        ("basics/multiset.cpp", "5 3 1 3 8 3 3", "1 3 3 8 menor=1 maior=8 restantes=2"),
+        ("basics/multiset.cpp", "2 1 1 9", "1 1 menor=1 maior=1 restantes=0"),
+        ("basics/multiset.cpp", "1 3 3", "vazio restantes=0"),
+        ("basics/multiset.cpp", "0 3", "vazio restantes=0"),
         ("data-structures/queue.cpp", "0", ""),
         ("algorithms/sliding-window-fixed.cpp", "3 2 -5 -2 -7", "-7"),
         ("algorithms/sliding-window-variable.cpp", "3 0 0 0 0", "3"),
+        ("algorithms/bounds.cpp", "5 1 3 3 8 10 3 3 8",
+         "lower=1 upper=3 iguais=2 intervalo=3 menor_que=1 menor_igual=3 maior_igual=3 maior_que=8"),
+        ("algorithms/bounds.cpp", "0 0 -1 1",
+         "lower=0 upper=0 iguais=0 intervalo=0 menor_que=nenhum menor_igual=nenhum maior_igual=nenhum maior_que=nenhum"),
+        ("algorithms/difference-array.cpp", "4 2 1 2 3 4 0 2 10 1 3 -2", "11 10 11 2"),
+        ("algorithms/difference-array.cpp", "0 0", ""),
+        ("algorithms/sliding-window-distinct.cpp", "6 2 1 2 1 3 3 2", "3"),
+        ("algorithms/sliding-window-distinct.cpp", "3 0 1 1 1", "0"),
     ]
     checks = 0
     with tempfile.TemporaryDirectory(prefix="icpc-cpp-") as temp:
@@ -130,6 +146,43 @@ def main():
                                   if sum(v[l:r]) <= limit])
             data = " ".join(map(str, [n, limit, *v]))
             assert run("algorithms/sliding-window-variable.cpp", data) == [str(expected)]
+        for _ in range(50):
+            v = [rng.randrange(-6, 7) for _ in range(rng.randrange(12))]
+            x = rng.randrange(-8, 9)
+            l, r = sorted([rng.randrange(-8, 9), rng.randrange(-8, 9)])
+            s = sorted(v)
+            lower = sum(a < x for a in s)
+            upper = sum(a <= x for a in s)
+            def last_or_none(items):
+                return str(items[-1]) if items else "nenhum"
+            def first_or_none(items):
+                return str(items[0]) if items else "nenhum"
+            expected = [f"lower={lower}", f"upper={upper}",
+                        f"iguais={v.count(x)}", f"intervalo={sum(l <= a <= r for a in v)}",
+                        "menor_que=" + last_or_none([a for a in s if a < x]),
+                        "menor_igual=" + last_or_none([a for a in s if a <= x]),
+                        "maior_igual=" + first_or_none([a for a in s if a >= x]),
+                        "maior_que=" + first_or_none([a for a in s if a > x])]
+            data = " ".join(map(str, [len(v), *v, x, l, r]))
+            assert run("algorithms/bounds.cpp", data) == expected
+
+            k = rng.randrange(5)
+            expected_length = max([0] + [j-i for i in range(len(v))
+                                  for j in range(i+1, len(v)+1) if len(set(v[i:j])) <= k])
+            data = " ".join(map(str, [len(v), k, *v]))
+            assert run("algorithms/sliding-window-distinct.cpp", data) == [str(expected_length)]
+
+            if v:
+                updates = []
+                final = v[:]
+                for _ in range(rng.randrange(10)):
+                    l, r = sorted([rng.randrange(len(v)), rng.randrange(len(v))])
+                    delta = rng.randrange(-10, 11)
+                    updates.extend([l, r, delta])
+                    for i in range(l, r+1):
+                        final[i] += delta
+                data = " ".join(map(str, [len(v), len(updates)//3, *v, *updates]))
+                assert run("algorithms/difference-array.cpp", data) == list(map(str, final))
         print(f"OK: {len(binaries)} executáveis; {checks} execuções verificadas.")
 
 
