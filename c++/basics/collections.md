@@ -1,5 +1,8 @@
 # Estruturas C++
 
+Ainda não sabe qual escolher? Consulte [QUAL ESTRUTURA USAR?](../../QUAL-ESTRUTURA-USAR.md):
+operação → candidata, custo e limitações.
+
 Aprendendo agora? Comece pela [comparação map, unordered_map, set e multiset](maps-and-sets.md).
 Fila/pilha/deque/heap ficam em [data-structures](../data-structures/), sem subpastas.
 

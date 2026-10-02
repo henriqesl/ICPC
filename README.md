@@ -5,6 +5,9 @@ C++17 é a linguagem principal; Python 3 é complementar.
 Está com uma questão em mãos? Consulte o [mapa de resolução](MAPA-DE-RESOLUCAO.md)
 para associar o enunciado às técnicas e encontrar os exemplos.
 
+Já sabe quais operações precisa repetir? Abra [QUAL ESTRUTURA USAR?](QUAL-ESTRUTURA-USAR.md):
+escolha por operação, compare os custos e confira as limitações.
+
 | Linguagem | Conteúdo |
 |---|---|
 | [c++/](c++/README.md) | Referências de C++17, estruturas, algoritmos, matemática, aplicações e template. |

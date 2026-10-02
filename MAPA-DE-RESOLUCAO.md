@@ -5,6 +5,10 @@
 **O que preciso descobrir → quais propriedades posso aproveitar → qual custo cabe nos limites.**
 Use o mapa para levantar hipóteses. Antes de copiar um exemplo, confirme suas pré-condições.
 
+Para decidir **como guardar e consultar os dados**, abra
+[QUAL ESTRUTURA USAR?](QUAL-ESTRUTURA-USAR.md): operações repetidas → estruturas,
+com exemplos C++17 e casos de mediana, poções, lasers e mínimos de subarrays.
+
 ## Mapa rápido
 
 Consultas novas: [vizinhos, lower_bound e upper_bound](c++/algorithms/bounds.cpp);

@@ -6,6 +6,7 @@ from pathlib import Path
 import itertools
 import math
 import random
+import re
 import shutil
 import subprocess
 import tempfile
@@ -87,6 +88,41 @@ def main():
             if executable:
                 binaries[relative] = output
             print("Compilado:", relative, flush=True)
+
+        # Os 20 recortes do guia devem compilar dentro de main, sem depender uns dos outros.
+        guide = ROOT.parent / "QUAL-ESTRUTURA-USAR.md"
+        snippets = re.findall(r"```cpp\n(.*?)\n```", guide.read_text(encoding="utf-8"), re.S)
+        expected_snippets = ["7 4", "1", "0", "3 1 3 8", "1 5", "1 3 5 8", "3 1",
+                             "8", "9 2", "3", "Ana", "[", "1 3", "1", "8 7", "3",
+                             "", "3", "7", "1"]
+        assert len(snippets) == len(expected_snippets) == 20
+        extra_checks = {
+            1: "assert(presentes.count(8) == 0);",
+            8: "assert(maior.top() == 5 && menor.top() == 5);",
+            10: 'assert(fila.front() == "Bia");',
+            11: "assert(pendentes.top() == '(');",
+            12: "assert(d.size() == 1 && d.front() == 2);",
+            15: "assert(baixo.size() == 3 && alto.size() == 2 && *baixo.rbegin() <= *alto.begin());",
+            16: "assert((anterior == vector<int>{-1, -1, 1}));",
+        }
+        source = "#include <bits/stdc++.h>\n#include <cassert>\nusing namespace std;\nint main() {\n"
+        for i, snippet in enumerate(snippets):
+            assert 3 <= len(snippet.splitlines()) <= 6, (i + 1, "recorte fora de 3-6 linhas")
+            source += "{\n" + snippet + "\n" + extra_checks.get(i, "") + '\ncout << char(31);\n}\n'
+        source += "}\n"
+        guide_binary = Path(temp) / "guide.exe"
+        result = subprocess.run([compiler, "-std=c++17", "-Wall", "-Wextra", "-Wpedantic",
+                                 "-Werror", "-O0", "-D_GLIBCXX_DEBUG", "-x", "c++", "-",
+                                 "-o", str(guide_binary)], input=source, text=True,
+                                capture_output=True, timeout=60)
+        assert result.returncode == 0, result.stderr
+        result = subprocess.run([str(guide_binary)], capture_output=True, text=True, timeout=5)
+        assert result.returncode == 0, result.stderr
+        outputs = result.stdout.split(chr(31))
+        assert len(outputs) == 21 and outputs[-1] == ""
+        for i, (actual, expected) in enumerate(zip(outputs, expected_snippets)):
+            assert actual.split() == expected.split(), (f"guia, caso {i+1:02}", actual, expected)
+        print("OK: 20 recortes do guia compilados e verificados.", flush=True)
 
         def run(relative, data):
             nonlocal checks

@@ -14,6 +14,7 @@ Cada arquivo resolve uma aplicação pequena: compile **um de cada vez**.
 
 | Preciso... | Abra |
 |---|---|
+| Escolher a estrutura pelas operações do problema | [QUAL ESTRUTURA USAR?](../QUAL-ESTRUTURA-USAR.md) |
 | Entender map, unordered_map, set e multiset | [Comparação com exemplos](basics/maps-and-sets.md) |
 | Contar valores em ordem / consultar rápido | [map.cpp](basics/map.cpp) / [unordered-map.cpp](basics/unordered-map.cpp) |
 | Guardar únicos / permitir repetidos ordenados | [set.cpp](basics/set.cpp) / [multiset.cpp](basics/multiset.cpp) |
