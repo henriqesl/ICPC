@@ -19,6 +19,7 @@ escolha por operação, compare os custos e confira as limitações.
 |---|---|---|
 | Sintaxe, tipos e funções | [Referência](c++/basics/cpp.md) | [Referência](python/cheatsheets/python.md) |
 | Vetores/listas, sets, mapas, filas e heap | [Estruturas](c++/basics/collections.md) | [Coleções](python/cheatsheets/python-collections.md) |
+| lower_bound / upper_bound: primeiro >= X / > X | [Exemplo C++](c++/algorithms/bounds.cpp), [explicação](QUAL-ESTRUTURA-USAR.md#op07) | [Bisect](python/algorithms/README.md#bisect-limite-não-é-presença) |
 | Strings e conversões | [Strings](c++/basics/strings.md) | [Strings](python/cheatsheets/python-strings.md) |
 | Algoritmos e aplicações | [Algoritmos](c++/algorithms/README.md) | [Algoritmos](python/algorithms/README.md) |
 | Matemática | [Matemática](c++/math/README.md) | [Matemática](python/math/README.md) |

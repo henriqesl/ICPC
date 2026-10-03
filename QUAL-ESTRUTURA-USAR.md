@@ -179,7 +179,7 @@ for (int x : s) cout << x << ' '; // 1 3 5 8
 
 <a id="op07"></a>
 
-### 07. Encontrar o primeiro valor >= x
+### 07. lower_bound — encontrar o primeiro valor >= x
 
 **Use lower_bound**: O(log N) no vector ordenado ou em `s.lower_bound(x)`.
 Bom para saltar ao primeiro candidato, inclusive x. Não use no vector desordenado
@@ -198,7 +198,7 @@ if (it != v.end()) cout << *it << ' ' << (it - v.begin()); // 3 1
 
 <a id="op08"></a>
 
-### 08. Encontrar o primeiro valor > x
+### 08. upper_bound — encontrar o primeiro valor > x
 
 **Use upper_bound**: O(log N) em vector ordenado ou no método de set/multiset.
 Bom para pular todas as cópias de x. Não use se x também é aceito: aí é lower_bound.

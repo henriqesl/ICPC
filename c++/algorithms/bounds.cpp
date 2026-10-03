@@ -1,4 +1,8 @@
-// BOUNDS: limites, ocorrências, vizinhos e quantidade em intervalo.
+// LOWER_BOUND / UPPER_BOUND: limites, ocorrências, vizinhos e quantidade em intervalo.
+// lower_bound(X): primeiro >= X. upper_bound(X): primeiro > X.
+// Vetor ordenado [1,3,3,8], X=3: lower aponta para o primeiro 3; upper para 8.
+// Retornam ITERADORES: *it lê o valor; it-begin() dá índice só no vector.
+// Se it == end(), não há candidato: NÃO leia *it.
 // Entrada: N, N inteiros (qualquer ordem), X, L e R, com L <= R.
 // Ex.: 5 1 3 3 8 10 3 3 8
 // Saída:

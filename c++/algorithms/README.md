@@ -4,7 +4,7 @@
 |---|---|---|
 | Localizar primeira ocorrência exata | [linear-search.cpp](linear-search.cpp) | qualquer ordem; O(N) |
 | Primeiro valor >= alvo | [binary-search.cpp](binary-search.cpp) | vetor ordenado; O(log N) na busca |
-| Primeiro >= / >; último < / <=; contar em [L,R] | [bounds.cpp](bounds.cpp) | ordenação/conjunto ordenado; trata ausência |
+| lower_bound / upper_bound: primeiro >= / >; último < / <=; contar em [L,R] | [bounds.cpp](bounds.cpp) | ordenação/conjunto ordenado; trata ausência |
 | Ordenar crescente/decrescente | [sorting.cpp](sorting.cpp) | O(N log N); muda índices |
 | Somar muitos intervalos | [prefix-sum.cpp](prefix-sum.cpp) | dados fixos; O(N)+O(1) por consulta |
 | Adicionar a muitos intervalos e consultar só no final | [difference-array.cpp](difference-array.cpp) | O(N+Q); não é consulta online |
