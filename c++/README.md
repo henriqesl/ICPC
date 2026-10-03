@@ -6,8 +6,8 @@ Cada arquivo resolve uma aplicação pequena: compile **um de cada vez**.
 | Pasta | O que tem |
 |---|---|
 | [basics/](basics/) | Entrada, strings, vector, map, unordered_map, set, multiset e referências da linguagem. |
-| [data-structures/](data-structures/) | Fila, pilha, deque, pair e heap. Todos diretamente nessa pasta. |
-| [algorithms/](algorithms/README.md) | Busca, ordenação, prefix sum, sliding window, dois ponteiros e guloso. |
+| [data-structures/](data-structures/README.md) | Fila, pilha, deque, pair, heaps e referência de mediana. Todos diretamente nessa pasta. |
+| [algorithms/](algorithms/README.md) | Busca, ordenação, comparadores, prefix sum, janelas, dois ponteiros, pilha/deque monotônicas e guloso. |
 | [math/](math/README.md) | Divisores, primalidade, MDC/MMC e potência modular. |
 
 ## Encontre pelo que precisa fazer
@@ -15,15 +15,21 @@ Cada arquivo resolve uma aplicação pequena: compile **um de cada vez**.
 | Preciso... | Abra |
 |---|---|
 | Escolher a estrutura pelas operações do problema | [QUAL ESTRUTURA USAR?](../QUAL-ESTRUTURA-USAR.md) |
+| Reconhecer frases do enunciado / evitar confusões | [Mapa](../MAPA-DE-RESOLUCAO.md#o-que-o-enunciado-está-me-pedindo), [pegadinhas](../MAPA-DE-RESOLUCAO.md#parece-x-mas-é-y) |
+| Índice, tamanho fixo, valor+id, contagem | [Vector/array/pair/frequências](basics/collections.md) |
 | Entender map, unordered_map, set e multiset | [Comparação com exemplos](basics/maps-and-sets.md) |
 | Contar valores em ordem / consultar rápido | [map.cpp](basics/map.cpp) / [unordered-map.cpp](basics/unordered-map.cpp) |
 | Guardar únicos / permitir repetidos ordenados | [set.cpp](basics/set.cpp) / [multiset.cpp](basics/multiset.cpp) |
 | Primeiro/último, begin/end/rbegin e remoção | [Set](basics/set.cpp), [multiset](basics/multiset.cpp), [guia](basics/maps-and-sets.md#extremos-e-vizinhos) |
-| lower_bound, upper_bound, vizinhos e quantidade em intervalo | [bounds.cpp](algorithms/bounds.cpp) |
+| lower_bound, upper_bound, vizinhos e quantidade em intervalo | [Gatilhos e exemplos](algorithms/patterns.md#lower-bound), [bounds.cpp](algorithms/bounds.cpp) |
 | Atender por chegada | [queue.cpp](data-structures/queue.cpp) |
 | Fechar símbolos na ordem correta | [stack.cpp](data-structures/stack.cpp) |
 | Mexer nas duas pontas / pegar maior prioridade | [deque.cpp](data-structures/deque.cpp) / [priority-queue.cpp](data-structures/priority-queue.cpp) |
 | Guardar valor e índice | [pair.cpp](data-structures/pair.cpp) |
+| Ordenar com desempate próprio | [Custom comparator](algorithms/patterns.md#custom-comparator) |
+| Primeiro menor/maior à esquerda/direita | [Guia](algorithms/patterns.md#monotonic-stack), [monotonic-stack.cpp](algorithms/monotonic-stack.cpp) |
+| Máximo/mínimo de cada janela | [Guia](algorithms/patterns.md#monotonic-deque), [monotonic-deque.cpp](algorithms/monotonic-deque.cpp) |
+| Mediana dinâmica: inserir, retirar e consultar meio | [Dois multisets](data-structures/README.md#median) |
 | Achar índice ou contar num vetor | [vector.cpp](basics/vector.cpp) |
 | Converter letras/dígitos | [strings.cpp](basics/strings.cpp), [referência](basics/strings.md) |
 | Aprender prefix sum e sliding window | [Guia com passo a passo](algorithms/prefix-and-window.md) |

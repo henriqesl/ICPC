@@ -161,12 +161,26 @@ class LibraryTests(unittest.TestCase):
                 self.assertEqual(proc.stdout, expected)
 
     def test_local_links(self):
-        # Verifica destinos de links; as âncoras são conferidas na revisão.
+        # Confere também âncoras explícitas e títulos no formato do GitHub.
         docs = [*ROOT.glob("*.md"), *PYTHON.rglob("*.md"), *(ROOT / "c++").rglob("*.md")]
         for path in docs:
-            for target in re.findall(r"\]\(([^)]+)\)", path.read_text(encoding="utf-8")):
+            document = re.sub(r"```.*?```", "", path.read_text(encoding="utf-8"), flags=re.S)
+            document = re.sub(r"`[^`]*`", "", document)
+            for target in re.findall(r"\]\(([^)]+)\)", document):
                 if "://" not in target:
-                    self.assertTrue((path.parent / target.split("#")[0]).exists(), f"{path}: {target}")
+                    filename, _, fragment = target.partition("#")
+                    destination = path.parent / filename if filename else path
+                    self.assertTrue(destination.exists(), f"{path}: {target}")
+                    if fragment:
+                        text = destination.read_text(encoding="utf-8")
+                        anchors = set(re.findall(r'<a\s+(?:id|name)="([^"]+)"', text))
+                        counts = {}
+                        for title in re.findall(r"^#{1,6}\s+(.+)$", text, re.M):
+                            slug = re.sub(r"[^\w -]", "", title.strip().lower()).replace(" ", "-")
+                            number = counts.get(slug, 0)
+                            counts[slug] = number + 1
+                            anchors.add(slug if number == 0 else f"{slug}-{number}")
+                        self.assertIn(fragment, anchors, f"{path}: {target}")
 
     def test_windows_against_brute_force(self):
         rng = random.Random(12)

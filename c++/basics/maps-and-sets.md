@@ -1,11 +1,19 @@
 # Map, unordered_map, set ou multiset?
 
+[Mapa](../../MAPA-DE-RESOLUCAO.md) · [Set](#set) · [Multiset](#multiset) ·
+[Unordered_set](#unordered-set) · [Map](#map) · [Unordered_map](#unordered-map)
+
+Os recortes marcados são independentes e vão dentro de `main()`, com o
+[template](../template.cpp). Nos conjuntos, `*it` é o valor;
+nos mapas, `it->first` é a chave e `it->second` é a informação associada.
+
 | O que guardar | Ordenado? | Estrutura | Arquivo |
 |---|---|---|---|
 | Chave e valor: número → frequência | Por chave | map | [map.cpp](map.cpp) |
 | Chave e valor, sem precisar de ordem | Não | unordered_map | [unordered-map.cpp](unordered-map.cpp) |
 | Apenas valores, sem repetição | Sim | set | [set.cpp](set.cpp) |
 | Apenas valores, com repetição | Sim | multiset | [multiset.cpp](multiset.cpp) |
+| Apenas presença, sem precisar de ordem | Não | unordered_set | [exemplo abaixo](#unordered-set) |
 
 Imagine os valores **3, 1, 3, 8, 3**:
 
@@ -14,53 +22,225 @@ Imagine os valores **3, 1, 3, 8, 3**:
 - map de frequência guarda **1 → 1, 3 → 3, 8 → 1**.
 - unordered_map guarda as mesmas associações, sem ordem de percurso garantida.
 
-## Map: uma coisa associada a outra
+<a id="map"></a>
 
+## Map
+
+### Quando pensar nisso?
+
+- “Chave → informação, e quero percorrer as chaves em ordem.”
+- “Preciso do primeiro código >= X e da informação dele.”
+
+### Ideia simples
+
+Guarda uma informação por chave, mantendo as chaves ordenadas.
+Alterar uma chave existente substitui a informação; não cria uma segunda cópia.
+
+### Exemplo de contest
+
+Cadastro: Ana → 20. Atualizar Ana → 21 mantém uma chave.
+Consultar Bia com `find` pode informar ausência sem cadastrar Bia por acidente.
+
+### Operações que preciso lembrar
+
+<!-- example: map -->
 ```cpp
 map<string, int> idade;
 idade["Ana"] = 20; // chave "Ana", valor 20
 idade["Ana"] = 21; // substitui o valor; não cria outra Ana
 cout << idade["Ana"]; // 21
+auto it = idade.find("Bia");
+if (it != idade.end()) cout << it->second; // não insere Bia
 ```
 
 Em contagem, `frequencia[x]++` cria zero se necessário e incrementa.
 Mas uma consulta `frequencia[x]` também insere se x estiver ausente.
-Para não modificar:
-
-```cpp
-auto it = idade.find("Bia");
-if (it != idade.end()) cout << it->second;
-```
+Para não modificar, use `find` como no recorte.
 
 `auto` pede que o compilador descubra o tipo. `it` é um iterador que aponta
 para a associação encontrada. `end()` significa “não encontrou” nesse contexto.
 `it->first` é a chave e `it->second` é o valor. Nunca acesse end.
 `idade.erase("Ana")` remove a chave. `size()` conta chaves, não soma frequências.
 
-## Unordered_map: mesma ideia, outra organização
+### Complexidade
 
-Troque o tipo por `unordered_map<string, int>` e inclua <unordered_map>.
-A sintaxe principal é a mesma. Use se não precisar de chaves ordenadas.
-Não é automaticamente melhor: usa hash, tem custo de memória e pior caso ruim.
+Consultar/inserir/remover por chave e `lower_bound/upper_bound`: O(log N).
+Percorrer O(N); memória O(N), com N chaves. Comparar strings pode custar mais.
 
-## Set e multiset: somente valores
+### Não confundir com
 
+Unordered_map não ordena chaves. Set guarda só a chave, não uma informação.
+Map de índice → 0/1 pode ser desperdício se um vector pequeno resolver em O(1).
+O menor de um map é a menor CHAVE, não a menor idade/frequência.
+[Aplicação executável](map.cpp).
+
+<a id="unordered-map"></a>
+
+## Unordered_map
+
+### Quando pensar nisso?
+
+- “Preciso contar/consultar por chave, mas a ordem não importa.”
+- “Os valores são enormes e só alguns aparecem.”
+
+### Ideia simples
+
+Associa chave → informação como map, mas usa hash, sem ordenar as chaves.
+A sintaxe de contagem é a mesma; não oferece vizinhos por ordem.
+
+### Exemplo de contest
+
+[3,3,8] gera 3 → 2 e 8 → 1. Perguntar por 7 deve retornar zero
+sem criar mais uma chave se estamos contando distintos com `size()`.
+
+### Operações que preciso lembrar
+
+<!-- example: unordered-map -->
 ```cpp
-set<int> unicos;
-unicos.insert(3);
-unicos.insert(3); // continua com um elemento
-bool existe = unicos.count(3) > 0;
-unicos.erase(3);
-
-multiset<int> repetidos = {3, 3, 8};
-auto it = repetidos.find(3);
-if (it != repetidos.end()) repetidos.erase(it); // agora {3,8}
-repetidos.erase(3); // remove TODOS os 3 restantes; agora {8}
+unordered_map<int, int> freq;
+for (int x : {3, 3, 8}) freq[x]++;
+auto it = freq.find(7);
+cout << (it == freq.end() ? 0 : it->second); // 0
+freq.erase(8);
 ```
 
-Essas estruturas não têm acesso por índice. `*s.begin()` lê o menor,
-somente se não vazio. `s.lower_bound(x)` aponta para o primeiro >= x:
-confira se o resultado é diferente de end antes de usar `*it`.
+### Complexidade
+
+Busca/inserção/remoção O(1) médio, O(N) pior caso; memória O(N).
+`reserve` pode reduzir realocações, não elimina o pior caso do hash.
+
+### Não confundir com
+
+Unordered_set guarda só presença; unordered_map guarda uma informação/contagem.
+`begin()` não é a menor chave e não existem `lower_bound/upper_bound`.
+Se precisa de ordem/garantia O(log N), use map.
+[Aplicação executável](unordered-map.cpp).
+
+<a id="set"></a>
+
+## Set
+
+### Quando pensar nisso?
+
+- “Valores ativos entram e saem.”
+- “Preciso de únicos ordenados, do primeiro >= X ou de um ativo em [L,R].”
+
+### Ideia simples
+
+Mantém valores únicos e ordenados, mesmo após inserir/remover.
+É útil para pular diretamente para o próximo valor relevante sem varrer posições vazias.
+
+### Exemplo de contest
+
+Ativos {1,4,5,9}. Existe alguém em [3,7]?
+`lower_bound(3)` aponta para 4. Como 4 <= 7, existe; para [6,8], aponta para 9 e falha.
+
+### Operações que preciso lembrar
+
+<!-- example: set -->
+```cpp
+set<int> s{1, 4, 5, 9};
+s.insert(4); s.erase(9); // repetir 4 não cria outro
+auto it = s.lower_bound(3);
+cout << (it != s.end() && *it <= 7); // 1: existe em [3,7]
+```
+
+`s.find(x)` testa presença exata; `*s.begin()` / `*s.rbegin()` consultam extremos
+somente se não vazio. [Todos os vizinhos](#extremos-e-vizinhos).
+
+### Complexidade
+
+`insert`, `erase(x)`, `find`, `lower_bound`, `upper_bound`: O(log N).
+Extremos/size O(1); memória O(N). Contar iteradores no intervalo pode ser O(N).
+
+### Não confundir com
+
+Unordered_set: presença O(1) médio, sem ordem/bounds. Multiset preserva repetidos.
+Vector de bits testa uma posição em O(1), mas varrer [L,R] custa O(R-L+1);
+se os bits são fixos, prefixos de contagem também resolvem existência.
+Set não permite `s[i]`. [Aplicação executável](set.cpp).
+
+<a id="multiset"></a>
+
+## Multiset
+
+### Quando pensar nisso?
+
+- “Valores repetem, entram/saem, e preciso manter ordem.”
+- “Preciso apagar um valor específico, não necessariamente o menor.”
+
+### Ideia simples
+
+É como set, mas preserva cada cópia. Permite retirar um valor arbitrário
+e continuar consultando extremos/vizinhos; não dá acesso rápido ao item do meio.
+
+### Exemplo de contest
+
+[1,3,3,8]: sai UM 3 e entra 5 → [1,3,5,8].
+Usar `erase(3)` apagaria os dois 3, o que é errado se saiu só um item da janela.
+
+### Operações que preciso lembrar
+
+<!-- example: multiset -->
+```cpp
+multiset<int> s{1, 3, 3, 8};
+s.insert(5);
+auto it = s.find(3);
+if (it != s.end()) s.erase(it); // uma cópia
+for (int x : s) cout << x << ' '; // 1 3 5 8
+```
+
+`s.erase(3)` apaga TODAS as cópias; `s.erase(s.lower_bound(3),s.upper_bound(3))`
+também. Confirme `it != end()` para apagar uma cópia encontrada.
+
+### Complexidade
+
+Inserir/buscar e `find` + apagar uma cópia O(log N). Apagar C cópias por valor:
+O(log N + C). Extremos O(1); avançar K posições O(K); memória O(N).
+
+### Não confundir com
+
+Priority_queue retira só o topo. Multiset permite remoção arbitrária, mas
+`advance(it,size()/2)` não consulta mediana em O(log N): anda O(N).
+Para mediana dinâmica, veja [dois multisets](../data-structures/README.md#median).
+[Aplicação executável](multiset.cpp).
+
+<a id="unordered-set"></a>
+
+## Unordered_set
+
+### Quando pensar nisso?
+
+- “Só preciso saber se um código já apareceu.”
+- “Preciso de únicos, mas não quero vizinhos nem percurso ordenado.”
+
+### Ideia simples
+
+Guarda presença usando hash. Repetir o valor não cria cópia nem contagem.
+Não mantém ordem por valor e não oferece bounds.
+
+### Exemplo de contest
+
+Chegam códigos 3,8,3: o segundo 3 já estava presente; ficam dois distintos.
+
+### Operações que preciso lembrar
+
+<!-- example: unordered-set -->
+```cpp
+unordered_set<int> vistos{3, 8};
+cout << (vistos.find(3) != vistos.end()); // 1
+vistos.insert(3); vistos.erase(8);
+cout << ' ' << vistos.size(); // 1
+```
+
+### Complexidade
+
+Insert/find/erase O(1) médio, O(N) pior caso; memória O(N).
+
+### Não confundir com
+
+Unordered_map responde quantas vezes apareceu. Set mantém ordem e tem
+`lower_bound` em O(log N). `begin()` de unordered_set não significa menor valor.
 
 ## Extremos e vizinhos
 
