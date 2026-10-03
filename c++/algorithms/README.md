@@ -9,6 +9,7 @@ Para reconhecer o pedido: [mapa geral](../../MAPA-DE-RESOLUCAO.md#o-que-o-enunci
 | Primeiro valor >= alvo | [binary-search.cpp](binary-search.cpp) | vetor ordenado; O(log N) na busca |
 | lower_bound / upper_bound: primeiro >= / >; último < / <=; contar em [L,R] | [bounds.cpp](bounds.cpp) | ordenação/conjunto ordenado; trata ausência |
 | Ordenar crescente/decrescente | [sorting.cpp](sorting.cpp) | O(N log N); muda índices |
+| Sort por trecho, coluna, second ou lista de índices | [Variantes](sorting.md), [sorting-variants.cpp](sorting-variants.cpp) | inclui stable_sort; exemplos independentes |
 | Ordenar por pontuação e desempatar por id | [Custom comparator](patterns.md#custom-comparator) | regra estrita; não use <= como desempate |
 | Somar muitos intervalos | [prefix-sum.cpp](prefix-sum.cpp) | dados fixos; O(N)+O(1) por consulta |
 | Adicionar a muitos intervalos e consultar só no final | [difference-array.cpp](difference-array.cpp) | O(N+Q); não é consulta online |

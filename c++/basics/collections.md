@@ -8,6 +8,9 @@ Fila/pilha/deque/heap ficam em [data-structures](../data-structures/), sem subpa
 
 [Vector](#vector) · [Array](#array) · [Pair](#pair) · [Frequências](#frequency-counting)
 
+Confundiu posição, valor e índice? [Iteradores: begin/end, *it e it->](iterators.md),
+com [exemplo executável](iterators.cpp).
+
 Snippets independentes, dentro de `main()`, com o [template](../template.cpp).
 Antes de `front/back/pop`, confira que não está vazio; nunca leia `*end()`.
 

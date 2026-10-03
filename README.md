@@ -23,6 +23,8 @@ escolha por operação, compare os custos e confira as limitações.
 | lower_bound / upper_bound: primeiro >= X / > X | [Lower](c++/algorithms/patterns.md#lower-bound), [upper](c++/algorithms/patterns.md#upper-bound), [bounds.cpp](c++/algorithms/bounds.cpp) | [Bisect](python/algorithms/README.md#bisect-limite-não-é-presença) |
 | Strings e conversões | [Strings](c++/basics/strings.md) | [Strings](python/cheatsheets/python-strings.md) |
 | Algoritmos e aplicações | [Algoritmos](c++/algorithms/README.md) | [Algoritmos](python/algorithms/README.md) |
+| Sort por campo/coluna, trecho ou índice original | [Variantes de sort](c++/algorithms/sorting.md) | — |
+| Iteradores: begin/end, *it, it->, converter para índice | [Guia](c++/basics/iterators.md) | — |
 | Primeiro menor/maior / máximo de cada janela | [Stack](c++/algorithms/patterns.md#monotonic-stack) / [deque monotônicas](c++/algorithms/patterns.md#monotonic-deque) | — |
 | Matemática | [Matemática](c++/math/README.md) | [Matemática](python/math/README.md) |
 | Aprender prefix sum e sliding window | [Guia passo a passo](c++/algorithms/prefix-and-window.md) | [Exemplos](python/algorithms/README.md) |

@@ -48,6 +48,10 @@ Set/multiset mantêm ordem durante inserções/remoções. Sort não preserva a 
 anterior dos empates; `stable_sort` preserva. Para só um extremo, min/max_element
 custam O(N), sem ordenar. [sorting.cpp](sorting.cpp).
 
+Quer ordenar um trecho, uma coluna, pelo second ou só uma lista de índices?
+Abra [Sort: variantes e índices](sorting.md). Se begin/end ainda confundem,
+leia [Iteradores: posição, valor ou índice?](../basics/iterators.md).
+
 <a id="custom-comparator"></a>
 
 ## Custom comparator — qual item vem antes?
@@ -89,6 +93,8 @@ Sort O(N log N) com comparação de dois inteiros O(1).
 A regra deve ser coerente/transitiva: não crie um ciclo a antes de b, b antes de c,
 c antes de a. Pair já ordena first e depois second, ambos crescentes, sem lambda.
 Bounds precisam usar a mesma ordem da ordenação; os recortes abaixo são crescentes.
+
+[Ordenar pela coluna j](sorting.md#column) · [Ordenar índices do vetor](sorting.md#indices).
 
 <a id="lower-bound"></a>
 

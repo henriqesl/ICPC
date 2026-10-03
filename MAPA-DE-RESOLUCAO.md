@@ -36,6 +36,8 @@ N é a quantidade guardada; K é o tamanho da janela. Hash tem custo médio, nã
 | “Primeiro valor > X” | limite estrito → upper_bound | pula iguais, O(log N) | [Upper_bound](c++/algorithms/patterns.md#upper-bound) |
 | “Há algum ativo em [L,R]?” | set.lower_bound(L), conferir <= R | pula vazios, O(log N) | [Set](c++/basics/maps-and-sets.md#set) |
 | “Ordenar uma vez e só consultar” | sort + bounds | O(N log N) + O(log N)/busca | [Sort](c++/algorithms/patterns.md#sort) |
+| “Ordenar só um trecho / por coluna / preservar índices” | intervalo ou comparator + índices/pares | escolha a variante sem perder a informação necessária | [Variantes de sort](c++/algorithms/sorting.md) |
+| “Find/bounds me devolveu um it” | cursor → conferir end → ler *it | índice por diferença só em acesso aleatório | [Iteradores](c++/basics/iterators.md) |
 | “Maior nota; empate por menor id” | definir quem vem antes → comparator | regra curta dentro de sort | [Comparator](c++/algorithms/patterns.md#custom-comparator) |
 | “Muitas perguntas: quantos <= X?” | ordenar + upper_bound - begin | índice do limite é a quantidade; O(log N) | [Upper_bound](c++/algorithms/patterns.md#upper-bound) |
 | “Array fixo + muitas somas [L,R]” | prefix sum | O(N) preparo, O(1)/consulta | [Prefix sum](c++/algorithms/prefix-and-window.md#prefix-sum) |

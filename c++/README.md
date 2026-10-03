@@ -26,6 +26,8 @@ Cada arquivo resolve uma aplicação pequena: compile **um de cada vez**.
 | Fechar símbolos na ordem correta | [stack.cpp](data-structures/stack.cpp) |
 | Mexer nas duas pontas / pegar maior prioridade | [deque.cpp](data-structures/deque.cpp) / [priority-queue.cpp](data-structures/priority-queue.cpp) |
 | Guardar valor e índice | [pair.cpp](data-structures/pair.cpp) |
+| Entender begin/end, *it, it-> e índice a partir de iterador | [Iteradores](basics/iterators.md), [iterators.cpp](basics/iterators.cpp) |
+| Sort por trecho, coluna, second, índice original ou estabilidade | [Guia](algorithms/sorting.md), [sorting-variants.cpp](algorithms/sorting-variants.cpp) |
 | Ordenar com desempate próprio | [Custom comparator](algorithms/patterns.md#custom-comparator) |
 | Primeiro menor/maior à esquerda/direita | [Guia](algorithms/patterns.md#monotonic-stack), [monotonic-stack.cpp](algorithms/monotonic-stack.cpp) |
 | Máximo/mínimo de cada janela | [Guia](algorithms/patterns.md#monotonic-deque), [monotonic-deque.cpp](algorithms/monotonic-deque.cpp) |

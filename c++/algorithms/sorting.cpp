@@ -3,6 +3,8 @@
 // Complexidade: O(N log N) tempo.
 // Entrada: N e N inteiros. Ex.: 3 2 1 3 -> 1 2 3 / 3 2 1.
 // Vector usa O(N); sort não é estável. Para índices originais, guarde pair.
+// Trecho, coluna, second, índices e stable_sort: sorting.md / sorting-variants.cpp.
+// begin/end delimitam [início,fim); veja ../basics/iterators.md.
 #include <bits/stdc++.h>
 using namespace std;
 

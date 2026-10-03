@@ -43,6 +43,8 @@ comparações e hash de chaves pequenas, como int.
 | Máximo/mínimo de cada janela | monotonic deque | [Explicação e exemplo](c++/algorithms/patterns.md#monotonic-deque) |
 | Ordem diferente: maior nota, menor id | custom comparator | [Explicação e exemplo](c++/algorithms/patterns.md#custom-comparator) |
 | Dois valores somam um alvo | two pointers | [Explicação e exemplo](c++/algorithms/patterns.md#two-pointers) |
+| Ordenar trecho, coluna ou índices originais | variantes de sort | [Explicação e exemplo](c++/algorithms/sorting.md) |
+| Ler/mover o iterador devolvido pela consulta | begin/end, *it, it-> | [Explicação e exemplo](c++/basics/iterators.md) |
 
 ## Comparação curta
 

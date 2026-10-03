@@ -48,6 +48,11 @@ def main():
         ("algorithms/prefix-sum.cpp", "3 2 -1 4 2 0 2 1 1", "5 -1"),
         ("algorithms/prefix-sum.cpp", "2 3000000000 3000000000 1 0 1", "6000000000"),
         ("algorithms/sorting.cpp", "3 2 1 3", "1 2 3 3 2 1"),
+        ("algorithms/sorting-variants.cpp", "",
+         "trecho: 9 2 3 4 8 pares: 3:1 3:2 8:0 second: 5:1 8:1 10:2 "
+         "coluna: 1:9 0:7 2:7 indices: 1:3 2:3 0:8 estavel: 7:4 7:2 9:1"),
+        ("basics/iterators.cpp", "",
+         "cursor: 10 20 7 busca: 3 1 ausente set: 4 9 1 map: Ana:21 erase: 1 3 apos_sort: 10"),
         ("algorithms/greedy.cpp", "0", "0"),
         ("math/number-theory.cpp", "12 18", "1 2 3 4 6 12 false 6 36"),
         ("math/number-theory.cpp", "1 1", "1 false 1 1"),
@@ -106,6 +111,14 @@ def main():
             "upper-bound": "8 3", "binary-search": "1", "two-pointers": "1 3",
             "monotonic-stack": "-1 -1 1", "monotonic-deque": "5 5 5",
             "prefix-sum": "8", "sliding-window": "8 7", "fenwick": "7",
+            "sort-directions": "8 3 1", "sort-range": "9 2 3 4 8",
+            "sort-pairs": "3:1 3:2 8:0", "sort-second": "5:1 8:1 10:2",
+            "sort-column": "1:9 0:7 2:7", "sort-indices": "1:3 2:3 0:8",
+            "sort-stable": "7:4 7:2 9:1", "sort-array-string": "1 3 8 abc",
+            "iterator-read": "10 20 7", "iterator-loop": "10 20 30",
+            "iterator-find": "3 1 ausente", "iterator-set": "4 9 1",
+            "iterator-map": "Ana:21", "iterator-range": "30 30 3",
+            "iterator-erase": "1 3", "iterator-after-sort": "10",
         }
         snippets = []
         docs = sorted([*ROOT.parent.glob("*.md"), *ROOT.rglob("*.md")])
@@ -128,6 +141,9 @@ def main():
             "deque": "assert(d.size() == 1 && d.front() == 2);",
             "median": "assert(baixo.size() == 3 && alto.size() == 2 && *baixo.rbegin() <= *alto.begin());",
             "monotonic-stack": "assert((anterior == vector<int>{-1, -1, 1}));",
+            "sort-indices": "assert((valores == vector<int>{8, 3, 3}) && (ordem == vector<int>{1, 2, 0}));",
+            "iterator-map": 'assert(idade.at("Ana") == 21);',
+            "iterator-erase": "assert((s == set<int>{1, 3}));",
         }
         source = "#include <bits/stdc++.h>\n#include <cassert>\nusing namespace std;\nint main() {\n"
         for name, snippet in snippets:
