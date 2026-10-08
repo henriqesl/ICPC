@@ -1,6 +1,6 @@
 # BOUNDS — presença, limites e contagem
 
-[Índice](README.md) · [Busca manual](binary-search.md) · [Iteradores](../c++/basics/iterators.md)
+[Índice](README.md) · [Busca manual](binary-search.md) · [Iteradores](../basics/iterators.md)
 
 ## NECESSIDADE / RECONHECIMENTO
 

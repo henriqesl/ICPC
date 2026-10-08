@@ -1,4 +1,4 @@
-"""Na raiz icpc/: python -B c++/test_search.py. Compila os blocos reais de search/."""
+"""Na raiz icpc/: python -B c++/test_search.py. Compila os blocos de c++/search/."""
 
 from bisect import bisect_left, bisect_right
 import itertools
@@ -11,7 +11,7 @@ import tempfile
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
-DOCS = ROOT / "search"
+DOCS = ROOT / "c++" / "search"
 LL_MAX = 2**63 - 1
 
 
@@ -40,7 +40,12 @@ def examples():
         for name, source in blocks:
             assert name not in result, name
             result[name] = source
-    assert set(result) == {"linear", "binary", "bounds", "first-true", "last-true", "ceiling"}
+    assert set(result) == {
+        "linear", "binary", "bounds", "first-true", "last-true", "ceiling",
+        "two-pointers-pair", "two-pointers-window", "sweep-line",
+        "coordinate-compression", "exhaustive-pairs", "exhaustive-subsets",
+        "exhaustive-permutations",
+    }
     return result
 
 
@@ -223,7 +228,72 @@ def main():
 
         harness = compile_source(compiler, directory, "loop-boundaries", loop_harness(sources))
         assert run(harness) == ["loops ok"]
-    print(f"OK: 6 blocos C++, {cases} execuções e 2912 combinações de limites/monotonicidade.")
+
+        pairs_cases = [([], 0), ([2], 4), ([2, 2, 2], 4), ([-5, -1, 0, 4], -1)]
+        pairs_cases += [([rng.randrange(-8, 9) for _ in range(rng.randrange(9))], rng.randrange(-12, 13))
+                        for _ in range(16)]
+        for values, target in pairs_cases:
+            expected = sum(a + b == target for a, b in itertools.combinations(values, 2))
+            assert run(executables["exhaustive-pairs"], input_case(values, target)) == [str(expected)]
+            ordered = sorted(values)
+            result = run(executables["two-pointers-pair"], input_case(ordered, target))[0]
+            if expected == 0:
+                assert result == "-1"
+            else:
+                left, right = map(int, result.split())
+                assert 0 <= left < right < len(ordered)
+                assert ordered[left] + ordered[right] == target
+            cases += 2
+
+        windows = [([], 0), ([0, 0, 0], 0), ([9, 9], 1), ([2, 1, 3, 1, 1], 5)]
+        windows += [([rng.randrange(10) for _ in range(rng.randrange(9))], rng.randrange(20))
+                    for _ in range(12)]
+        for values, limit in windows:
+            expected = max([0] + [r - l for l in range(len(values))
+                                  for r in range(l + 1, len(values) + 1)
+                                  if sum(values[l:r]) <= limit])
+            assert run(executables["two-pointers-window"], input_case(values, limit)) == [str(expected)]
+            cases += 1
+        print("Two pointers: pares e janelas comparados com força bruta OK", flush=True)
+
+        coordinate_cases = [[], [0], [100, 5, 100, 10**9], [-5, -5, -1, 0], [-LL_MAX - 1, LL_MAX]]
+        coordinate_cases += [[rng.randrange(-9, 10) for _ in range(rng.randrange(9))] for _ in range(12)]
+        for values in coordinate_cases:
+            ids = {x: i for i, x in enumerate(sorted(set(values)))}
+            expected = [f"{x} -> {ids[x]}" for x in values]
+            data = f"{len(values)}\n" + " ".join(map(str, values)) + "\n"
+            assert run(executables["coordinate-compression"], data) == expected
+            cases += 1
+
+        subsets = [([], 0), ([], 3), ([0, 0, 0], 0), ([1, 2, 3], 3), ([-5, 2, 3], 0)]
+        subsets += [([rng.randrange(-5, 6) for _ in range(rng.randrange(9))], rng.randrange(-7, 8))
+                    for _ in range(12)]
+        for values, target in subsets:
+            expected = sum(sum(choice) == target for size in range(len(values) + 1)
+                           for choice in itertools.combinations(values, size))
+            assert run(executables["exhaustive-subsets"], input_case(values, target)) == [str(expected)]
+            cases += 1
+        for text in ["a", "aba", "cba", "aaaa", "abca"]:
+            expected = sorted({"".join(choice) for choice in itertools.permutations(text)})
+            assert run(executables["exhaustive-permutations"], text + "\n") == expected
+            cases += 1
+
+        interval_cases = [[], [(1, 3), (3, 5)], [(1, 3), (1, 3)],
+                          [(-5, 3), (-1, 0), (2, 2)], [(-LL_MAX - 1, LL_MAX)]]
+        interval_cases += [[tuple(sorted((rng.randrange(-9, 10), rng.randrange(-9, 10))))
+                            for _ in range(rng.randrange(9))] for _ in range(12)]
+        for intervals in interval_cases:
+            positions = sorted({x for pair in intervals for x in pair})
+            queries = sorted(set([-LL_MAX - 1, LL_MAX, -10, -1, 0, 1, 3, 5, 10, *positions]))
+            active = lambda x: sum(l <= x < r for l, r in intervals)
+            maximum = max(map(active, positions), default=0)
+            data = f"{len(intervals)}\n" + "".join(f"{l} {r}\n" for l, r in intervals)
+            data += f"{len(queries)}\n" + " ".join(map(str, queries)) + "\n"
+            expected = [str(maximum), *[str(active(x)) for x in queries]]
+            assert run(executables["sweep-line"], data) == expected
+            cases += 1
+        print("Compressão, exaustiva e sweep line: duplicados, empates e extremos OK", flush=True)
+    print(f"OK: {len(sources)} blocos C++, {cases} execuções e 2912 combinações de limites/monotonicidade.")
 
 
 if __name__ == "__main__":

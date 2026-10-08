@@ -9,8 +9,8 @@ e o [checklist de 20 segundos](MAPA-DE-RESOLUCAO.md#checklist-de-20-segundos-ant
 Já sabe quais operações precisa repetir? Abra [QUAL ESTRUTURA USAR?](QUAL-ESTRUTURA-USAR.md):
 escolha por operação, compare os custos e confira as limitações.
 
-Precisa reconhecer uma **busca**? Abra [search/](search/README.md): busca linear,
-binária tradicional, lower/upper bound e busca na resposta (first true / last true).
+Precisa reconhecer uma **busca ou varredura**? Abra [c++/search/](c++/search/README.md):
+buscas, bounds, two pointers, sweep line, compressão e busca exaustiva.
 
 | Linguagem | Conteúdo |
 |---|---|

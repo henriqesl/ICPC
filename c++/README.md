@@ -8,6 +8,7 @@ Cada arquivo resolve uma aplicação pequena: compile **um de cada vez**.
 | [basics/](basics/) | Entrada, strings, vector, map, unordered_map, set, multiset e referências da linguagem. |
 | [data-structures/](data-structures/README.md) | Fila, pilha, deque, pair, heaps e referência de mediana. Todos diretamente nessa pasta. |
 | [algorithms/](algorithms/README.md) | Busca, ordenação, comparadores, prefix sum, janelas, dois ponteiros, pilha/deque monotônicas e guloso. |
+| [search/](search/README.md) | Reconhecimento e templates: buscas, bounds, two pointers, sweep line, compressão e busca exaustiva. |
 | [math/](math/README.md) | Divisores, primalidade, MDC/MMC e potência modular. |
 
 ## Encontre pelo que precisa fazer
@@ -16,6 +17,7 @@ Cada arquivo resolve uma aplicação pequena: compile **um de cada vez**.
 |---|---|
 | Escolher a estrutura pelas operações do problema | [QUAL ESTRUTURA USAR?](../QUAL-ESTRUTURA-USAR.md) |
 | Reconhecer frases do enunciado / evitar confusões | [Mapa](../MAPA-DE-RESOLUCAO.md#o-que-o-enunciado-está-me-pedindo), [pegadinhas](../MAPA-DE-RESOLUCAO.md#parece-x-mas-é-y) |
+| Consultar buscas, varreduras e enumeração | [Índice de search/](search/README.md) |
 | Índice, tamanho fixo, valor+id, contagem | [Vector/array/pair/frequências](basics/collections.md) |
 | Entender map, unordered_map, set e multiset | [Comparação com exemplos](basics/maps-and-sets.md) |
 | Contar valores em ordem / consultar rápido | [map.cpp](basics/map.cpp) / [unordered-map.cpp](basics/unordered-map.cpp) |
@@ -61,6 +63,7 @@ Saída: Ana, Bia, Caio, uma pessoa por linha.
 Arquivos .cpp de referência, contendo só comentários, não são executáveis.
 Os demais têm main. Testes: `python -B "c++/test_library.py"`.
 Não precisa abrir o teste durante o contest.
+Templates dos guias de search/: `python -B "c++/test_search.py"`.
 
 **Ordem de estudo:** basics → fila/pilha → prefix sum → janela fixa → janela
 variável → busca binária/dois ponteiros/guloso. Grafos, DP e geometria ficam para depois.

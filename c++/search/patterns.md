@@ -11,6 +11,11 @@
 | Existe x em array ordenado? | [Binary search](binary-search.md) | A comparação permite descartar metade? |
 | Primeiro >= x / primeiro > x | [lower / upper bound](bounds.md) | Quero posição-limite, não necessariamente igualdade? |
 | Quantas vezes x aparece? | [upper − lower](bounds.md#contar) | Os iguais estão consecutivos em um vector ordenado? |
+| Dois valores somam um alvo? | [Two pointers](two-pointers.md#par) | Posso ordenar e mover as pontas sem perder uma solução? |
+| Maior trecho com soma <= limite? | [Sliding window](two-pointers.md#janela) | São consecutivos, não negativos e o limite é >= 0? |
+| Quantos intervalos simultâneos / ativos num ponto? | [Sweep line](sweep-line.md) | Cada intervalo pode virar eventos de início/fim? |
+| Coordenadas grandes demais para indexar? | [Compressão](coordinate-compression.md) | Preciso da ordem/igualdade, e não das distâncias originais? |
+| Todas as escolhas com N pequeno? | [Exaustiva](exhaustive-search.md) | Cabem N², N · 2^N ou N · N! operações? |
 | “menor valor que permite…” | FIRST TRUE | Se x permite, qualquer maior também permite? |
 | “menor tempo necessário…” | FIRST TRUE | Esperar mais nunca prejudica? |
 | “menor capacidade suficiente…” | FIRST TRUE | Capacidade extra nunca impede a solução? |
