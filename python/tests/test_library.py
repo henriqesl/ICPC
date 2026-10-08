@@ -162,7 +162,8 @@ class LibraryTests(unittest.TestCase):
 
     def test_local_links(self):
         # Confere também âncoras explícitas e títulos no formato do GitHub.
-        docs = [*ROOT.glob("*.md"), *PYTHON.rglob("*.md"), *(ROOT / "c++").rglob("*.md")]
+        docs = [*ROOT.glob("*.md"), *PYTHON.rglob("*.md"), *(ROOT / "c++").rglob("*.md"),
+                *(ROOT / "search").rglob("*.md")]
         for path in docs:
             document = re.sub(r"```.*?```", "", path.read_text(encoding="utf-8"), flags=re.S)
             document = re.sub(r"`[^`]*`", "", document)
