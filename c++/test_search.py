@@ -33,6 +33,7 @@ def examples():
     assert {path.name for path in DOCS.glob("*.md")} == {
         "README.md", "binary-search.md", "two-pointers.md", "sweep-line.md",
         "exhaustive-search.md", "patterns.md",
+        "backtracking.md",
     }
     for path in DOCS.glob("*.md"):
         document = path.read_text(encoding="utf-8")

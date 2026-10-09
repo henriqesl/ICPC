@@ -30,6 +30,7 @@
 | Todas as ordens | [Permutations](exhaustive-search.md#permutacoes) |
 | N <= aproximadamente 20 | Considere 2^N, mas estime o custo por estado |
 | N pequeno, K fixo / todos os pares ou trios | [Nested loops / complete search](exhaustive-search.md#pares) |
+| Quantas / existe / melhor + decisões com conflitos | [Backtracking](backtracking.md#modelos): combine retorno + tipo de escolha |
 
 ## NÃO DECORE APENAS AS FRASES
 
@@ -62,7 +63,7 @@ não assuma que é igual a “produzir pelo menos mid”.
 | Greedy × Backtracking | Faz escolha e normalmente não explora alternativas × escolhe, explora, desfaz e tenta outra |
 
 Greedy precisa de justificativa; backtracking só pode podar quando a alternativa descartada
-não puder melhorar/completar a solução. Aqui é uma nota de reconhecimento, não um template profundo.
+não puder melhorar/completar a solução. Veja [estado, escolhas, base e retorno](backtracking.md#mapeamento).
 
 <a id="complexidades"></a>
 ## COMPLEXIDADES — CONSULTA RÁPIDA
@@ -85,6 +86,7 @@ A = ativos; P = permutações distintas; K = constante.
 | Permutations | P <= N! estados; O(N · P) para gerar/avaliar/imprimir cada ordem completa |
 | Pares / trios | O(N²) / O(N³) |
 | K loops aninhados | O(N^K), para K fixo |
+| Backtracking | Depende das escolhas: O(2^N), O(B^D), O(N · N!)…; [hipóteses](backtracking.md) |
 
 O(N!) conta ordens, não ignora o custo de construir/avaliar cada uma.
 Para N/R/E pequenos, interprete o log como log(tamanho+1); inclua memória e saída na estimativa.

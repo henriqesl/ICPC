@@ -24,6 +24,7 @@ Todos os exemplos são neutros. Use os links para saltar ao padrão, sem ler o a
 | Testar todas as ordens | [Permutations](exhaustive-search.md#permutacoes) |
 | Poucos elementos e todas as possibilidades | [Complete search](exhaustive-search.md); escolha a enumeração |
 | Quantidade fixa de índices / pares / trios | [Nested loops](exhaustive-search.md#pares) |
+| Construir aos poucos, testar conflitos e desfazer escolhas | [Backtracking: retorno + escolhas](backtracking.md#mapeamento) |
 
 Custos e diferenças entre técnicas: [tabelas de consulta](patterns.md#complexidades).
 Os blocos com main são programas independentes; os trechos menores indicam o contexto necessário.
@@ -45,7 +46,7 @@ Os blocos com main são programas independentes; os trechos menores indicam o co
 “Menor”, “maior” e “contínuo” são pistas, não provas.
 Confira as hipóteses antes de copiar: monotonicidade, ordenação, sinal dos valores e extremos dos intervalos.
 
-## ARQUIVOS — SEIS GUIAS, SEM CÓPIAS DO MESMO TEMPLATE
+## ARQUIVOS — GUIAS E RECEITAS SEM DUPLICAÇÃO
 
 | Abra | Conteúdo |
 |---|---|
@@ -53,6 +54,8 @@ Confira as hipóteses antes de copiar: monotonicidade, ordenação, sinal dos va
 | [two-pointers.md](two-pointers.md) | Sliding window, two sum, two difference, merge e variantes. |
 | [sweep-line.md](sweep-line.md) | Receita, eventos, consultas, empates, estado ativo e compressão. |
 | [exhaustive-search.md](exhaustive-search.md) | Complete search, pares/trios, subsets/bitmask e permutations. |
+| [backtracking.md](backtracking.md) | Enunciado → estado → escolhas → poda → base → retorno. |
+| [backtracking-templates.cpp](backtracking-templates.cpp) | Sete receitas: existe, conta, pega/não pega, opções, usados, melhor e grid. |
 | [patterns.md](patterns.md) | Gatilhos, comparações, complexidades e checklist de armadilhas. |
 
 O padrão visual vem de `maratona/study/`: títulos curtos, passos, exemplos pequenos
@@ -66,6 +69,7 @@ compressão ficou em sweep-line.md, mas **não é sweep line**.
 Todos os templates existentes foram mantidos uma vez, e os links foram atualizados.
 
 Teste na raiz icpc/: `python -B c++/test_search.py`.
+Receitas de backtracking: `python -B c++/test_backtracking.py`.
 [Índice de C++](../README.md) · [Índice do repositório](../../README.md).
 
 ## VI BINARY SEARCH NA RESPOSTA. E AGORA?

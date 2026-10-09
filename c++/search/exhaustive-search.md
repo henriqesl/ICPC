@@ -190,4 +190,5 @@ Sort inicial: O(N log N).
 - Repetidos reduzem P; next_permutation não repete a mesma sequência de valores.
 - Imprimir todas as ordens pode custar mais do que avaliá-las. Geralmente o contest pede guardar a melhor.
 - Se restrições permitem podar escolhas antes de completar uma ordem, considere backtracking;
-  não é implementado aqui e não elimina automaticamente o pior caso exponencial/fatorial.
+  veja [como mapear retorno + escolhas](backtracking.md) e as [receitas C++](backtracking-templates.cpp).
+  Poda não elimina automaticamente o pior caso exponencial/fatorial.
