@@ -1,12 +1,15 @@
 # Sort: qual parte e qual critério?
 
-[Mapa](../../MAPA-DE-RESOLUCAO.md) · [Iteradores: begin/end e *it](../basics/iterators.md) ·
+[Consulta geral](../../README.md) · [Iteradores: begin/end e *it](../basics/iterators.md) ·
 [Exemplo básico](sorting.cpp) · [Variantes executáveis](sorting-variants.cpp)
 
 [Trecho](#range) · [Pair/second](#pairs) · [Coluna](#column) · [Índices](#indices) · [Stable_sort](#stable)
 
 Os snippets são independentes e vão dentro de `main()`, com o [template](../template.cpp).
 O comparator responde **“a vem antes de b?”**, não “a é maior?”.
+
+**Custo:** sort O(N log N); muda a sequência. Comparator usa `<`/`>`, nunca `<=`/`>=`.
+**Índice original na saída?** Carregue (valor,id) ou ordene só os índices.
 
 ## Escolha rápida
 

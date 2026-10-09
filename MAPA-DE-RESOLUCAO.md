@@ -1,19 +1,63 @@
 # Do enunciado à técnica
 
-[Voltar ao índice](README.md)
-
-**O que preciso descobrir → quais propriedades posso aproveitar → qual custo cabe nos limites.**
-Use o mapa para levantar hipóteses. Antes de copiar um exemplo, confirme suas pré-condições.
-
-Para decidir **como guardar e consultar os dados**, abra
-[QUAL ESTRUTURA USAR?](QUAL-ESTRUTURA-USAR.md): operações repetidas → estruturas,
-comparação de custos e acesso às explicações por assunto.
+[Consulta direta / códigos](README.md) · [Qual estrutura usar?](QUAL-ESTRUTURA-USAR.md)
 
 ## O QUE O ENUNCIADO ESTÁ ME PEDINDO?
 
-**Enunciado → operação repetida → candidata.** Não copie pelo nome da história.
-As referências abaixo têm gatilhos, exemplo numérico, comandos e limitações.
-N é a quantidade guardada; K é o tamanho da janela. Hash tem custo médio, não garantido.
+**Transforme a história em uma operação.** “Computadores ligando” pode ser divisibilidade;
+“clientes” pode ser fila ou prioridade. O tema não escolhe o algoritmo.
+
+| Pergunta que você faz | Pista / próximo passo |
+|---|---|
+| Quero consultar intervalos fixos ou mover um trecho? | [Prefix sum × janela](c++/algorithms/prefix-and-window.md) |
+| Escolho dois elementos ou todos os consecutivos? | [Par × janela](c++/search/two-pointers.md#nao-confundir) |
+| Procuro X nos dados ou o menor/maior X viável? | [Busca tradicional × na resposta](c++/search/binary-search.md) |
+| Os dados mudam? Preciso ordem, repetidos ou só presença? | [Estruturas por operação](QUAL-ESTRUTURA-USAR.md#procure-pela-operação) |
+| Só muda em certos instantes/posições? | [Sweep line](c++/search/sweep-line.md#receita) |
+| Poucos valores enormes, mas preciso indexar? | [Compressão](c++/search/sweep-line.md#compression) |
+| N é pequeno e preciso testar escolhas/ordens? | [Enumeração](c++/search/exhaustive-search.md) · [backtracking com poda](c++/search/backtracking.md#mapeamento) |
+| O estado muda sempre do mesmo jeito? Há pares, ciclos ou paridade? | Faça casos pequenos e procure uma propriedade matemática antes de simular tudo. |
+
+Para localizar o código, use a [tabela principal](README.md#algoritmos-o-que-a-questão-pede).
+As pistas levantam hipóteses: confirme as condições do template.
+
+## CHECKLIST DE 20 SEGUNDOS ANTES DE CODAR
+
+1. **Pedido:** em uma frase, o que devo devolver? Índice, valor, quantidade, melhor ou existe?
+2. **Trabalho:** qual operação se repete? Dados mudam? Posso ordenar? Repetidos/negativos?
+3. **Propriedade:** por que posso descartar opções? Ordem, monotonicidade, evento, paridade?
+4. **Custo:** conte N, Q, trabalho por estado e soma dos tamanhos entre casos.
+5. **Teste:** um item, repetidos, ausente, extremos, negativo quando permitido. Compare com força bruta pequena.
+
+N~10^5 costuma pedir O(N) ou O(N log N), não O(N²). N~20 pode permitir 2^N.
+São estimativas: considere tempo, memória e custo das operações.
+Travou? Faça um caso pequeno à mão e escreva a solução direta; procure o trabalho repetido.
+
+## PARECE X, MAS É Y
+
+| Parece... | Mas a operação real muda a escolha |
+|---|---|
+| “Pego o menor várias vezes” → min-heap | “Também apago um valor específico” → set/multiset, não heap puro. |
+| “Já apareceu?” → unordered_set | “Quantas vezes?” → unordered_map ou vetor de frequências. |
+| “Quero o menor” → heap ou set/multiset | “Também quero lower_bound” → set/multiset. Heap não tem bounds. |
+| “Tudo ordenado” → sort | “Chegam/saem valores durante consultas” → set/multiset. |
+| “Intervalo” → prefix sum | Só soma/contagem **fixa** combina com a subtração de prefixos; presença dinâmica pode ser set. |
+| “Menor/maior” → greedy | Consultar extremo não prova que escolher esse extremo é ótimo. Justifique a escolha. |
+
+**“Tenho uma janela K” descreve a movimentação, não resolve a consulta.**
+
+| O que quero DENTRO da janela? | Estado que mantenho |
+|---|---|
+| Soma | variável acumulada: subtrai quem sai, soma quem entra |
+| Frequência/distintos | map/unordered_map ou vetor; remova chaves com frequência zero |
+| Máximo/mínimo | monotonic deque de índices |
+| Mediana | dois multisets, removendo uma cópia e rebalanceando |
+
+Não force um encaixe: sequência de operações, construção, matemática, grafos e DP
+podem pedir outro raciocínio. A história e o título não escolhem a estrutura.
+
+<details>
+<summary>Entender melhor: tabela completa de operações</summary>
 
 | Se você está pensando... | Operação → padrão/estrutura | Por que serve / custo | Abra |
 |---|---|---|---|
@@ -51,49 +95,12 @@ N é a quantidade guardada; K é o tamanho da janela. Hash tem custo médio, nã
 | “Atualizar e já consultar somas” | Fenwick / segment tree | O(log N); prefixo estático fica velho | [Reconhecimento](QUAL-ESTRUTURA-USAR.md#op19) |
 | “Movimentos, sequência ou resposta a construir” | blocos / propriedade / construção | estrutura sofisticada pode nem ser necessária | [Exemplos abaixo](#problemas-estudados) |
 
-## CHECKLIST DE 20 SEGUNDOS ANTES DE CODAR
-
-1. O que se repete?
-2. Qual operação vou executar muitas vezes?
-3. Os dados mudam ou são estáticos?
-4. Preciso manter ordem? Posso ordenar sem perder a ordem original?
-5. Pode haver valores repetidos?
-6. Preciso consultar mínimo/máximo?
-7. Removo qualquer elemento ou só o topo?
-8. Existe intervalo [L,R]? Quero soma, presença, quantidade ou extremo?
-9. É subarray/substring **contínuo**, ou escolho elementos separados?
-10. Procuro o primeiro maior/menor à esquerda/direita?
-11. Existe uma propriedade monotônica que justifica descartar candidatos?
-12. Qual complexidade cabe para N, Q e a **soma de N** entre testes?
-
-**N ≈ 10^5 / 2×10^5 → normalmente buscar O(N) ou O(N log N).**
-Evite O(N²), salvo se outro limite pequeno restringir o trabalho.
-São estimativas: tempo, memória, linguagem e custo de cada operação importam.
-
-## PARECE X, MAS É Y
-
-| Parece... | Mas a operação real muda a escolha |
-|---|---|
-| “Pego o menor várias vezes” → min-heap | “Também apago um valor específico” → set/multiset, não heap puro. |
-| “Já apareceu?” → unordered_set | “Quantas vezes?” → unordered_map ou vetor de frequências. |
-| “Quero o menor” → heap ou set/multiset | “Também quero lower_bound” → set/multiset. Heap não tem bounds. |
-| “Tudo ordenado” → sort | “Chegam/saem valores durante consultas” → set/multiset. |
-| “Intervalo” → prefix sum | Só soma/contagem **fixa** combina com a subtração de prefixos; presença dinâmica pode ser set. |
-| “Menor/maior” → greedy | Consultar extremo não prova que escolher esse extremo é ótimo. Justifique a escolha. |
-
-**“Tenho uma janela K” descreve a movimentação, não resolve a consulta.**
-
-| O que quero DENTRO da janela? | Estado que mantenho |
-|---|---|
-| Soma | variável acumulada: subtrai quem sai, soma quem entra |
-| Frequência/distintos | map/unordered_map ou vetor; remova chaves com frequência zero |
-| Máximo/mínimo | monotonic deque de índices |
-| Mediana | dois multisets, removendo uma cópia e rebalanceando |
-
-Não force um encaixe: sequência de operações, construção, matemática, grafos e DP
-podem pedir outro raciocínio. A história e o título não escolhem a estrutura.
+</details>
 
 <a id="problemas-estudados"></a>
+
+<details>
+<summary>Entender melhor: problemas estudados</summary>
 
 ## Exemplos dos problemas estudados
 
@@ -154,6 +161,11 @@ Isso pode guiar uma construção sem set/heap. Não é solução pronta:
 confira tamanho, limites dos valores, unicidade e valide todas as condições.
 N elementos impressos já exigem O(N) trabalho, mesmo que a ideia seja uma fórmula.
 
+</details>
+
+<details>
+<summary>Entender melhor: raciocínios passo a passo e equivalentes Python</summary>
+
 ## Referências e equivalentes C++ / Python
 
 Consultas novas: [vizinhos, lower_bound e upper_bound](c++/algorithms/bounds.cpp);
@@ -185,8 +197,8 @@ de janela variável ([C++](c++/algorithms/sliding-window-variable.cpp),
 | Potência enorme com resposta módulo M | Exponenciação modular; confira limites da multiplicação | [Potência modular](c++/math/modular-power.cpp) | [pow(a,b,mod)](python/math/README.md) |
 | Transformar caracteres ou contar letras | Conversão + frequência; confirme alfabeto e maiúsculas | [Strings](c++/basics/strings.md) | [Strings](python/cheatsheets/python-strings.md) |
 
-Os exemplos de busca binária do repositório trabalham com vetores ordenados.
-Busca binária sobre uma resposta exige escrever e justificar outro predicado.
+Busca binária em vetor exige ordem compatível. Na resposta, quem precisa ser
+monotônico é o teste de viabilidade; não é obrigatório ordenar a entrada.
 Nenhuma dessas associações substitui a leitura das restrições.
 
 ## Roteiro ao receber uma questão
@@ -328,3 +340,5 @@ Use este rascunho para organizar o raciocínio antes de procurar código:
 
 Não é necessário conhecer o nome da técnica de imediato. Primeiro identifique
 a operação e as propriedades; depois use o material para localizar uma implementação.
+
+</details>

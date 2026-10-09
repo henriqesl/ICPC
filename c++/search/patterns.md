@@ -2,50 +2,7 @@
 
 [Índice](README.md) · [Não confundir](#nao-confundir) · [Complexidades](#complexidades) · [Armadilhas](#armadilhas)
 
-## ENUNCIADO / NECESSIDADE → TÉCNICA PROVÁVEL
-
-| Enunciado / necessidade | Técnica provável e confirmação |
-|---|---|
-| Procurar x sem ordem útil | [Linear](binary-search.md#linear); muitas consultas podem pedir outra estrutura |
-| Valor exato em array ordenado | [Binary search tradicional](binary-search.md#tradicional) |
-| Primeiro >= x / primeiro > x / contar iguais | [Bounds](binary-search.md#bounds); limite não garante igualdade |
-| “menor X que funciona”, menor tempo/capacidade/velocidade | [FIRST TRUE](binary-search.md#first-true): maiores também viáveis? |
-| “maior X que ainda funciona” | [LAST TRUE](binary-search.md#last-true): menores também viáveis? |
-| “maximize o mínimo” | LAST TRUE, se diminuir a exigência mantiver viabilidade |
-| “minimize o máximo” | FIRST TRUE, se aumentar o limite mantiver viabilidade |
-| “subarray contínuo”, janela válida ou frequência limitada | [Sliding window](two-pointers.md#janela), se expandir/contrair ajustar a condição monotonicamente |
-| Par com soma alvo + ordenado | [Two sum](two-pointers.md#par): pontas opostas |
-| Par com diferença alvo + ordenado | [Two difference](two-pointers.md#diferenca): ambos para a direita |
-| Merge de arrays ordenados | [Dois índices, um por array](two-pointers.md#merge) |
-| Muitos intervalos em tempo/coordenada | [Sweep line](sweep-line.md#receita) |
-| “quando algo começa/termina” | Eventos START/END; defina extremos e empates |
-| Consultar estado em um ponto | [QUERY como evento](sweep-line.md#query-events) ou histórico + bounds |
-| Coordenadas 1e9, mas só 2e5 usadas | [Compression](sweep-line.md#compression) **se precisar de índices**; varredura direta pode dispensar |
-| “quantos estão ativos” | [Contador](sweep-line.md#estado), não set por hábito |
-| “quais estão ativos” | Set de ids únicos; valores repetidos pedem outra representação |
-| Ativos com valores repetidos | Multiset; saída de um remove por iterator |
-| Menor/maior ativo | begin()/rbegin(), após conferir que não está vazio |
-| Soma/frequência dos ativos | Soma corrente / map, unordered_map ou vetor |
-| Todas as escolhas, pego ou não pego | [Subsets / bitmask](exhaustive-search.md#subconjuntos) |
-| Todas as ordens | [Permutations](exhaustive-search.md#permutacoes) |
-| N <= aproximadamente 20 | Considere 2^N, mas estime o custo por estado |
-| N pequeno, K fixo / todos os pares ou trios | [Nested loops / complete search](exhaustive-search.md#pares) |
-| Quantas / existe / melhor + decisões com conflitos | [Backtracking](backtracking.md#modelos): combine retorno + tipo de escolha |
-
-## NÃO DECORE APENAS AS FRASES
-
-**Se x funciona, o que acontece com x+1? E x-1?**
-Justifique a propriedade para todos os maiores/menores, não só para dois exemplos.
-O padrão depende da pergunta de verify, não só da palavra “mínimo” ou “máximo”.
-
-```text
-F F F T T T → first true → funciona? salve e tente MENOR
-T T T F F F → last true  → funciona? salve e tente MAIOR
-F T F T F T → não monotônico → esses templates NÃO servem
-```
-
-“Produzir exatamente mid” pode alternar entre possível/impossível;
-não assuma que é igual a “produzir pelo menos mid”.
+Para escolher o template, use o [índice de search](README.md). Aqui ficam as diferenças e os custos.
 
 <a id="nao-confundir"></a>
 ## NÃO CONFUNDIR — O QUE CADA TÉCNICA FAZ?
@@ -106,3 +63,53 @@ Para N/R/E pequenos, interprete o log como log(tamanho+1); inclua memória e sa�
 
 Os [templates de busca](binary-search.md) e de [varredura](sweep-line.md) ficam apenas nos guias;
 esta tabela não cria uma segunda implementação para desatualizar.
+
+<details>
+<summary>Entender melhor: gatilhos e monotonicidade</summary>
+
+## ENUNCIADO / NECESSIDADE → TÉCNICA PROVÁVEL
+
+| Enunciado / necessidade | Técnica provável e confirmação |
+|---|---|
+| Procurar x sem ordem útil | [Linear](binary-search.md#linear); muitas consultas podem pedir outra estrutura |
+| Valor exato em array ordenado | [Binary search tradicional](binary-search.md#tradicional) |
+| Primeiro >= x / primeiro > x / contar iguais | [Bounds](binary-search.md#bounds); limite não garante igualdade |
+| “menor X que funciona”, menor tempo/capacidade/velocidade | [FIRST TRUE](binary-search.md#first-true): maiores também viáveis? |
+| “maior X que ainda funciona” | [LAST TRUE](binary-search.md#last-true): menores também viáveis? |
+| “maximize o mínimo” | LAST TRUE, se diminuir a exigência mantiver viabilidade |
+| “minimize o máximo” | FIRST TRUE, se aumentar o limite mantiver viabilidade |
+| “subarray contínuo”, janela válida ou frequência limitada | [Sliding window](two-pointers.md#janela), se expandir/contrair ajustar a condição monotonicamente |
+| Par com soma alvo + ordenado | [Two sum](two-pointers.md#par): pontas opostas |
+| Par com diferença alvo + ordenado | [Two difference](two-pointers.md#diferenca): ambos para a direita |
+| Merge de arrays ordenados | [Dois índices, um por array](two-pointers.md#merge) |
+| Muitos intervalos em tempo/coordenada | [Sweep line](sweep-line.md#receita) |
+| “quando algo começa/termina” | Eventos START/END; defina extremos e empates |
+| Consultar estado em um ponto | [QUERY como evento](sweep-line.md#query-events) ou histórico + bounds |
+| Coordenadas 1e9, mas só 2e5 usadas | [Compression](sweep-line.md#compression) **se precisar de índices**; varredura direta pode dispensar |
+| “quantos estão ativos” | [Contador](sweep-line.md#estado), não set por hábito |
+| “quais estão ativos” | Set de ids únicos; valores repetidos pedem outra representação |
+| Ativos com valores repetidos | Multiset; saída de um remove por iterator |
+| Menor/maior ativo | begin()/rbegin(), após conferir que não está vazio |
+| Soma/frequência dos ativos | Soma corrente / map, unordered_map ou vetor |
+| Todas as escolhas, pego ou não pego | [Subsets / bitmask](exhaustive-search.md#subconjuntos) |
+| Todas as ordens | [Permutations](exhaustive-search.md#permutacoes) |
+| N <= aproximadamente 20 | Considere 2^N, mas estime o custo por estado |
+| N pequeno, K fixo / todos os pares ou trios | [Nested loops / complete search](exhaustive-search.md#pares) |
+| Quantas / existe / melhor + decisões com conflitos | [Backtracking](backtracking.md#modelos): combine retorno + tipo de escolha |
+
+## NÃO DECORE APENAS AS FRASES
+
+**Se x funciona, o que acontece com x+1? E x-1?**
+Justifique a propriedade para todos os maiores/menores, não só para dois exemplos.
+O padrão depende da pergunta de verify, não só da palavra “mínimo” ou “máximo”.
+
+```text
+F F F T T T → first true → funciona? salve e tente MENOR
+T T T F F F → last true  → funciona? salve e tente MAIOR
+F T F T F T → não monotônico → esses templates NÃO servem
+```
+
+“Produzir exatamente mid” pode alternar entre possível/impossível;
+não assuma que é igual a “produzir pelo menos mid”.
+
+</details>

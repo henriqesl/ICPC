@@ -1,32 +1,104 @@
-# BACKTRACKING — do enunciado ao estado
+# BACKTRACKING — escolher, explorar, desfazer
 
-[Índice](README.md) · [Mapeamento](#mapeamento) · [Combinar modelos](#modelos) ·
-[Caso base](#base) · [Faz/recursa/desfaz](#desfaz) · [Poda](#poda) · [Receitas C++](backtracking-templates.cpp)
+[Índice](README.md) · [Mapeamento](#mapeamento) · [Modelos](#modelos) · [Base](#base) · [Desfazer](#desfaz) · [Poda](#poda) · [Código](backtracking-templates.cpp)
 
-**O centro é: TIPO DE RETORNO + TIPO DE ESCOLHA.**
-“Quantas?” decide como juntar respostas; “pega/não pega” decide como abrir os ramos.
-São decisões diferentes. Não escolha um template só pelo tema da questão.
+**Use:** construir aos poucos, testar restrições e tentar alternativas. Geralmente N pequeno.
 
-```text
-ENUNCIADO → ESTADO → ESCOLHAS → VALIDADE / PODA → CASO BASE → O QUE RETORNAR
-```
-
-## CONSULTA RÁPIDA — QUAL PARTE DO CÓDIGO PRECISO?
-
-Abra [backtracking-templates.cpp](backtracking-templates.cpp) e procure `TEMPLATE N`:
-
-| Pedido | Receita |
-|---|---|
-| A) Existe alguma solução? | 1: bool, para no primeiro sucesso |
-| B) Quantas soluções? | 2: long long, soma os filhos |
-| C) Pega / não pega | 3: duas chamadas por índice |
-| D) Uma opção entre várias | 4: for nas opções da etapa |
-| E) Permutação / usados | 5: used[], marca e desmarca |
-| F) Melhor solução | 6: min/max e branch and bound |
-| G) Grid / caminho | 7: vizinhos e visited do caminho |
+**Não confunda:** “existe/quantas/melhor” define o retorno; “pega/não pega/opções/usados” define os ramos.
 
 <a id="mapeamento"></a>
-## COMO MAPEAR O ENUNCIADO PARA O BACKTRACKING
+## CONSULTA RÁPIDA — ESCOLHA A RECEITA
+
+Abra [backtracking-templates.cpp](backtracking-templates.cpp) e use Ctrl+F em `TEMPLATE N`.
+As funções são exemplos com regras específicas: adapte validade/base à sua questão.
+
+| Pedido | Receita / função | Estado / ação |
+|---|---|---|
+| Existe solução? | 1: `decisions::exists(0)` | posição + prefixo; para no primeiro true |
+| Quantas soluções? | 2: `decisions::count(0)` | mesmo estado; soma todos os filhos |
+| Escolher subconjunto com soma alvo | 3: `subsets::count(0)` | idx + soma; pega / não pega |
+| Uma coluna por linha sem conflitos | 4: `placements::count(0)` | linha + colunas/diagonais; for nas colunas |
+| Todas as ordens | 5: `permutations::generate(0)` | posição + used + prefixo; marca/desmarca |
+| Menor/maior custo de exatamente K itens | 6: `optimization::minimize(0,0)` / `maximize(0,0)` | idx + escolhidos + custo; atualiza melhor global |
+| Caminho com restrições | 7: `paths::exists(r,c)` | posição + visited do caminho; tenta vizinhos |
+
+**Antes de chamar:** inicialize os dados/flags como indicado no cabeçalho da receita.
+1/2 impedem vizinhos iguais; 4 usa bloqueios e diagonais; 6 exige custos não negativos.
+Não copie o arquivo inteiro como solução: não tem main. Copie uma receita e as declarações usadas.
+
+<a id="modelos"></a>
+## RETORNO + ESCOLHAS — COMBINE OS DOIS
+
+| O problema pergunta | Na folha válida | Juntar os filhos |
+|---|---|---|
+| Existe? | true | basta um true; pode parar |
+| Quantas? | 1 | soma todos |
+| Melhor? | atualize melhor resposta | min/max, sem perder alternativas melhores |
+| Listar? | imprima/salve a construção | explore todas as válidas |
+
+Exemplos: N-Rainhas = **contar + opções por linha**; soma de subconjunto = **contar + pega/não pega**.
+
+<a id="base"></a>
+## CASO BASE — ACABOU, MAS É VÁLIDO?
+
+| Construção | Terminou | Confira |
+|---|---|---|
+| Subconjunto | idx == N | soma == alvo / coverage == FULL |
+| Permutação | pos == N | regras finais não garantidas antes |
+| Uma peça por linha | row == N | conflitos já impedidos em cada escolha |
+| Caminho | chegou ao destino | célula válida e demais exigências atendidas |
+
+Folha inválida: 0 / false. Sem opções antes do fim também é falha, não solução.
+Contagem distingue soluções por índice, valor ou ordem? Defina isso antes de codar.
+
+<a id="desfaz"></a>
+## FAZ → RECURSA → DESFAZ
+
+| Faz | Depois da chamada, desfaz |
+|---|---|
+| `used[i] = 1` | `used[i] = 0` |
+| `sum += a[idx]` | `sum -= a[idx]` |
+| `current.push_back(x)` | `current.pop_back()` |
+| marca board/coluna/diagonais | restaura todos |
+
+Desfaça **inclusive antes de retornar true**. Melhor resposta/soluções salvas são resultados: não desfaça.
+Passou estado por valor? A cópia já isola. OR não se desfaz com XOR: passe coverage por valor ou salve o valor antigo.
+Reinicialize globais entre casos. Para mostrar uma solução, salve-a antes de desfazer.
+
+<a id="poda"></a>
+## PODA — SÓ DESCARTE COM JUSTIFICATIVA
+
+| Pode parar quando... | Hipótese necessária |
+|---|---|
+| posição bloqueada / coluna ocupada / conflito | regra torna a escolha inválida |
+| faltam mais itens que os disponíveis | impossível atingir quantidade exigida |
+| soma passou do alvo | restantes não negativos; negativos podem corrigir |
+| custo atual >= melhor mínimo | custos restantes não negativos |
+| teto otimista <= melhor máximo | teto nunca subestima a continuação |
+
+Minimizar usa piso seguro; maximizar usa teto seguro. Para contar soluções ótimas, não descarte empates sem adaptar.
+
+## GRID / CAMINHO — QUAL visited?
+
+- **Enumerar caminhos simples/regras dependentes do caminho:** marca ao entrar, desmarca ao sair.
+- **Só alcance/componente:** DFS/BFS com visited permanente, O(V+E); não precisa enumerar caminhos.
+
+Não conte caminhos com visited permanente. Memorizar só a célula/posição pode ser insuficiente se o histórico muda o futuro.
+
+## COMPLEXIDADE / ARMADILHAS
+
+| Árvore, com trabalho O(1) por ramo salvo indicação | Pior caso / memória extra |
+|---|---|
+| Pega/não pega | O(2^N) / O(N) pilha |
+| B opções em D etapas, B >= 2 | O(B^D) / O(D) pilha |
+| Permutação ou colunas exclusivas, loop N por nó | O(N·N!) / O(N), além do board |
+| Caminhos simples em V células | limite grosseiro O(4^V) / O(V) |
+
+Poda **não garante** um algoritmo rápido. Conte validação/cópia/saída, overflow de contagem e profundidade da pilha.
+Bitmask gera subconjuntos completos; next_permutation gera ordens completas; backtracking permite cortar prefixos inválidos.
+
+<details>
+<summary>Entender melhor: traduzir frases do enunciado</summary>
 
 ### ENUNCIADO DIZ: “QUANTAS MANEIRAS / CONFIGURAÇÕES VÁLIDAS?”
 
@@ -95,18 +167,10 @@ Exemplo: uma peça por linha sem compartilhar coluna/diagonal → estado row,
 escolha col, conflitos em `row + col` e `row - col + N - 1`.
 O template 4 conta; as ocupações guardam o histórico que não aparece no parâmetro row.
 
-<a id="modelos"></a>
-## MAPEAMENTO POR PADRÃO — OS MODELOS SE COMBINAM
+</details>
 
-| Frase / estrutura | Estado provável | Escolhas prováveis | Retorno |
-|---|---|---|---|
-| Quantas configurações válidas? | etapa + restrições acumuladas | explorar todas as válidas | long long |
-| É possível completar? | posição + situação parcial | opções válidas | bool |
-| Escolher subconjunto | idx + soma/cobertura | pega / não pega | bool/count/min/max |
-| Uma escolha por linha | row + colunas/diagonais ocupadas | colunas | count/bool |
-| Gerar permutação | pos + used[] + prefixo | índices não usados | processar solução |
-| Achar melhor solução | etapa + custo + restrições | todas que ainda podem melhorar | min/max |
-| Caminho simples com restrições | posição + visitados do caminho + estado extra | vizinhos válidos | bool/count/min/max |
+<details>
+<summary>Entender melhor: N-Rainhas, coverage e combinações</summary>
 
 **Não são categorias mutuamente exclusivas:**
 
@@ -122,110 +186,6 @@ O template 4 conta; as ocupações guardam o histórico que não aparece no par�
 Em coverage, passe a máscara por valor ou salve a antiga para restaurar.
 OR **não** se desfaz com XOR: duas escolhas podem cobrir o mesmo bit.
 
-<a id="base"></a>
-## CASO BASE — QUANDO NÃO EXISTE MAIS DECISÃO A TOMAR?
+</details>
 
-O índice só diz que a construção terminou; a condição final diz se ela serve.
-
-| Construção mapeada | Acabou quando… | Ainda precisa conferir? |
-|---|---|---|
-| Subsets | idx == N | soma == alvo, coverage == FULL… |
-| Permutação | pos == N | restrições finais, se não foram garantidas durante a construção |
-| N-Rainhas / uma peça por linha | row == N | não, se conflitos foram impedidos em cada escolha |
-| Sudoku por célula | pos == 81 ou row == 9 | só com tabuleiro inicial válido e preenchimentos válidos; ignore células fixas |
-| Lista de células vazias | idx == vazias.size() | terminou a última decisão relevante |
-| Caminho | u == destino | entrada é válida? comprimento/cobertura exigidos foram atendidos? |
-
-Para contar, folha **válida** retorna 1. Para existência, retorna true.
-Com condição final, retorne `condicao_final ? 1 : 0` ou `condicao_final`.
-Coverage: `if (idx == N) return coverage == FULL;` (bool ou 0/1 convertido para count).
-Para minimizar, atualize a melhor resposta; para listar, processe a construção completa.
-Sem opções válidas antes do fim: 0 maneiras / false. Não transforme esse beco sem saída em solução.
-
-<a id="desfaz"></a>
-## FAZ → RECURSA → DESFAZ
-
-| Faz | Recursa | Desfaz |
-|---|---|---|
-| board[row][col] = 'Q' | ways += solve(row + 1) | board[row][col] = '.' |
-| used[i] = true | solve(pos + 1) | used[i] = false |
-| sum += a[idx] | solve(idx + 1) | sum -= a[idx] |
-
-Desfaça **tudo que modificou na construção parcial**: tabuleiro, coluna, diagonais, frequência, custo etc.
-A melhor resposta global e as soluções salvas são resultados: não devem ser desfeitas.
-Dados passados por valor já são isolados; shared/global/referência precisa de restauração.
-Nos templates, `exists` restaura antes de retornar true; o buffer da permutação também é restaurado.
-Se quiser manter um testemunho, copie a solução à parte em vez de deixar flags sujas.
-Antes de outro caso de teste, reinicialize vetores, flags, current e melhor resposta.
-
-<a id="poda"></a>
-## VALIDADE / PODA — QUAL RAMO O TEXTO PROÍBE OU TORNA INÚTIL?
-
-| Enunciado / regra | Tradução no código | Por que pode descartar? |
-|---|---|---|
-| Posição bloqueada | continue / return false | nunca pode fazer parte da solução |
-| Coluna já usada | continue | violaria exclusividade |
-| Diagonal atacada | continue | violaria conflito geométrico |
-| Soma passou do alvo | return 0/false **se restantes não negativos** | não existe como reduzir; negativos podem corrigir |
-| Custo atual já >= melhor mínimo | return **se custos restantes não negativos** | completar não pode melhorar |
-| Teto otimista <= melhor máximo | return | nem a melhor continuação imaginável supera o atual |
-| Faltam mais itens que os disponíveis | return | impossível completar a quantidade exigida |
-| Estado repetido | talvez memo / visited | só se o estado guardar tudo que influencia o futuro |
-
-No template 6, os custos são não negativos: min poda pelo custo atual;
-max usa `current + suffix[idx]` como teto, somando todos os custos restantes.
-Esse teto pode ignorar o limite K, mas não pode subestimar uma continuação válida.
-Para podar mínimo por um limite, ele deve ser um **piso** seguro; máximo exige **teto** seguro.
-Se precisar contar soluções ótimas, podar empates pode apagar respostas: adapte a regra.
-
-Memo não é um simples “já visitei”: para contar, reutilize o **número de continuações**;
-para otimizar, reutilize a melhor continuação se o estado for suficiente.
-Em permutação, só pos é insuficiente; em caminho com restrições, só a célula pode ser insuficiente.
-
-## GRID / CAMINHO — QUANDO DESFAZER visited?
-
-- **Todos os caminhos simples / restrição dependente do caminho:** visited significa
-  “está neste caminho”. Marque ao entrar e desmarque ao sair; outro ramo pode usar a célula.
-- **Apenas existe caminho, sem outra restrição:** DFS/BFS com visited permanente basta,
-  em O(V+E). Encontrar algum caminho simples não exige enumerar todos: ciclos podem ser evitados.
-- **Explorar componente inteira:** visited significa “já processado”; não desmarque,
-  não pare no primeiro destino e processe todos os vizinhos alcançáveis.
-
-O template 7 mostra a versão que restaura o caminho, inclusive no sucesso.
-Antes do caso base, verifica limites, bloqueio e visited: destino bloqueado não é sucesso.
-Para só alcance, retire os dois desfazeres; para contar caminhos simples, troque bool por contagem
-e explore todas as alternativas. Não conte caminhos com visited permanente.
-
-## COMPLEXIDADE — RETORNO NÃO DETERMINA O TAMANHO DA ÁRVORE
-
-| Escolhas | Pior caso / memória extra |
-|---|---|
-| Pega/não pega, atualização O(1) | O(2^N) tempo; O(N) pilha |
-| Até B opções em D etapas | O(B^D), para B >= 2 e trabalho O(1) por ramo; O(D) pilha |
-| Peças por linha com coluna exclusiva | até O(N · N!) com loop de N colunas por nó; O(N) flags/pilha, além do board |
-| Permutação com loop de N índices por nó | O(N · N!) incluindo avaliação/saída O(N); O(N) pilha/used/current |
-| Melhor subconjunto por branch and bound | O(2^N) no pior caso; O(N) pilha/suffix |
-| Caminhos simples no grid de V células | limite grosseiro O(4^V); O(V) visited/pilha |
-| Alcance/componente com visited permanente | O(V+E), O(V) memória |
-
-Poda melhora muitos casos, **não garante** que deixa de ser exponencial/fatorial.
-Conte o custo real de validar/copiar/avaliar. Long long pode estourar ao contar; use o módulo pedido
-ou outro tipo adequado. Recursão profunda pode estourar a pilha mesmo quando há poucos ramos.
-
-## NÃO CONFUNDIR / ARMADILHAS
-
-| Comparação | Diferença prática |
-|---|---|
-| Backtracking × bitmask | ambos geram subsets; bitmask é iterativo, backtracking permite poda parcial natural |
-| Backtracking × next_permutation | este gera ordens completas; backtracking pode impedir um prefixo inválido |
-| Backtracking × greedy | greedy normalmente não desfaz para explorar alternativas; backtracking explora |
-| Contar × existir | soma todos os filhos × para no primeiro true |
-| Estado × parâmetro | parte pode estar em globals/used/board; precisa estar coerente e ser restaurada |
-
-Não use return 1 só porque chegou ao fim se a condição final não foi atendida.
-Não conte a mesma configuração por caminhos diferentes sem definir a identidade da solução.
-Não use poda de soma/custo com negativos sem prova. Não mantenha marcações permanentes
-entre ramos ao enumerar caminhos simples. Não deixe `used[]` marcado após um retorno antecipado.
-
-Os templates completos ficam **apenas** no [.cpp](backtracking-templates.cpp), sem cópia neste guia.
-Teste na raiz icpc/: `python -B c++/test_backtracking.py`.
+Teste fora do contest: `python -B c++/test_backtracking.py`.

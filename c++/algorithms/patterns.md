@@ -1,6 +1,6 @@
 # Padrões: qual operação o enunciado esconde?
 
-[Mapa geral](../../MAPA-DE-RESOLUCAO.md) · [Exemplos executáveis](README.md)
+[Consulta geral](../../README.md) · [Exemplos executáveis](README.md)
 
 [Sort](#sort) · [Comparator](#custom-comparator) · [Lower bound](#lower-bound) ·
 [Upper bound](#upper-bound) · [Binary search](#binary-search) ·
@@ -13,22 +13,11 @@ Snippets dentro de `main()`, com o [template](../template.cpp), sem ler entrada.
 
 ## Sort
 
-### Quando pensar nisso?
+**Use quando:** Depois de agrupar iguais, consultar vizinhos ou buscar fica fácil; Os dados não mudam: posso ordenar uma vez.
 
-- “Depois de agrupar iguais, consultar vizinhos ou buscar fica fácil.”
-- “Os dados não mudam: posso ordenar uma vez.”
+**Precisa:** ordenar não pode destruir informação exigida; preserve (valor,id) se necessário.
 
-### Ideia simples
-
-Organiza a sequência por valor. Pague a ordenação uma vez e aproveite a ordem
-nas consultas seguintes; não ordene de novo em cada pergunta.
-
-### Exemplo de contest
-
-[8,3,1,3] vira [1,3,3,8]. Os dois 3 ficam juntos, e bounds encontram seu intervalo.
-Se precisa responder índices originais, carregue pares (valor,índice).
-
-### Operações que preciso lembrar
+### Template / operações
 
 <!-- example: sort -->
 ```cpp
@@ -52,26 +41,30 @@ Quer ordenar um trecho, uma coluna, pelo second ou só uma lista de índices?
 Abra [Sort: variantes e índices](sorting.md). Se begin/end ainda confundem,
 leia [Iteradores: posição, valor ou índice?](../basics/iterators.md).
 
+<details>
+<summary>Entender melhor: ideia e exemplo</summary>
+
+### Ideia simples
+
+Organiza a sequência por valor. Pague a ordenação uma vez e aproveite a ordem
+nas consultas seguintes; não ordene de novo em cada pergunta.
+
+### Exemplo de contest
+
+[8,3,1,3] vira [1,3,3,8]. Os dois 3 ficam juntos, e bounds encontram seu intervalo.
+Se precisa responder índices originais, carregue pares (valor,índice).
+
+</details>
+
 <a id="custom-comparator"></a>
 
 ## Custom comparator — qual item vem antes?
 
-### Quando pensar nisso?
+**Use quando:** Maior pontuação primeiro; empate → menor id; Quero ordenar pelo segundo campo, não pelo primeiro.
 
-- “Maior pontuação primeiro; empate → menor id.”
-- “Quero ordenar pelo segundo campo, não pelo primeiro.”
+**Precisa:** comparação coerente, estrita; a vs a retorna false.
 
-### Ideia simples
-
-A comparação responde: **a deve vir antes de b?** A lambda abaixo é uma regra
-curta colocada no sort, não um algoritmo novo. Em empate total, responda false.
-
-### Exemplo de contest
-
-Pares (pontuação,id): (10,2), (10,1), (8,0).
-Maior pontuação e menor id no empate → (10,1), (10,2), (8,0).
-
-### Operações que preciso lembrar
+### Template / operações
 
 <!-- example: comparator -->
 ```cpp
@@ -96,25 +89,30 @@ Bounds precisam usar a mesma ordem da ordenação; os recortes abaixo são cresc
 
 [Ordenar pela coluna j](sorting.md#column) · [Ordenar índices do vetor](sorting.md#indices).
 
+<details>
+<summary>Entender melhor: ideia e exemplo</summary>
+
+### Ideia simples
+
+A comparação responde: **a deve vir antes de b?** A lambda abaixo é uma regra
+curta colocada no sort, não um algoritmo novo. Em empate total, responda false.
+
+### Exemplo de contest
+
+Pares (pontuação,id): (10,2), (10,1), (8,0).
+Maior pontuação e menor id no empate → (10,1), (10,2), (8,0).
+
+</details>
+
 <a id="lower-bound"></a>
 
 ## Lower_bound — primeiro >= X
 
-### Quando pensar nisso?
+**Use quando:** Quero o primeiro preço que chega a X; Quero pular diretamente para a primeira posição ativa >= L.
 
-- “Quero o primeiro preço que chega a X.”
-- “Quero pular diretamente para a primeira posição ativa >= L.”
+**Precisa:** vector ordenado crescente ou método de set/map; conferir end antes de ler.
 
-### Ideia simples
-
-Devolve um iterador para o primeiro candidato >= X na ordem crescente.
-Pode apontar para um valor maior que X; igualdade exige outra conferência.
-
-### Exemplo de contest
-
-[1,3,3,8], X=3 → primeiro 3, índice 1. X=4 → 8. X=20 → end, sem candidato.
-
-### Operações que preciso lembrar
+### Template / operações
 
 <!-- example: lower-bound -->
 ```cpp
@@ -148,26 +146,29 @@ auto it = lower_bound(v.begin(), v.end(), make_pair(3, -1));
 if (it != v.end() && it->first == 3) cout << it->second; // índice original 1
 ```
 
+<details>
+<summary>Entender melhor: ideia e exemplo</summary>
+
+### Ideia simples
+
+Devolve um iterador para o primeiro candidato >= X na ordem crescente.
+Pode apontar para um valor maior que X; igualdade exige outra conferência.
+
+### Exemplo de contest
+
+[1,3,3,8], X=3 → primeiro 3, índice 1. X=4 → 8. X=20 → end, sem candidato.
+
+</details>
+
 <a id="upper-bound"></a>
 
 ## Upper_bound — primeiro > X
 
-### Quando pensar nisso?
+**Use quando:** Preciso pular todas as cópias de X; Tenho muitas perguntas: quantos valores são <= X?.
 
-- “Preciso pular todas as cópias de X.”
-- “Tenho muitas perguntas: quantos valores são <= X?”
+**Precisa:** vector ordenado crescente ou método de set/map; conferir end antes de ler.
 
-### Ideia simples
-
-Devolve o primeiro valor estritamente maior. Num vector ordenado, o índice desse
-iterador é justamente a quantidade de elementos <= X.
-
-### Exemplo de contest
-
-[1,3,3,8], X=3 → aponta para 8, índice 3: três elementos são <= 3.
-Quantidade de 3 = índice upper - índice lower = 3 - 1 = 2.
-
-### Operações que preciso lembrar
+### Template / operações
 
 <!-- example: upper-bound -->
 ```cpp
@@ -190,26 +191,30 @@ Ordenar antes custa O(N log N), uma vez. Conte Q buscas: O(N log N + Q log N).
 Lower_bound aceita igualdade; upper não. Se o resultado é end, não pode ler
 o valor, mas ainda pode calcular o índice no vector. [bounds.cpp](bounds.cpp).
 
+<details>
+<summary>Entender melhor: ideia e exemplo</summary>
+
+### Ideia simples
+
+Devolve o primeiro valor estritamente maior. Num vector ordenado, o índice desse
+iterador é justamente a quantidade de elementos <= X.
+
+### Exemplo de contest
+
+[1,3,3,8], X=3 → aponta para 8, índice 3: três elementos são <= 3.
+Quantidade de 3 = índice upper - índice lower = 3 - 1 = 2.
+
+</details>
+
 <a id="binary-search"></a>
 
 ## Binary search — uma mudança de falso para verdadeiro
 
-### Quando pensar nisso?
+**Use quando:** Primeiro valor/limite que satisfaz a condição; Se a resposta X funciona, qualquer resposta maior também funciona.
 
-- “Primeiro valor/limite que satisfaz a condição.”
-- “Se a resposta X funciona, qualquer resposta maior também funciona.”
+**Precisa:** teste monotônico FFFTTT; este recorte usa [l,r), não intervalo fechado.
 
-### Ideia simples
-
-O teste precisa ter uma única transição: falso, falso, verdadeiro, verdadeiro.
-Teste o meio e descarte a metade que não pode conter o primeiro verdadeiro.
-
-### Exemplo de contest
-
-[1,3,3,8], condição valor >= 3 → F,V,V,V. O primeiro V fica no índice 1.
-Em [3,1,8], o teste V,F,V não permite esse descarte: falta monotonicidade.
-
-### Operações que preciso lembrar
+### Template / operações
 
 <!-- example: binary-search -->
 ```cpp
@@ -234,25 +239,30 @@ N grande não prova monotonicidade. `binary_search` da STL devolve bool de prese
 lower/upper_bound devolvem limites. Não misture intervalo fechado com [l,r).
 [binary-search.cpp](binary-search.cpp).
 
+<details>
+<summary>Entender melhor: ideia e exemplo</summary>
+
+### Ideia simples
+
+O teste precisa ter uma única transição: falso, falso, verdadeiro, verdadeiro.
+Teste o meio e descarte a metade que não pode conter o primeiro verdadeiro.
+
+### Exemplo de contest
+
+[1,3,3,8], condição valor >= 3 → F,V,V,V. O primeiro V fica no índice 1.
+Em [3,1,8], o teste V,F,V não permite esse descarte: falta monotonicidade.
+
+</details>
+
 <a id="two-pointers"></a>
 
 ## Two pointers — dois índices, sem testar todos os pares
 
-### Quando pensar nisso?
+**Use quando:** Dois valores somam um alvo e a sequência está ordenada; Consigo avançar cada índice sem precisar voltar atrás.
 
-- “Dois valores somam um alvo e a sequência está ordenada.”
-- “Consigo avançar cada índice sem precisar voltar atrás.”
+**Precisa:** vector crescente; índices distintos. Negativos são permitidos.
 
-### Ideia simples
-
-Use a ordem para descartar pares: soma pequena → aumentar o menor;
-soma grande → diminuir o maior. É preciso justificar qual movimento é seguro.
-
-### Exemplo de contest
-
-[1,3,4,7], alvo 10. Pontas: 1+7=8; avance esquerda → 3+7=10.
-
-### Operações que preciso lembrar
+### Template / operações
 
 <!-- example: two-pointers -->
 ```cpp
@@ -275,26 +285,29 @@ Sliding window também usa dois índices, com outra regra. Esse exemplo aceita
 negativos, encontra um par e não conta todos os pares. Preserve índices antes de ordenar
 se a saída exige posições originais. [two-pointers.cpp](two-pointers.cpp).
 
+<details>
+<summary>Entender melhor: ideia e exemplo</summary>
+
+### Ideia simples
+
+Use a ordem para descartar pares: soma pequena → aumentar o menor;
+soma grande → diminuir o maior. É preciso justificar qual movimento é seguro.
+
+### Exemplo de contest
+
+[1,3,4,7], alvo 10. Pontas: 1+7=8; avance esquerda → 3+7=10.
+
+</details>
+
 <a id="monotonic-stack"></a>
 
 ## Monotonic stack — próximo menor/maior de um lado
 
-### Quando pensar nisso?
+**Use quando:** Para cada posição, qual é o primeiro menor à esquerda/direita?; Até onde este elemento pode ser o mínimo de um subarray?.
 
-- “Para cada posição, qual é o primeiro menor à esquerda/direita?”
-- “Até onde este elemento pode ser o mínimo de um subarray?”
+**Precisa:** preservar posições; este recorte procura menor estrito à esquerda.
 
-### Ideia simples
-
-Guarde índices de candidatos numa pilha com valores em ordem. Descarte do topo
-os que não servem; o topo restante é o vizinho mais próximo procurado.
-
-### Exemplo de contest
-
-[3,1,2]: para o último 2, o menor mais próximo à esquerda é 1, no índice 1.
-Para o 1, não há menor à esquerda: descarte o 3.
-
-### Operações que preciso lembrar
+### Template / operações
 
 <!-- example: monotonic-stack -->
 ```cpp
@@ -323,27 +336,30 @@ Para somar mínimos de subarrays, trate empates: menor estrito de um lado,
 menor ou igual do outro, evitando contar o mesmo trecho duas vezes.
 [monotonic-stack.cpp](monotonic-stack.cpp).
 
+<details>
+<summary>Entender melhor: ideia e exemplo</summary>
+
+### Ideia simples
+
+Guarde índices de candidatos numa pilha com valores em ordem. Descarte do topo
+os que não servem; o topo restante é o vizinho mais próximo procurado.
+
+### Exemplo de contest
+
+[3,1,2]: para o último 2, o menor mais próximo à esquerda é 1, no índice 1.
+Para o 1, não há menor à esquerda: descarte o 3.
+
+</details>
+
 <a id="monotonic-deque"></a>
 
 ## Monotonic deque — mínimo/máximo de cada janela
 
-### Quando pensar nisso?
+**Use quando:** Qual é o máximo dos K últimos elementos, a cada avanço?; Sai o mais antigo, entra um novo, e quero só o extremo da janela.
 
-- “Qual é o máximo dos K últimos elementos, a cada avanço?”
-- “Sai o mais antigo, entra um novo, e quero só o extremo da janela.”
+**Precisa:** 1 <= K <= N; este recorte calcula máximo e guarda índices.
 
-### Ideia simples
-
-Guarde índices de candidatos, não todos os itens. Para máximo, os valores ficam
-decrescentes. Retire da frente os expirados e do fim os dominados pelo novo item.
-O maior válido fica na frente; o novo candidato dura mais que os antigos.
-
-### Exemplo de contest
-
-[2,1,5,1,3], K=3 → máximos 5,5,5. Ao entrar 5, descarte 1 e 2:
-o 5 é maior e também sairá mais tarde da janela. Um 1 novo não descarta o 5.
-
-### Operações que preciso lembrar
+### Template / operações
 
 <!-- example: monotonic-deque -->
 ```cpp
@@ -369,3 +385,19 @@ Deque comum não faz esses descartes sozinho. Mediana precisa de outros candidat
 e não funciona com esta regra. Heap pode resolver extremos com expiração controlada,
 mas custa O(log N) por operação e pode acumular entradas antigas.
 [monotonic-deque.cpp](monotonic-deque.cpp), [janela e sua consulta](prefix-and-window.md#sliding-window).
+
+<details>
+<summary>Entender melhor: ideia e exemplo</summary>
+
+### Ideia simples
+
+Guarde índices de candidatos, não todos os itens. Para máximo, os valores ficam
+decrescentes. Retire da frente os expirados e do fim os dominados pelo novo item.
+O maior válido fica na frente; o novo candidato dura mais que os antigos.
+
+### Exemplo de contest
+
+[2,1,5,1,3], K=3 → máximos 5,5,5. Ao entrar 5, descarte 1 e 2:
+o 5 é maior e também sairá mais tarde da janela. Um 1 novo não descarta o 5.
+
+</details>

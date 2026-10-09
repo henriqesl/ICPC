@@ -1,31 +1,40 @@
 # Prefix sum ou sliding window?
 
-[Mapa geral](../../MAPA-DE-RESOLUCAO.md) · [Prefix sum](#prefix-sum) · [Sliding window](#sliding-window)
+[Consulta geral](../../README.md) · [Prefix sum](#prefix-sum) · [Janela](#sliding-window)
 
-Os recortes vão dentro de `main()`, com o [template](../template.cpp).
-
-O nome é **sliding window** (janela deslizante). Slicing é extrair um trecho
-da sequência; não é a mesma técnica. A janela evita recalcular o trecho inteiro.
-
-| O problema pede | Use | Arquivo |
+| Pedido | Use / código | Condição |
 |---|---|---|
-| Muitas consultas de soma [L,R] em dados fixos | Prefix sum | [prefix-sum.cpp](prefix-sum.cpp) |
-| Melhor soma entre trechos de exatamente K consecutivos | Janela fixa | [sliding-window-fixed.cpp](sliding-window-fixed.cpp) |
-| Maior trecho com soma <= limite, valores não negativos | Janela variável | [sliding-window-variable.cpp](sliding-window-variable.cpp) |
-| Maior trecho com até K valores diferentes | Janela com frequências | [sliding-window-distinct.cpp](sliding-window-distinct.cpp) |
-| Somar incrementos a intervalos e ver resultado só no final | Vetor de diferenças | [difference-array.cpp](difference-array.cpp) |
+| Muitas somas [L,R] | [Prefix sum](prefix-sum.cpp) | dados fixos; negativos permitidos |
+| Melhor soma de K consecutivos | [Janela fixa](sliding-window-fixed.cpp) | 1 <= K <= N; negativos permitidos |
+| Maior trecho com soma <= S | [Janela variável](../search/two-pointers.md#janela) | não negativos; S >= 0 |
+| Maior trecho com até K distintos | [Janela + frequências](sliding-window-distinct.cpp) | K >= 0; negativos permitidos |
+| Somar em intervalos, só ver o final | [Diferenças](difference-array.cpp) | não há consultas intercaladas |
 
-Trecho/subarray é **contíguo**: [2,1,5] é trecho de [2,1,5,1,3]; escolher
-[2,5,3] pulando posições não é.
+Trecho é **consecutivo**, não pode pular posições. Recortes dentro de main com o [template](../template.cpp).
 
 <a id="prefix-sum"></a>
-
 ## 1. Prefix sum: guarde o que já foi somado
 
-### Quando pensar nisso?
+**Use:** array não muda e preciso de várias somas/contagens em intervalos.
 
-- “O array não muda e tenho muitas consultas de soma [L,R].”
-- “Preciso contar uma propriedade em vários intervalos fixos.”
+**Fórmula:** p[i+1] = p[i] + v[i]; soma inclusiva base 0 de [L,R] = **p[R+1] - p[L]**.
+
+<!-- example: prefix-sum -->
+```cpp
+vector<int> v{2, 3, 5, 1}; vector<long long> p(v.size() + 1, 0);
+for (int i = 0; i < int(v.size()); i++) p[i+1] = p[i] + v[i];
+int l = 1, r = 2; // base zero, inclusivo
+cout << p[r+1] - p[l]; // 8
+```
+
+**Custo:** O(N) construção, O(1) consulta, O(N) memória.
+
+**Cuidado:** posição extra e zero inicial; somas em long long. Aceita negativos.
+Se atualizar o array, o prefixo fica desatualizado. Mínimo não funciona por subtração.
+Atualização pontual + somas online → [Fenwick](../../QUAL-ESTRUTURA-USAR.md#op19).
+
+<details>
+<summary>Entender melhor: construção e por que R+1</summary>
 
 ### Ideia simples
 
@@ -51,41 +60,42 @@ Para somar índices [1,2], queremos 3+5:
 Fórmula para índices base zero inclusivos:
 `soma(L,R) = prefixo[R+1] - prefixo[L]`.
 
-### Operações que preciso lembrar
 
-<!-- example: prefix-sum -->
-```cpp
-vector<int> v{2, 3, 5, 1}; vector<long long> p(v.size() + 1, 0);
-for (int i = 0; i < int(v.size()); i++) p[i+1] = p[i] + v[i];
-int l = 1, r = 2; // base zero, inclusivo
-cout << p[r+1] - p[l]; // 8
-```
+O prefixo p[R+1] inclui até R. Retiramos p[L], que contém tudo antes de L.
 
-**Por que R+1?** prefixo[3] contém as posições 0,1,2. Depois retiramos o que
-vem antes de L. O zero inicial permite consultar L=0 sem tratamento especial.
-
-### Complexidade
-
-Construção O(N), cada consulta O(1), espaço O(N). Negativos funcionam.
-Erros frequentes: esquecer posição extra, confundir índices base 0/1,
-usar int para somas grandes e modificar os valores sem refazer prefixos.
-
-Exercício: [4,-2,7,1], soma de [1,3]? **6**.
-
-### Não confundir com
-
-Sliding window reaproveita um trecho que se move. Prefixos consultam quaisquer
-intervalos fixos. Não substitua soma por mínimo: subtrair não desfaz um mínimo.
-Dados mudando + somas online → [Fenwick](../../QUAL-ESTRUTURA-USAR.md#op19).
+</details>
 
 <a id="sliding-window"></a>
-
 ## Sliding window: movimentação não é a estrutura
 
-### Quando pensar nisso?
+**Use:** o trecho se move e consigo atualizar o que entra/sai sem recalcular tudo.
 
-- “Considero todo trecho de K elementos consecutivos.”
-- “O segmento cresce pela direita e encolhe pela esquerda.”
+**Janela fixa:** tamanho K. Soma nova = soma antiga - saiu + entrou.
+
+<!-- example: sliding-window -->
+```cpp
+vector<int> v{2, 1, 5, 1}; int k = 3; // 1 <= k <= size()
+long long soma = accumulate(v.begin(), v.begin() + k, 0LL);
+cout << soma << ' ';
+for (int r = k; r < int(v.size()); r++) {
+    soma -= v[r-k]; soma += v[r]; cout << soma << ' '; // 8 7
+}
+```
+
+**Custo:** soma fixa O(N), O(1) estado extra; entrada guardada O(N).
+
+**Cuidado:** 1 <= K <= N; aceita negativos. Para maior soma, inicialize o melhor com a primeira janela, não com zero.
+Não ordene: perderia os trechos originais.
+
+| Quero dentro da janela | Estado | Template |
+|---|---|---|
+| Soma | acumulador | [maior soma fixa](sliding-window-fixed.cpp) |
+| Distintos/frequências | mapa de contagens | [até K distintos](sliding-window-distinct.cpp) |
+| Mínimo/máximo | deque monotônica de índices | [recorte](patterns.md#monotonic-deque) |
+| Mediana | dois multisets + rebalanceamento | [recorte de inserção](../data-structures/README.md#median) |
+
+<details>
+<summary>Entender melhor: o que muda a cada avanço</summary>
 
 ### Ideia simples
 
@@ -99,38 +109,20 @@ para extremos, dois multisets para mediana.
 Não some os três itens novamente. Para máximo, porém, remover o antigo máximo
 pede saber quem ainda pode ser o próximo: só uma variável não basta.
 
-### Operações que preciso lembrar
+</details>
 
-<!-- example: sliding-window -->
-```cpp
-vector<int> v{2, 1, 5, 1}; int k = 3; // 1 <= k <= size()
-long long soma = accumulate(v.begin(), v.begin() + k, 0LL);
-cout << soma << ' ';
-for (int r = k; r < int(v.size()); r++) {
-    soma -= v[r-k]; soma += v[r]; cout << soma << ' '; // 8 7
-}
-```
+## Janela variável — expande, depois corrige
 
-### Complexidade
+[Template completo](../search/two-pointers.md#janela): entra pela direita; enquanto inválida,
+sai pela esquerda; com janela válida, registra o tamanho.
 
-Soma fixa: O(N) total, O(1) por avanço. Frequência com hash: O(N) médio,
-O(N²) pior caso. Mediana com dois multisets: O(N log K).
-Deque monotônica para extremos: O(N). Entrada guardada usa O(N) memória.
+**Soma <= S:** exige não negativos e S >= 0. [5,-4], S=1 mostra por que negativos quebram o descarte.
 
-### Não confundir com
+**Até K distintos:** mantenha frequências; apague a chave quando virar zero. Essa condição aceita negativos.
+Custo: soma O(N); frequências com hash O(N) médio, O(N²) pior caso.
 
-Janela não garante algoritmo linear. Pergunte **o que consultar dentro dela**:
-
-| Consulta | Estado | Detalhes |
-|---|---|---|
-| Soma | acumulador | [janela fixa](sliding-window-fixed.cpp) |
-| Frequência/distintos | mapa de contagens | [até K distintos](sliding-window-distinct.cpp) |
-| Máximo/mínimo | deque monotônica de índices | [padrão](patterns.md#monotonic-deque) |
-| Mediana | dois multisets + rebalanceamento | [padrão](../data-structures/README.md#median) |
-
-Janela variável também usa two pointers, mas é preciso justificar o descarte.
-Para soma limitada, a versão abaixo exige **não negativos**; já a janela fixa
-de soma aceita negativos. Não ordene a entrada: perderia os trechos originais.
+<details>
+<summary>Entender melhor: execução das janelas fixa e variável</summary>
 
 ## 2. Janela fixa: sai um, entra outro
 
@@ -181,22 +173,14 @@ de soma para qualquer problema com a palavra “janela”.
 
 Exercício: [1,2,1,1], limite 3. Maior tamanho? **2**.
 
-## 4. Outra condição de janela: até K distintos
+</details>
 
-Em [1,2,1,3], com K=2, o trecho [1,2,1] tem três posições mas só dois valores.
-Use um mapa com as frequências dentro da janela. Ao entrar o 3, há três chaves:
-avance a esquerda até restarem no máximo duas.
-Quando uma frequência chegar a zero, apague a chave; caso contrário size()
-continuará contando um valor que já saiu. Essa variante aceita negativos.
+## Prefixos para contar / diferenças para atualizar
 
-## 5. Prefixos para contar e diferenças para atualizar
+**Contar pares em [L,R]:** transforme cada valor em 1 se par, 0 senão; consulte prefixos.
+**Média:** soma / tamanho, convertendo para double antes de dividir.
+**Adicionar X a [L,R] e ver só o final:** diferença[L] += X; diferença[R+1] -= X;
+um prefixo reconstrói os incrementos. Reserve N+1 posições. [Código](difference-array.cpp).
 
-Para contar pares em [L,R], transforme cada valor em 1 se for par e 0 caso
-contrário, depois use os mesmos prefixos. Ex.: [2,3,6] vira [1,0,1].
-Para média, divida a soma pelo tamanho convertendo antes para double.
-Não funciona substituir soma por mínimo: não há uma subtração que remova o
-mínimo de um prefixo e revele o mínimo de outro intervalo.
-
-Se o pedido é adicionar 10 a [L,R] muitas vezes e só imprimir os valores finais,
-marque +10 em L e -10 em R+1 num vetor extra de tamanho N+1. Um prefixo dessas
-alterações reconstrói o incremento de cada posição. Veja difference-array.cpp.
+Janela fixa também pode usar prefixos; acumulador evita o vetor extra.
+“Sliding window” é janela deslizante; slicing é extrair um trecho, outra coisa.

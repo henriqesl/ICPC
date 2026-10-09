@@ -1,37 +1,29 @@
-# BUSCAS — linear, binária, bounds e resposta
+# BUSCAS — escolha e copie um template
 
-[Índice](README.md) · [Linear](#linear) · [Tradicional](#tradicional) · [Bounds](#bounds) ·
-[FIRST TRUE](#first-true) · [LAST TRUE](#last-true) · [verify](#verify) · [Limites](#limites) · [Armadilhas](#armadilhas)
+[Índice](README.md) · [Linear](#linear) · [Tradicional](#tradicional) · [Bounds](#bounds) · [FIRST TRUE](#first-true) · [LAST TRUE](#last-true) · [verify](#verify) · [Limites](#limites) · [Armadilhas](#armadilhas)
 
 ## RECONHEÇA EM UMA FRASE
 
-| Preciso... | Vá direto |
-|---|---|
-| Procurar valor, sem ordem útil | [Linear](#linear) |
-| Procurar valor em dados ordenados | [Tradicional](#tradicional) |
-| Existe / primeiro >= / primeiro > / contar iguais | [STL e bounds](#bounds) |
-| Menor candidato viável: FFFTTT | [FIRST TRUE](#first-true) |
-| Maior candidato viável: TTTFFF | [LAST TRUE](#last-true) |
+| Pedido | Template | Condição |
+|---|---|---|
+| X está nos dados, sem ordem útil? | [Linear](#linear) | qualquer ordem |
+| X está nos dados ordenados? | [Tradicional](#tradicional) | crescente |
+| Primeiro >= / primeiro > / quantos iguais? | [Bounds](#bounds) | crescente |
+| Menor X viável? | [FIRST TRUE](#first-true) | FFFTTT: maiores continuam viáveis |
+| Maior X viável? | [LAST TRUE](#last-true) | TTTFFF: menores continuam viáveis |
 
-Os blocos com main são programas independentes: copie um por vez.
-Índices começam em 0; -1 sinaliza ausência nos exemplos de busca.
+Programas independentes: copie um por vez. Índices base 0; -1 = ausência nos exemplos.
 
 <a id="linear"></a>
 ## 1. BUSCA LINEAR
 
-### NECESSIDADE / RECONHECIMENTO
+**Use:** achar a primeira ocorrência de X.
 
-“Existe x?”, “qual a primeira posição com essa propriedade?”; os dados não têm uma
-ordem útil, ou basta uma consulta. Não precisa ordenar.
+**Precisa:** nenhuma ordenação.
 
-### IDEIA
+**Ideia:** percorra; encontrou, salve e pare.
 
-Visite um elemento por vez; pare no primeiro que satisfaz a condição.
-Para contar ou listar todas as ocorrências, não pare no primeiro acerto.
-
-### TEMPLATE C++
-
-Entrada: N, alvo e N valores. Saída: primeiro índice (base 0), ou -1 se ausente.
+Entrada: N, alvo, N valores. Saída: primeiro índice ou -1.
 
 <!-- search-example: linear -->
 ```cpp
@@ -58,57 +50,28 @@ int main() {
 }
 ```
 
-### EXEMPLO
+**Custo:** O(N) por busca; O(1) extra, além do vetor O(N).
 
-```text
-Entrada: 5 7
-         4 7 1 7 9
-Saída:   1
-```
+**Cuidado:** não leia v[-1]. Muitas buscas custam O(QN); considere ordenar uma vez + bounds ou guardar presença em set/hash.
 
-### COMPLEXIDADE
+<details>
+<summary>Entender melhor: exemplo</summary>
 
-Busca: O(N) no pior caso, O(1) de memória extra. O vetor de entrada ocupa O(N).
-Q buscas independentes custam O(QN); se Q = N, vira **O(N²)**.
+Entrada: `5 7` e valores `4 7 1 7 9` → índice `1`.
+Para contar todas as ocorrências, não pare no primeiro acerto.
 
-Muitas consultas no mesmo conjunto? Pense em ordenar uma vez + [busca binária](binary-search.md)
-(O(N log N + Q log N)), ou em `set` / `unordered_set` para presença
-(O(log N) / O(1) médio por consulta; hash pode chegar a O(N) no pior caso).
-Se a posição original importa, preserve-a antes de ordenar.
-
-### ARMADILHAS
-
-- Não acesse `v[answer]` se answer = -1.
-- Vetor vazio: o loop não executa; a resposta continua -1.
-- Uma condição arbitrária serve para busca linear; para busca binária, precisa da propriedade adequada.
-
+</details>
 
 <a id="tradicional"></a>
 ## 2. BINARY SEARCH TRADICIONAL
 
-### NECESSIDADE / RECONHECIMENTO
+**Use:** achar uma ocorrência exata de X.
 
-Coleção **ordenada crescente** e busca por um valor exato.
+**Precisa:** vetor já ordenado crescente.
 
-| Busca | Pergunta |
-|---|---|
-| Tradicional | **“X está aqui?”** — compara X com elementos do vetor. |
-| Na resposta | **“Se a resposta fosse X, funcionaria?”** — testa viabilidade; pode nem existir vetor de respostas. |
+**Ideia:** compare o meio; alvo menor → esquerda; maior → direita.
 
-### IDEIA
-
-`left` e `right` delimitam o trecho ainda possível, **ambos inclusivos**.
-`mid` é o índice do meio. Cada comparação descarta metade desse trecho.
-
-| Comparação | Ação |
-|---|---|
-| v[mid] < target | `left = mid + 1`: alvo só pode estar à direita. |
-| v[mid] > target | `right = mid - 1`: alvo só pode estar à esquerda. |
-| v[mid] == target | Achou; salve mid e pare. |
-
-### TEMPLATE C++
-
-Entrada: N, alvo e N valores **já ordenados**. Saída: um índice com esse valor, ou -1.
+Entrada: N, alvo, N valores ordenados. Saída: um índice ou -1.
 
 <!-- search-example: binary -->
 ```cpp
@@ -144,79 +107,37 @@ int main() {
 }
 ```
 
-### EXEMPLO
+**Custo:** O(log N) na busca; O(1) extra, vetor O(N). Sort prévio soma O(N log N).
 
-```text
-Entrada: 6 5
-         1 2 2 2 5 8
-Saída:   4
-```
+**Cuidado:** com repetidos, não garante a primeira ocorrência. Ordenar muda índices: preserve (valor,id) se precisar da posição original.
 
-`left + (right - left) / 2` evita somar dois índices grandes, como em `(left + right) / 2`.
-`while (left <= right)` ainda testa o último candidato; terminou quando left > right.
-Use índices com sinal: para N = 0, right = -1 e o loop não executa.
+<details>
+<summary>Entender melhor: limites e exemplo</summary>
 
-### COMPLEXIDADE
+`left/right` são inclusivos; `left <= right` testa o último candidato.
+`left + (right-left)/2` evita somar dois índices grandes.
+Entrada: `6 5` e valores `1 2 2 2 5 8` → índice `4`.
 
-Busca: O(log N), O(1) de memória extra; armazenamento do vetor: O(N).
-Se precisar de `sort(v.begin(), v.end())`, some O(N log N) de preparação.
+Busca tradicional pergunta “X está aqui?”. Na resposta pergunta “X é viável?”.
+O arquivo [algorithms/binary-search.cpp](../algorithms/binary-search.cpp) procura primeiro >=, não igualdade.
 
-### ARMADILHAS
-
-- Não use em vetor desordenado. Ordenar muda os índices e pode destruir a ordem exigida pelo problema.
-- Com repetidos, esse template acha **uma** ocorrência, não necessariamente a primeira.
-  Para primeira ocorrência, use [lower_bound + teste de igualdade](binary-search.md#lower-bound).
-- `<` e `>` indicam o lado; igualdade resolve a busca tradicional, mas **não** resolve busca na resposta.
-- Só precisa saber se existe? `std::binary_search` já devolve bool; não é índice.
-- O arquivo antigo `c++/algorithms/binary-search.cpp` procura primeiro >= alvo;
-  não é este template de igualdade.
-
+</details>
 
 <a id="bounds"></a>
 ## 3. STL — binary_search / lower_bound / upper_bound
 
-### NECESSIDADE / RECONHECIMENTO
+**Use:** presença, vizinhos ou quantidade em vetor **ordenado crescente**.
 
-Vetor **ordenado crescente**; quero presença, primeiro >=, primeiro > ou número de repetições.
-Os limites descrevem posições de inserção: **não garantem igualdade com o alvo**.
+| Preciso | Chamada / resultado |
+|---|---|
+| X existe? | `binary_search(begin,end,x)` → bool |
+| <a id="lower-bound"></a>Primeiro >= X | `lower_bound(begin,end,x)` → iterador |
+| <a id="upper-bound"></a>Primeiro > X | `upper_bound(begin,end,x)` → iterador |
+| <a id="contar"></a>Quantos X? | `upper - lower` no vector |
+| Quantos <= X? | `upper - begin` no vector |
+| Quantos em [L,R], L <= R? | `upper_bound(R) - lower_bound(L)` no vector |
 
-### IDEIA / EXEMPLO
-
-```text
-índice: 0  1  2  3  4  5     6 = end()
-vetor: [1, 2, 2, 2, 5, 8]
-
-alvo 2: lower → índice 1; upper → índice 4; quantidade → 4 - 1 = 3
-alvo 3: lower → índice 4; upper → índice 4; quantidade → 0
-alvo 9: lower → índice 6; upper → índice 6; nenhum elemento válido
-```
-
-#### binary_search — existe x?
-
-Retorna **bool**, não iterador nem índice.
-
-<a id="lower-bound"></a>
-#### lower_bound — primeiro elemento >= x
-
-Retorna um **iterador**, uma posição na coleção. `*it` lê o valor;
-em vector, `it - v.begin()` converte para índice. Para igualdade: confira
-`it != v.end() && *it == x`. Se não houver >= x, retorna `v.end()`.
-
-<a id="upper-bound"></a>
-#### upper_bound — primeiro elemento > x
-
-Também retorna iterador; passa por todas as ocorrências iguais a x.
-Se não houver > x, retorna `v.end()`.
-
-<a id="contar"></a>
-#### Contar ocorrências
-
-O intervalo dos iguais é **[lower_bound(x), upper_bound(x))**:
-inclui o início e exclui o fim. Em vector, quantidade = upper − lower.
-
-### TEMPLATE C++
-
-Exemplo completo; troque v e x pelos seus dados. A saída confirma as posições acima.
+**Leia:** `*it` = valor; `it - v.begin()` = índice. Para igualdade: `it != end && *it == x`.
 
 <!-- search-example: bounds -->
 ```cpp
@@ -244,76 +165,54 @@ int main() {
 }
 ```
 
-### COMPLEXIDADE
+**Custo:** O(log N) por chamada; O(1) extra. Sort inicial, se necessário: O(N log N).
 
-Em vector ordenado: O(log N) por chamada, O(1) de memória extra.
-Contar com duas chamadas continua O(log N). Ordenar, se necessário: O(N log N) uma vez.
+**Cuidado:** `end()` não é elemento. Em set/multiset/map use `s.lower_bound(x)` e `s.upper_bound(x)` em O(log N); não subtraia seus iteradores.
 
-### ARMADILHAS
+<details>
+<summary>Entender melhor: posições, ausência e repetidos</summary>
 
-- **Nunca leia `*v.end()`**. Índice N significa ausência de limite válido, não elemento N.
-- Não confunda iterador com valor: `lower` é posição; `*lower` é o valor (se válido).
-- Em `set`, `multiset` e `map`, use `s.lower_bound(x)` / `s.upper_bound(x)`:
-  são O(log N). As versões genéricas podem percorrer O(N) iteradores nesses containers.
-- Não subtraia iteradores de set/map. `distance(s.begin(), it)` é O(N);
-  `distance(lower, upper)` custa O(quantidade de elementos percorridos).
-- A regra desta página assume ordem crescente padrão. Comparador diferente exige ordenação e busca coerentes.
-- Só precisa da última ocorrência? Se lower != upper, o índice é `(upper - v.begin()) - 1`.
+```text
+índice: 0  1  2  3  4  5     6 = end()
+vetor: [1, 2, 2, 2, 5, 8]
+X=2 → lower=1, upper=4; quantidade=3
+X=3 → lower=4, upper=4; quantidade=0
+X=9 → lower=6, upper=6; nenhum valor para ler
+```
 
+Última ocorrência de X: se lower != upper, índice `(upper - begin) - 1`.
+Em set/map, `distance` percorre elementos e pode custar O(N); a função genérica
+`lower_bound(s.begin(),s.end(),x)` também pode avançar O(N) vezes.
+Comparador diferente exige ordenação e busca compatíveis.
+
+</details>
 
 <a id="resposta"></a>
 ## 4. BINARY SEARCH NA RESPOSTA
 
-Binary Search na resposta **NÃO procura necessariamente algo dentro de um vetor**.
-Ela pergunta: **SE A RESPOSTA FOSSE mid, ISSO FUNCIONARIA?**
-O intervalo contém candidatos, não necessariamente elementos existentes.
+Você não precisa ter um vetor de respostas. `mid` é um **valor candidato**;
+`verify(mid)` responde **se dá para cumprir o pedido com esse valor**.
+Antes de copiar, prove a direção da viabilidade e escolha [l,r] que contenha a resposta.
 
-### NECESSIDADE / RECONHECIMENTO
+| Ao aumentar mid... | Quero | Se verify(mid) é true | Se false |
+|---|---|---|---|
+| F F F T T T | primeiro true / menor viável | salvar; `r = mid - 1` | `l = mid + 1` |
+| T T T F F F | último true / maior viável | salvar; `l = mid + 1` | `r = mid - 1` |
 
-Quero otimizar um valor e consigo testar se um candidato é **viável**.
-O teste precisa ser monotônico: ao aumentar mid, muda de false para true
-ou de true para false no máximo uma vez. Não precisa ordenar o vetor de entrada;
-quem precisa dessa propriedade é o **intervalo de respostas**.
-
-### IDEIA — ANTES DE CODAR
-
-1. Defina o que mid representa: tempo, capacidade, tamanho, distância…
-2. Escreva a pergunta `verify(mid)` com resposta true/false.
-3. Se mid funciona, o que acontece com mid + 1 e mid - 1? Justifique.
-4. Escolha FIRST TRUE (menor viável) ou LAST TRUE (maior viável).
-5. Defina l/r que contêm a resposta, e uma saída para “não existe”.
-6. Execute a busca, descartando mid com `+1` ou `-1` após testá-lo.
-
-Os dois templates abaixo são **programas independentes**, não devem ser colados juntos.
-Usam intervalo inteiro inclusivo [l, r], `ll = long long` e ans = -1 para ausência.
-Para copiar só a busca, adapte l/r e troque verify: o movimento dos limites fica igual.
-Assumimos candidatos não negativos e r <= LLONG_MAX - 1, para que mid ± 1 caiba em ll.
+Os programas usam inteiros, intervalo inclusivo, candidatos não negativos e r <= LLONG_MAX-1. Não misture com templates [l,r).
 
 <a id="first-true"></a>
-### A) FIRST TRUE — MENOR VALOR SUFICIENTE
+## A) FIRST TRUE — MENOR VALOR SUFICIENTE
 
-```text
-mid aumentando → F F F F T T T T
-                         ^
-                      primeiro true
-```
+**Use:** minimizar X quando aumentar X mantém a viabilidade (FFFTTT).
 
-Gatilhos: menor tempo necessário, menor capacidade suficiente, menor velocidade necessária, menor limite máximo,
-**minimizar o máximo** — desde que aumentar mid preserve a viabilidade.
+**Precisa:** um verify correto e monotônico; aqui N >= 1, K >= 1, valores não negativos e soma <= LLONG_MAX-1.
 
-| verify(mid) | O que concluo | Movimento |
-|---|---|---|
-| true | mid funciona: salvo e tento MENOR | ans = mid; r = mid - 1 |
-| false | mid é insuficiente: preciso aumentar | l = mid + 1 |
+**Ideia:** funcionou → salve e tente MENOR.
 
-#### TEMPLATE C++ — capacidade de grupos consecutivos
-
-Exemplo genérico: dividir N valores **não negativos**, sem mudar a ordem, em **no máximo K**
-grupos não vazios, minimizando a maior soma de um grupo.
-mid = capacidade; verify = “consigo acomodar tudo em até K grupos?”.
-Se cabe em capacidade x, cabe em qualquer capacidade maior: **FFF → TTT**.
-
-Entrada: N K e N valores; N >= 1, K >= 1 e soma <= LLONG_MAX - 1.
+Exemplo completo: dividir valores consecutivos em **no máximo K grupos**, minimizando a maior soma.
+`mid` = capacidade; verify = cabe tudo em até K grupos?
+Entrada: N K e N valores. Saída: menor capacidade.
 
 <!-- search-example: first-true -->
 ```cpp
@@ -372,42 +271,33 @@ int main() {
 }
 ```
 
-```text
-Entrada: 3 2
-         2 3 5
-Saída:   5  (grupos [2,3] e [5])
-```
+**Custo:** O(N log R), R = quantidade de capacidades candidatas; vetor O(N), teste O(1) extra.
 
-O verify preenche cada grupo até o próximo elemento não caber. Com valores não negativos,
-terminar o grupo mais cedo não permite usar menos grupos: essa escolha gulosa produz
-a menor quantidade de grupos para a capacidade testada. Não serve com negativos sem nova justificativa.
+**Cuidado:** o verify guloso abaixo exige não negativos. Um item maior que mid não cabe nem sozinho.
+
+<details>
+<summary>Entender melhor: grupos e exemplo</summary>
+
+Valores `2 3 5`, K=2 → capacidade mínima `5`: grupos [2,3] e [5].
+
+O teste enche o grupo até o próximo item não caber. Com não negativos, fechar mais cedo não permite usar menos grupos.
+Os limites são maior item e soma total.
+“No máximo K” só pode virar “exatamente K” aqui se K <= N, grupos não vazios e nenhuma outra restrição impedir subdivisões.
+
+</details>
 
 <a id="last-true"></a>
-### B) LAST TRUE — MAIOR VALOR AINDA POSSÍVEL
+## B) LAST TRUE — MAIOR VALOR AINDA POSSÍVEL
 
-```text
-mid aumentando → T T T T F F F F
-                       ^
-                     último true
-```
+**Use:** maximizar X quando diminuir X mantém a viabilidade (TTTFFF).
 
-Gatilhos: maior distância mínima, maior tamanho possível, **maximizar o mínimo** —
-desde que diminuir mid preserve a viabilidade.
+**Precisa:** um verify correto e monotônico; aqui N >= 1, K >= 1 e comprimentos não negativos <= LLONG_MAX-1.
 
-| verify(mid) | O que concluo | Movimento |
-|---|---|---|
-| true | mid funciona: salvo e tento MAIOR | ans = mid; l = mid + 1 |
-| false | exigi demais: preciso diminuir | r = mid - 1 |
+**Ideia:** funcionou → salve e tente MAIOR.
 
-#### TEMPLATE C++ — tamanho inteiro de pedaços
-
-Exemplo genérico: cortar comprimentos não negativos em pelo menos K pedaços do mesmo
-tamanho inteiro positivo; sobras são permitidas, mas não se juntam comprimentos distintos.
-mid = tamanho; verify = “consigo produzir pelo menos K pedaços desse tamanho?”.
-Se consigo tamanho x, consigo qualquer tamanho positivo menor: **TTT → FFF**.
-
-Entrada: N K e N comprimentos; N >= 1, K >= 1 e cada comprimento <= LLONG_MAX - 1.
-Saída: maior tamanho, ou -1 se nenhum tamanho positivo funcionar.
+Exemplo completo: cortar pelo menos K pedaços de tamanho inteiro positivo, permitindo sobras.
+`mid` = tamanho; verify = saem pelo menos K pedaços?
+Entrada: N K e N comprimentos. Saída: maior tamanho ou -1.
 
 <!-- search-example: last-true -->
 ```cpp
@@ -457,78 +347,54 @@ int main() {
 }
 ```
 
-```text
-Entrada: 2 3
-         5 8
-Saída:   4  (5/4 + 8/4 = 1 + 2 pedaços)
-```
+**Custo:** O(N log R), R = quantidade de tamanhos candidatos; vetor O(N), teste O(1) extra.
+
+**Cuidado:** l começa em 1 para não dividir por zero. Não é permitido juntar sobras de comprimentos diferentes.
+
+<details>
+<summary>Entender melhor: exemplo</summary>
+
+Comprimentos `5 8`, K=3 → tamanho `4`: `5/4 + 8/4 = 1+2` pedaços.
+A divisão é piso: uma sobra menor que mid não forma outro pedaço.
+
+</details>
 
 <a id="verify"></a>
-### COMO PENSAR NO verify(mid)
+## COMO PENSAR NO verify(mid)
 
-Ele **não** pergunta “mid é a resposta?”. Pergunta **“mid é viável?”**.
-Mais de um candidato pode funcionar; a busca encontra o extremo desejado.
-
-| mid representa | Pergunta de verify | Se mid aumenta… |
+| mid é... | Pergunta de viabilidade | Direção a provar |
 |---|---|---|
-| Tempo | Consigo produzir pelo menos X nesse tempo? | tende a facilitar → first true |
-| Capacidade | Consigo dividir tudo respeitando esse limite? | tende a facilitar → first true |
-| Distância mínima | Consigo posicionar K elementos com essa separação? | tende a dificultar → last true |
-| Velocidade | Termino dentro do prazo com essa velocidade? | tende a facilitar → first true |
-| Tamanho | Consigo produzir pelo menos K pedaços desse tamanho? | tende a dificultar → last true |
+| Tempo | Produzo pelo menos X nesse tempo? | mais tempo facilita → first |
+| Capacidade | Cabe tudo respeitando esse limite? | mais capacidade facilita → first |
+| Distância mínima | Posiciono K itens com essa separação? | maior distância dificulta → last |
+| Tamanho do pedaço | Produzo pelo menos K pedaços? | maior tamanho dificulta → last |
 
-“Tende” é pista, não prova: confira as regras do seu enunciado.
-O formato é `bool verify(ll mid)`: calcule a viabilidade e devolva true/false;
-os dois programas acima mostram implementações completas, sem `...` para preencher.
-Dados fixos não precisam ser copiados ou reordenados a cada teste.
-
-### COMPLEXIDADE
-
-Com R candidatos, há O(log(R+1)) testes, usualmente escrito **O(log R)**.
-Se verify = O(N), o total é **O(N log R)**, não apenas O(log R).
-Os dois exemplos usam O(1) de memória extra no teste/busca e O(N) para os dados.
-Se verify custar O(N log N), o total vira O(N log N · log R).
+São pistas, não provas. `verify` muda conforme a questão; o movimento da busca não.
+Se verify custa T, o total é **O(T log R)**. Prepare dados fixos uma vez, fora do teste.
 
 <a id="limites"></a>
-### COMO ESCOLHER L E R
+## COMO ESCOLHER L E R
 
-| Cenário (com hipóteses do enunciado) | l | r | Justificativa |
-|---|---|---|---|
-| Grupos consecutivos de não negativos, K >= 1 | maior elemento | soma | não pode dividir um elemento; tudo cabe em um grupo |
-| Distância mínima entre posições, 2 <= K <= N | 0 | max_position − min_position | separação não ultrapassa a extensão disponível |
-| Tempo, quando mais tempo não atrapalha | 0 | algum tempo comprovadamente suficiente | construir uma solução lenta fornece um teto |
-| Tamanho positivo de pedaços | 1 | maior comprimento | evita zero; não se juntam comprimentos |
+| Exemplo | l | r |
+|---|---|---|
+| Grupos consecutivos não negativos | maior item | soma total |
+| Tamanho positivo de pedaço | 1 | maior comprimento |
+| Distância entre K posições, 2 <= K <= N | 0 | maior posição − menor posição |
+| Tempo, quando mais tempo não atrapalha | 0 | tempo comprovadamente suficiente |
 
-O limite superior **não precisa ser a resposta**; o intervalo precisa conter a resposta.
-Para first true com resposta garantida, costuma ser fácil escolher um r que já funciona.
-Para last true, r pode não funcionar: basta não excluir a resposta real.
-Não é necessário criar um vetor de todos os valores possíveis: l/r já representam o intervalo.
-Produtos, somas e diferenças usados nos limites também precisam caber em long long.
-
-ans = -1 significa “não achei candidato viável”. Se todos funcionam, first true devolve
-o l inicial e last true devolve o r inicial. Se l > r desde o início, não há candidatos.
-Se respostas negativas forem permitidas, use outro marcador ou um bool `found`.
-Estes templates são para **inteiros**; busca real usa tolerância/iterações e outros movimentos.
+Todos os limites e cálculos intermediários devem caber em long long. Ans=-1 indica ausência;
+se -1 puder ser resposta, use outro marcador ou bool found.
 
 <a id="armadilhas"></a>
-### ARMADILHAS — CONFIRA ANTES DE SUBMETER
+## ARMADILHAS — CONFIRA ANTES DE SUBMETER
 
-- Inverter first/last ou mandar true para o lado errado: primeiro → menor; último → maior.
-- Usar `l = mid` / `r = mid` nestes templates inclusivos: pode não avançar e dar loop infinito.
-  Não misture com templates de intervalo semiaberto que têm outras regras.
-- Esquecer `mid + 1` / `mid - 1`, ou não salvar ans antes de tentar melhorar.
-- Usar int para tempo/capacidade/soma grandes; `(l + r) / 2` pode estourar.
-  `l + (r - l) / 2` evita essa soma, mas exige que r - l caiba no tipo;
-  aqui l/r são não negativos. Com extremos negativos/positivos, adapte o cálculo.
-- Permitir r = LLONG_MAX sem proteger `mid + 1`; este material limita r a LLONG_MAX - 1.
-- verify lento demais, com cópias ou preparação repetida; conte o custo multiplicado por log R.
-- Um limite que exclui a resposta torna a busca incorreta, mesmo se o loop estiver perfeito.
-- Confundir “exatamente K” com “no máximo K”: o primeiro exemplo pode ser subdividido
-  até exatamente K **se K <= N**, os grupos forem não vazios e os valores não negativos.
-  Outras restrições podem impedir essa equivalência.
-- Esquecer elemento individual maior que a capacidade: rejeite no verify, antes de somar.
-- Usar piso quando precisa de teto: para a >= 0 e b > 0, `(a + b - 1) / b` arredonda para cima,
-  mas só se a + b - 1 couber no tipo. Alternativa segura:
+- Salvar ans antes de tentar melhorar; usar **mid ± 1** neste intervalo inclusivo.
+- Não usar `l=mid` / `r=mid`: pode travar. First → tente menor; last → tente maior.
+- Manter l/r não negativos e r <= LLONG_MAX-1 nestes templates; busca real/negativa exige adaptação.
+- Monotonicidade e limites precisam de prova; “menor/maior” no texto não basta.
+- Contar o custo de verify e evitar overflow em soma, produto e divisão.
+
+Divisão teto para a >= 0, b > 0 (sem somar a+b):
 
 <!-- search-example: ceiling -->
 ```cpp
@@ -536,5 +402,13 @@ long long a = 10, b = 3;
 long long ceiling = a / b + (a % b != 0); // 4, sem somar a + b
 ```
 
-Na produção de pedaços usamos **piso** (`x / mid`): sobras não formam outro pedaço.
-Para calcular quantas viagens/caixas atendem uma demanda, geralmente precisamos de **teto**.
+<details>
+<summary>Entender melhor: extremos e divisão</summary>
+
+Se todos os candidatos funcionam, first devolve o l inicial e last devolve o r inicial.
+Se nenhum funciona, ans permanece -1. Se l > r no início, não há candidatos.
+
+`l + (r-l)/2` exige que r-l caiba no tipo; com candidatos não negativos isso vale nas hipóteses acima.
+Pedaços usam piso (`x/mid`); viagens/caixas para atender uma demanda costumam usar teto.
+
+</details>

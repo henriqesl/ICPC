@@ -2,49 +2,41 @@
 
 [Índice](README.md) · [Mapa de resolução](MAPA-DE-RESOLUCAO.md)
 
-**Qual operação vou repetir? → Qual estrutura faz isso sem percorrer tudo?**
-Este arquivo compara custos e aponta para as explicações completas.
-Para reconhecer frases do enunciado, comece pelo
-[mapa de padrões](MAPA-DE-RESOLUCAO.md#o-que-o-enunciado-está-me-pedindo).
-
-Os exemplos foram organizados por assunto nas pastas existentes:
-[sequências/frequências](c++/basics/collections.md),
-[sets/mapas](c++/basics/maps-and-sets.md),
-[filas/pilhas/heaps](c++/data-structures/README.md),
-[algoritmos e padrões](c++/algorithms/patterns.md),
-[prefixos/janelas](c++/algorithms/prefix-and-window.md).
-N é o número de itens guardados; K é o tamanho da janela. Custos assumem
-comparações e hash de chaves pequenas, como int.
+**Escolha pela operação repetida.** N = itens; K = tamanho da janela.
+Para frequência, chave → contagem; para presença, conjunto; para vizinhos, ordem.
 
 ## Procure pela operação
 
 | Preciso... | Candidata | Detalhes |
 |---|---|---|
-| <a id="op01"></a>Acessar por índice | vector / array | [Explicação e exemplo](c++/basics/collections.md#vector) |
-| <a id="op02"></a>Saber se um valor existe | unordered_set / set | [Explicação e exemplo](c++/basics/maps-and-sets.md#unordered-set) |
-| <a id="op03"></a>Contar frequências | vector / unordered_map / map | [Explicação e exemplo](c++/basics/collections.md#frequency-counting) |
-| <a id="op04"></a>Manter únicos | set / unordered_set | [Explicação e exemplo](c++/basics/maps-and-sets.md#set) |
-| <a id="op05"></a>Manter ordem dinamicamente | set / multiset | [Explicação e exemplo](c++/basics/maps-and-sets.md#multiset) |
-| <a id="op06"></a>Inserir/remover e continuar ordenado | set / multiset | [Explicação e exemplo](c++/basics/maps-and-sets.md#multiset) |
-| <a id="op07"></a>Primeiro >= X | lower_bound | [Explicação e exemplo](c++/algorithms/patterns.md#lower-bound) |
-| <a id="op08"></a>Primeiro > X | upper_bound | [Explicação e exemplo](c++/algorithms/patterns.md#upper-bound) |
-| <a id="op09"></a>Retirar menor/maior repetidamente | min-heap / max-heap | [Explicação e exemplo](c++/data-structures/README.md#min-heap) |
-| <a id="op10"></a>Remover um valor arbitrário | multiset / set / hash | [Explicação e exemplo](c++/basics/maps-and-sets.md#multiset) |
-| <a id="op11"></a>Atender por chegada | queue | [Explicação e exemplo](c++/data-structures/README.md#queue) |
-| <a id="op12"></a>Resolver o último inserido | stack | [Explicação e exemplo](c++/data-structures/README.md#stack) |
-| <a id="op13"></a>Mexer nas duas pontas | deque | [Explicação e exemplo](c++/data-structures/README.md#deque) |
-| <a id="op14"></a>Existe ativo em [L,R]? | set + lower_bound | [Explicação e exemplo](c++/basics/maps-and-sets.md#set) |
-| <a id="op15"></a>Manter os K itens de uma janela | estado depende da consulta | [Explicação e exemplo](c++/algorithms/prefix-and-window.md#sliding-window) |
-| <a id="op16"></a>Mediana dinâmica | dois multisets | [Explicação e exemplo](c++/data-structures/README.md#median) |
-| <a id="op17"></a>Próximo menor/maior à esquerda/direita | monotonic stack | [Explicação e exemplo](c++/algorithms/patterns.md#monotonic-stack) |
-| <a id="op18"></a>Somar intervalos fixos | prefix sum | [Explicação e exemplo](c++/algorithms/prefix-and-window.md#prefix-sum) |
-| Intercalar atualizações e somas | Fenwick / segment tree | [Explicação e exemplo](#op19) |
-| <a id="op20"></a>Ordenar uma vez e só consultar | vector + sort + bounds | [Explicação e exemplo](c++/algorithms/patterns.md#sort) |
-| Máximo/mínimo de cada janela | monotonic deque | [Explicação e exemplo](c++/algorithms/patterns.md#monotonic-deque) |
-| Ordem diferente: maior nota, menor id | custom comparator | [Explicação e exemplo](c++/algorithms/patterns.md#custom-comparator) |
-| Dois valores somam um alvo | two pointers | [Explicação e exemplo](c++/algorithms/patterns.md#two-pointers) |
-| Ordenar trecho, coluna ou índices originais | variantes de sort | [Explicação e exemplo](c++/algorithms/sorting.md) |
-| Ler/mover o iterador devolvido pela consulta | begin/end, *it, it-> | [Explicação e exemplo](c++/basics/iterators.md) |
+| <a id="op01"></a>Acessar por índice | vector / array | [Template](c++/basics/collections.md#vector) |
+| <a id="op02"></a>Saber se um valor existe | unordered_set / set | [Template](c++/basics/maps-and-sets.md#unordered-set) |
+| <a id="op03"></a>Contar frequências | vector / unordered_map / map | [Template](c++/basics/collections.md#frequency-counting) |
+| <a id="op04"></a>Manter únicos | set / unordered_set | [Template](c++/basics/maps-and-sets.md#set) |
+| <a id="op05"></a>Manter ordem dinamicamente | set / multiset | [Template](c++/basics/maps-and-sets.md#multiset) |
+| <a id="op06"></a>Inserir/remover e continuar ordenado | set / multiset | [Template](c++/basics/maps-and-sets.md#multiset) |
+| <a id="op07"></a>Primeiro >= X | lower_bound | [Template](c++/algorithms/patterns.md#lower-bound) |
+| <a id="op08"></a>Primeiro > X | upper_bound | [Template](c++/algorithms/patterns.md#upper-bound) |
+| <a id="op09"></a>Retirar menor/maior repetidamente | min-heap / max-heap | [Template](c++/data-structures/README.md#min-heap) |
+| <a id="op10"></a>Remover um valor arbitrário | multiset / set / hash | [Template](c++/basics/maps-and-sets.md#multiset) |
+| <a id="op11"></a>Atender por chegada | queue | [Template](c++/data-structures/README.md#queue) |
+| <a id="op12"></a>Resolver o último inserido | stack | [Template](c++/data-structures/README.md#stack) |
+| <a id="op13"></a>Mexer nas duas pontas | deque | [Template](c++/data-structures/README.md#deque) |
+| <a id="op14"></a>Existe ativo em [L,R]? | set + lower_bound | [Template](c++/basics/maps-and-sets.md#set) |
+| <a id="op15"></a>Manter os K itens de uma janela | estado depende da consulta | [Template](c++/algorithms/prefix-and-window.md#sliding-window) |
+| <a id="op16"></a>Mediana dinâmica | dois multisets | [Template](c++/data-structures/README.md#median) |
+| <a id="op17"></a>Próximo menor/maior à esquerda/direita | monotonic stack | [Template](c++/algorithms/patterns.md#monotonic-stack) |
+| <a id="op18"></a>Somar intervalos fixos | prefix sum | [Template](c++/algorithms/prefix-and-window.md#prefix-sum) |
+| Intercalar atualizações e somas | Fenwick / segment tree | [Template](#op19) |
+| <a id="op20"></a>Ordenar uma vez e só consultar | vector + sort + bounds | [Template](c++/algorithms/patterns.md#sort) |
+| Máximo/mínimo de cada janela | monotonic deque | [Template](c++/algorithms/patterns.md#monotonic-deque) |
+| Ordem diferente: maior nota, menor id | custom comparator | [Template](c++/algorithms/patterns.md#custom-comparator) |
+| Dois valores somam um alvo | two pointers | [Template](c++/algorithms/patterns.md#two-pointers) |
+| Ordenar trecho, coluna ou índices originais | variantes de sort | [Template](c++/algorithms/sorting.md) |
+| Ler/mover o iterador devolvido pela consulta | begin/end, *it, it-> | [Template](c++/basics/iterators.md) |
+
+<details>
+<summary>Comparar todos os custos e limitações</summary>
 
 ## Comparação curta
 
@@ -69,6 +61,8 @@ O(log N); `erase(x)` apaga TODAS as C cópias em O(log N + C).
 ²Custos com os containers padrão: stack usa deque; queue usa deque.
 `pair` não é um container: só junta dois campos, como valor e índice.
 [Regras dos containers associativos no padrão C++](https://eel.is/c++draft/associative.reqmts).
+
+</details>
 
 ## NÃO ESCOLHA A ESTRUTURA PELO NOME DO PROBLEMA
 

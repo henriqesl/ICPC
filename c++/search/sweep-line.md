@@ -1,31 +1,20 @@
-# SWEEP LINE — receita, eventos e estado ativo
+# SWEEP LINE — eventos, empates e compressão
 
-[Índice](README.md) · [Receita/base](#receita) · [Prefix sum](#prefix-events) ·
-[START/END/QUERY](#query-events) · [Empates](#empates) · [Estado ativo](#estado) ·
-[Compressão](#compression) · [Armadilhas](#sweep-armadilhas)
+[Índice](README.md) · [Receita](#receita) · [Histórico](#prefix-events) · [Consultas](#query-events) · [Empates](#empates) · [Estado](#estado) · [Compressão](#compression) · [Armadilhas](#sweep-armadilhas)
 
-## RECONHECIMENTO
+**Use:** intervalos começam/terminam, e preciso saber o estado ao longo do tempo/posição.
 
-Muitos intervalos no tempo/posição, algo começa/termina ou consultas sobre o estado atual.
-Descubra **onde muda**, não visite cada coordenada. O exemplo é 1D;
-sweep line em geometria pode exigir outras estruturas.
+**Ideia:** visite apenas onde muda, não cada coordenada. Exemplos abaixo são 1D.
 
 <a id="receita"></a>
-## RECEITA UNIVERSAL — ANTES DE ESCOLHER A ESTRUTURA
+## RECEITA — O QUE MUDA E ONDE?
 
-1. Descubra o eixo: tempo, posição ou coordenada.
-2. Descubra onde alguma coisa muda.
-3. Transforme cada mudança em evento.
-4. Coloque os eventos em um vetor.
-5. Ordene por posição **e pela prioridade dos empates**.
-6. Defina o estado atual: quantidade? soma? conjunto? frequências?
-7. Percorra: atualize o estado, consulte e atualize a resposta.
+1. Crie eventos de entrada/saída (e consultas, se necessário).
+2. Ordene por posição **e prioridade no empate**.
+3. Percorra atualizando o estado; consulte na hora certa.
 
-### TEMPLATE BASE — SOMENTE O ESTADO CORRENTE
-
-`pair.first` = **ONDE**; `pair.second` = **O QUE muda**.
-Para intervalos [L,R), +1 em L e -1 em R. Este exemplo usa pares ordenados
-por posição e delta: -1 antes de +1 nos empates, com intervalos vazios ignorados.
+**[L,R):** +1 em L, -1 em R; L incluído, R excluído. Ignore L=R.
+`event.first` = posição; `event.second` = mudança. Recorte dentro do main:
 
 <!-- search-example: sweep-base -->
 ```cpp
@@ -40,30 +29,18 @@ for (auto event : events) {
 }
 ```
 
-Para registrar o estado **exato na coordenada**, não consulte entre eventos empatados:
-agrupe os deltas antes de consultar (programa abaixo), ou ordene mudanças e QUERY por tipo.
+**Custo:** E eventos → O(E log E) para ordenar; contador O(1) por evento; memória O(E).
+
+**Cuidado:** em empates, o estado intermediário não é necessariamente o estado válido no ponto.
 
 ## INTERVALOS — MÁXIMO E CONSULTAS POR POSIÇÃO
 
-### IDEIA
+**Use:** máximo simultâneo e quantidade em vários pontos, com intervalos [L,R).
 
-Para intervalos **[l, r)**: +1 em l, -1 em r. Ordene os eventos por coordenada
-e acumule os deltas (prefix sum). Após processar todos os eventos em x,
-active é a quantidade válida em x e até antes da próxima coordenada.
+**Ideia:** agrupe mudanças na mesma coordenada e guarde a contagem final; consulta usa último evento <= X.
 
-```text
-[1,4) e [3,6)
-posição:  1   3   4   6
-delta:   +1  +1  -1  -1
-ativos:   1   2   1   0
-máximo: 2; no ponto 4, apenas o segundo intervalo está ativo.
-```
-
-### TEMPLATE C++
-
-Entrada: N intervalos l r (l <= r), depois Q e Q pontos de consulta.
-Saída: máximo simultâneo, depois a quantidade ativa em cada ponto.
-Coordenadas negativas/grandes funcionam: não existe um vetor até MAX_COORD.
+Entrada: N intervalos L R (L <= R), depois Q e Q pontos.
+Saída: máximo simultâneo, depois a quantidade em cada ponto. Coordenadas negativas/grandes funcionam.
 
 <!-- search-example: sweep-line -->
 ```cpp
@@ -114,41 +91,26 @@ int main() {
 }
 ```
 
-```text
-Entrada: 2
-         1 4
-         3 6
-         3
-         0 3 4
-Saída:   2
-         0
-         2
-         1
-```
+**Custo:** O(N log N + Q log N), memória O(N). Só máximo? Não precisa guardar histórico.
 
-### COMPLEXIDADE
+**Cuidado:** [1,3) e [3,5) não se sobrepõem. Para [L,R], adapte os extremos; não ignore L=R.
 
-O(N log N) para ordenar + O(N) para acumular; O(log N) por consulta,
-total O(N log N + Q log N). Memória O(N). Para zero/um elemento, leia log como log(N+1).
-Só precisa do máximo? Remova consultas e os vetores positions/counts.
-Coordenadas inteiras pequenas em [0,U]? Um vetor de diferenças permite O(U+N+Q),
-como na referência de study/, mas usa O(U) de memória.
+<details>
+<summary>Entender melhor: exemplo e alternativa com diferenças</summary>
 
-### ARMADILHAS
+`[1,4)` e `[3,6)` → contagens em 1,3,4,6: `1,2,1,0`; máximo `2`.
+Consultas em 0,3,4 → `0,2,1`.
 
-- **[l,r) não inclui r.** [1,3) e [3,5) não se sobrepõem; empates precisam dessa convenção.
-- Para intervalos fechados [l,r], l = r não é vazio: não copie este código sem adaptar.
-  Em pontos inteiros, evento -1 em r+1 é uma opção **somente se r+1 couber no tipo**.
-- Ordenar coordenadas não basta: mantenha o delta associado ao evento.
-- Para comprimento da união, use distâncias **originais** entre eventos quando active > 0;
-  a quantidade de índices comprimidos não mede comprimento.
-- Eventos são a ideia; prefix sum é a acumulação. Não confunda com testar todo par O(N²).
+Coordenadas inteiras pequenas [0,U]: vetor de diferenças permite O(U+N+Q), mas usa O(U) de memória.
+Comprimento da união usa distâncias originais entre eventos quando active > 0.
+
+</details>
 
 <a id="prefix-events"></a>
-## PREFIX SUM DE EVENTOS — VETOR OU ESCALAR?
+## PREFIX SUM DE EVENTOS — PRECISO GUARDAR?
 
-`active += event.second` é a soma acumulada das mudanças, não uma soma dos intervalos.
-O template base guarda só o corrente. Para manter o histórico por evento, após ordenar events:
+**Só resposta durante a varredura:** use o contador `active += delta`.
+**Histórico por evento:** após ordenar events, o recorte abaixo guarda todos os prefixos.
 
 <!-- search-example: prefix-events -->
 ```cpp
@@ -158,23 +120,21 @@ for (size_t i = 0; i < events.size(); i++) {
 }
 ```
 
-O vetor é desnecessário se cada resposta puder ser obtida durante a varredura (máximo,
-soma corrente ou QUERY intercalada). Para consultas posteriores, o programa anterior
-guarda posições e contagens **por coordenada**, agrupando empates: não confunda com o estado
-intermediário por evento. Ordenação O(N log N); acumulação O(N); histórico usa O(N).
+**Custo:** O(E) para acumular, O(E) memória adicional.
+
+**Cuidado:** esse histórico é por evento, não por coordenada; para consultar um ponto, agrupe empates como acima.
 
 <a id="query-events"></a>
-## START / END / QUERY — TUDO NO MESMO VETOR
+## START / END / QUERY — CONSULTAS OFFLINE
 
-Não precisa de um vetor por tipo. Um evento pode ser uma mudança ou uma consulta.
-Para preservar a ordem de saída das consultas, acrescente seu id ao evento.
-O pair aninhado abaixo tem **posição, tipo, id**; não precisa de uma classe.
+**Use:** conhece as consultas antes de processar; quer responder na ordem original.
 
-### TEMPLATE C++ — CONSULTAS OFFLINE EM [L,R)
+**Precisa:** escolher [L,R) ou [L,R] e aplicar a [prioridade correta](#empates).
 
-Entrada: N intervalos L R (L <= R), depois Q e Q posições.
-Saída: quantos intervalos contêm cada posição, na **ordem original das consultas**.
-END acontece antes de START e ambos antes de QUERY, incluindo L e excluindo R.
+**Ideia:** um vetor com posição, tipo, id. Ao chegar em QUERY, salve answer[id].
+
+Entrada: N intervalos L R (L <= R), depois Q e Q pontos.
+Saída: quantidade de intervalos contendo cada ponto, na ordem das consultas.
 
 <!-- search-example: sweep-query -->
 ```cpp
@@ -218,60 +178,44 @@ int main() {
 }
 ```
 
-```text
-Entrada: 2
-         1 3
-         3 5
-         3
-         5 3 1
-Saída:   0
-         1
-         1
-```
+**Custo:** E=2N+Q → O(E log E), memória O(E).
 
-Com E = 2N + Q eventos, tempo O(E log E), memória O(E).
-Offline = conhece as consultas antes da varredura; respostas podem ser reordenadas internamente.
-Se chegam online, use o histórico + bounds anterior ou uma estrutura adequada.
+**Cuidado:** conhece todas as consultas antes (offline). Consultas posteriores podem usar histórico + bounds.
+
+<details>
+<summary>Entender melhor: exemplo</summary>
+
+Intervalos [1,3), [3,5); consultas `5 3 1` → `0 1 1`.
+O id da consulta permite ordenar internamente sem mudar a ordem da saída.
+
+</details>
 
 <a id="empates"></a>
-## EVENTOS NA MESMA COORDENADA — A PRIORIDADE FAZ PARTE DA SOLUÇÃO
+## EMPATES — CONFIRA ANTES DE COPIAR
 
-| Semântica | Ordem na mesma coordenada | Por quê? |
+| Intervalo | Ordem no mesmo ponto | Ajuste no template |
 |---|---|---|
-| [L,R) | END → START → QUERY | exclui R e inclui L |
-| [L,R] | START → QUERY → END | inclui os dois extremos |
+| [L,R) | END → START → QUERY | `END=0, START=1, QUERY=2`; ignore L=R |
+| [L,R] | START → QUERY → END | `START=0, QUERY=1, END=2`; **não ignore L=R** |
 
-No template, o número do tipo define a prioridade via `sort` do pair.
-Para **[L,R]**, mude para `enum { START = 0, QUERY = 1, END = 2 };`
-e **não ignore L == R**: um intervalo pontual deve contar na consulta desse ponto.
-Um comparador explícito é outra opção, mas não é necessário com esses códigos de tipo.
-
-Para o máximo em [L,R), fins antes de inícios ou agrupamento evitam um pico falso.
-Para [L,R], registre o máximo depois dos START e antes dos END.
-Em pontos inteiros, remover em R+1 é alternativa para fechado, **só se R+1 couber no tipo**;
-a ordenação por tipo acima dispensa essa soma. Não confunda delta -1 com tipo END:
-no vetor tipado, END = 0 identifica a ação; a ação é `active--`.
+Para máximo em [L,R], consulte após START e antes de END.
+Remover em R+1 é alternativa só para coordenadas inteiras e se R+1 couber no tipo.
+`END=0` é o tipo da ação; a mudança na contagem é -1, não 0.
 
 <a id="estado"></a>
 ## ESTADO ATIVO — QUANTOS OU QUAIS?
 
-| Preciso | Estado | Exemplo neutro / operações |
+| Preciso | Guarde | Atualização |
 |---|---|---|
-| Apenas QUANTOS | contador | três entradas e uma saída → 2; ++ / -- |
-| QUAIS entidades únicas | set de ids | ids 2 e 7; insert(id), erase(id) |
-| Valores com duplicatas | multiset | prioridades 2, 2, 7; saída de um 2 deixa 2, 7 |
-| Menor / maior atual | set ou multiset | begin() / rbegin(), somente se não vazio |
-| Apenas soma de pesos | long long active_sum | entram pesos 5 e 9 → 14; sai 5 → 9 |
-| Frequência de cada valor | map, unordered_map ou vetor | três ativos de valor 7 → frequency[7] = 3 |
+| Quantos | contador | ++ / --, O(1) |
+| Soma de pesos | long long | += peso / -= peso, O(1) |
+| Quais entidades | set de ids | insert / erase, O(log A) |
+| Valores com cópias | multiset | insert / find + erase(it), O(log A) |
+| Menor/maior | set ou multiset | *begin / *rbegin, O(1), não vazio |
+| Frequências | vetor / map / unordered_map | O(1) / O(log A) / O(1) médio |
 
-**Não use set só porque o enunciado diz “ativos”.** Contagem/soma podem ser escalares.
-Set de valores perde duplicatas; se precisa distinguir entidades com o mesmo valor,
-use ids ou pares (valor,id), ou multiset quando bastar distinguir ocorrências.
-
-### OPERAÇÕES C++ — COPIE SÓ O BLOCO DO ESTADO NECESSÁRIO
-
-Cada bloco abaixo é independente; a atualização substitui o ++/-- na varredura.
-Para uma saída real, o evento precisa carregar o id, valor ou peso correspondente.
+A = tamanho ativo. Hash pode custar O(A) por operação no pior caso.
+Copie só o estado necessário; evento de saída precisa carregar id/valor/peso.
 
 <!-- search-example: active-structures -->
 ```cpp
@@ -312,49 +256,18 @@ using ll = long long;
 }
 ```
 
-Em multiset, **erase(value) remove TODAS as ocorrências desse valor**;
-`erase(iterator)` remove uma. Não leia extremos de estrutura vazia.
-Insert/find/remoção por chave em set/map custam O(log A), onde A é o tamanho ativo;
-multiset.erase(value) custa O(log A + removidos). Extremos custam O(1).
-Contador/soma/vetor de frequências: O(1) por atualização. Map: O(log A);
-unordered_map: O(1) médio, O(A) no pior caso. Vetor só quando o domínio indexável é pequeno
-ou comprimido; mantenha soma/frequências dentro do tipo.
+**Cuidado:** set de valores perde repetidos; use ids, pares (valor,id) ou multiset.
+`multiset.erase(valor)` apaga todas as C cópias em O(log A+C); `erase(it)` apaga uma. Não leia extremos vazios.
 
 <a id="compression"></a>
-## QUANDO PRECISO DE COMPRESSÃO?
+## COMPRESSÃO — VALORES ENORMES, ÍNDICES PEQUENOS
 
-**Coordinate Compression NÃO é Sweep Line; é uma técnica auxiliar.**
-Use quando há poucas coordenadas relevantes, mas valores até 1e9/1e18,
-e você precisa de índices para array/vector, Fenwick ou Segment Tree.
-100, 500000000, 1000000000 podem virar 0, 1, 2.
+**Use:** poucas coordenadas relevantes, mas preciso indexar um vetor/Fenwick.
+**Não precisa:** só ordenar eventos nas coordenadas originais e varrer.
 
-**Não precisa de compressão** para guardar eventos nas coordenadas originais, ordenar
-e varrer: os dois programas acima já fazem isso sem um vetor de tamanho 1e9.
-Está prestes a alocar um vector pelo tamanho da coordenada? Pergunte:
-preciso representar cada posição, posso só varrer eventos, ou preciso de índices pequenos?
+**Ideia:** copie → sort → unique + erase → lower_bound para obter o id.
 
-### NECESSIDADE / RECONHECIMENTO
-
-Valores chegam a 10^9, 10^18 ou são negativos, mas existem poucos valores distintos.
-Preciso de índices para frequências, eventos ou estruturas indexadas — não de um vetor até o maior valor.
-É um **pré-processamento**, não um algoritmo de busca por resposta.
-
-### IDEIA
-
-1. Copie os valores para não destruir a ordem de entrada.
-2. Ordene a cópia.
-3. Remova repetidos: cada valor distinto ganha um índice.
-4. `lower_bound` encontra o índice do valor original na cópia ordenada.
-
-```text
-original:    [100, 5, 100, 1000000000]
-distintos:   [5, 100, 1000000000]
-comprimido:  [1, 0, 1, 2]
-```
-
-### TEMPLATE C++
-
-Entrada: N e N valores. Saída: valor original -> índice (base 0), na ordem de entrada.
+Entrada: N e N valores. Saída: valor original → índice comprimido (base 0), na ordem de entrada.
 
 <!-- search-example: coordinate-compression -->
 ```cpp
@@ -379,41 +292,26 @@ int main() {
 }
 ```
 
-```text
-Entrada: 4
-         100 5 100 1000000000
-Saída:   100 -> 1
-         5 -> 0
-         100 -> 1
-         1000000000 -> 2
-```
+**Custo:** O(N log N) para preparar/mapear, O(N) memória; conversão posterior O(log M), M distintos.
 
-### COMPLEXIDADE
+**Cuidado:** preserva igualdade/ordem, **não distância** nem posição original. unique sozinho não encolhe o vetor.
 
-Ordenar O(N log N), remover repetidos O(N), mapear N valores O(N log M),
-onde M <= N é o número de distintos. Total O(N log N), memória O(N).
-Uma conversão posterior por lower_bound custa O(log M).
+<details>
+<summary>Entender melhor: exemplo e consultas novas</summary>
 
-### ARMADILHAS
+`[100,5,100,1000000000]` → distintos `[5,100,1000000000]` → ids `[1,0,1,2]`.
 
-- Preserva **igualdade e ordem**: a < b implica índice(a) < índice(b).
-  **Não preserva distância**: 1000000000 − 100 não vira 2 − 1.
-- `unique` sozinho não encolhe o vetor; use `erase`. Ordene antes para juntar todos os iguais.
-- O índice comprimido **não é a posição original** na entrada.
-- `lower_bound` só representa um ID exato se o valor estiver na lista.
-  Para um valor novo, pode retornar posição de inserção ou end(); confira igualdade.
-- Precisa incluir limites de consultas? Reúna as coordenadas necessárias antes de comprimir,
-  ou use bounds para localizar intervalos entre coordenadas existentes.
-- Em dados online, inserir novas coordenadas pode mudar IDs; não suponha que a compressão inicial basta.
+`compressed[id]` recupera o valor. Lower_bound de valor ausente dá posição de inserção, não um ID exato.
+Reúna as coordenadas relevantes antes; novas coordenadas online podem mudar IDs.
+Para limites de consulta ausentes, use bounds/intervalos entre valores, sem supor igualdade.
 
+</details>
 
 <a id="sweep-armadilhas"></a>
 ## ARMADILHAS / NÃO CONFUNDIR
 
-- Esquecer sort ou a prioridade de eventos empatados muda o estado consultado.
-- Esquecer END mantém entidades ativas para sempre. L = R é vazio apenas em [L,R).
-- R versus R+1 depende dos extremos e do domínio; nunca some 1 sem verificar overflow.
-- Um vector gigante por coordenada é desnecessário: eventos esparsos ou compressão bastam.
-- Set é para guardar quais; contador é para quantos. Multiset precisa remover uma ocorrência por iterador.
-- Sweep line organiza mudanças pelo eixo; prefix sum acumula deltas; compressão só cria índices.
-- Comprimento da união usa distância entre **coordenadas originais**, não entre IDs comprimidos.
+- Evento de saída e ordem de empate importam tanto quanto sort.
+- [L,R) exclui R; [L,R] inclui. L=R só é vazio no primeiro.
+- Contador para **quantos**; set para **quais**; multiset para cópias.
+- Sweep organiza mudanças; prefix sum acumula; compressão cria índices.
+- Comprimento usa coordenadas originais, não diferenças entre IDs.

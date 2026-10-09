@@ -1,7 +1,7 @@
 # Map, unordered_map, set ou multiset?
 
-[Mapa](../../MAPA-DE-RESOLUCAO.md) · [Set](#set) · [Multiset](#multiset) ·
-[Unordered_set](#unordered-set) · [Map](#map) · [Unordered_map](#unordered-map)
+[Consulta geral](../../README.md) · [Set](#set) · [Multiset](#multiset) ·
+[Unordered_set](#unordered-set) · [Map](#map) · [Unordered_map](#unordered-map) · [Primeiro/último/vizinhos](#extremos-e-vizinhos)
 
 Os recortes marcados são independentes e vão dentro de `main()`, com o
 [template](../template.cpp). Nos conjuntos, `*it` é o valor;
@@ -15,6 +15,9 @@ nos mapas, `it->first` é a chave e `it->second` é a informação associada.
 | Apenas valores, com repetição | Sim | multiset | [multiset.cpp](multiset.cpp) |
 | Apenas presença, sem precisar de ordem | Não | unordered_set | [exemplo abaixo](#unordered-set) |
 
+<details>
+<summary>Entender melhor: a mesma entrada em cada estrutura</summary>
+
 Imagine os valores **3, 1, 3, 8, 3**:
 
 - set guarda **1, 3, 8**.
@@ -22,26 +25,17 @@ Imagine os valores **3, 1, 3, 8, 3**:
 - map de frequência guarda **1 → 1, 3 → 3, 8 → 1**.
 - unordered_map guarda as mesmas associações, sem ordem de percurso garantida.
 
+</details>
+
 <a id="map"></a>
 
 ## Map
 
-### Quando pensar nisso?
+**Use quando:** Chave → informação, e quero percorrer as chaves em ordem; Preciso do primeiro código >= X e da informação dele.
 
-- “Chave → informação, e quero percorrer as chaves em ordem.”
-- “Preciso do primeiro código >= X e da informação dele.”
+**Precisa:** chaves únicas; m[x] cria chave ausente com valor inicial zero para int.
 
-### Ideia simples
-
-Guarda uma informação por chave, mantendo as chaves ordenadas.
-Alterar uma chave existente substitui a informação; não cria uma segunda cópia.
-
-### Exemplo de contest
-
-Cadastro: Ana → 20. Atualizar Ana → 21 mantém uma chave.
-Consultar Bia com `find` pode informar ausência sem cadastrar Bia por acidente.
-
-### Operações que preciso lembrar
+### Template / operações
 
 <!-- example: map -->
 ```cpp
@@ -74,26 +68,30 @@ Map de índice → 0/1 pode ser desperdício se um vector pequeno resolver em O(
 O menor de um map é a menor CHAVE, não a menor idade/frequência.
 [Aplicação executável](map.cpp).
 
+<details>
+<summary>Entender melhor: ideia e exemplo</summary>
+
+### Ideia simples
+
+Guarda uma informação por chave, mantendo as chaves ordenadas.
+Alterar uma chave existente substitui a informação; não cria uma segunda cópia.
+
+### Exemplo de contest
+
+Cadastro: Ana → 20. Atualizar Ana → 21 mantém uma chave.
+Consultar Bia com `find` pode informar ausência sem cadastrar Bia por acidente.
+
+</details>
+
 <a id="unordered-map"></a>
 
 ## Unordered_map
 
-### Quando pensar nisso?
+**Use quando:** Preciso contar/consultar por chave, mas a ordem não importa; Os valores são enormes e só alguns aparecem.
 
-- “Preciso contar/consultar por chave, mas a ordem não importa.”
-- “Os valores são enormes e só alguns aparecem.”
+**Precisa:** ordem não necessária; não tem lower_bound nem upper_bound.
 
-### Ideia simples
-
-Associa chave → informação como map, mas usa hash, sem ordenar as chaves.
-A sintaxe de contagem é a mesma; não oferece vizinhos por ordem.
-
-### Exemplo de contest
-
-[3,3,8] gera 3 → 2 e 8 → 1. Perguntar por 7 deve retornar zero
-sem criar mais uma chave se estamos contando distintos com `size()`.
-
-### Operações que preciso lembrar
+### Template / operações
 
 <!-- example: unordered-map -->
 ```cpp
@@ -116,26 +114,30 @@ Unordered_set guarda só presença; unordered_map guarda uma informação/contag
 Se precisa de ordem/garantia O(log N), use map.
 [Aplicação executável](unordered-map.cpp).
 
+<details>
+<summary>Entender melhor: ideia e exemplo</summary>
+
+### Ideia simples
+
+Associa chave → informação como map, mas usa hash, sem ordenar as chaves.
+A sintaxe de contagem é a mesma; não oferece vizinhos por ordem.
+
+### Exemplo de contest
+
+[3,3,8] gera 3 → 2 e 8 → 1. Perguntar por 7 deve retornar zero
+sem criar mais uma chave se estamos contando distintos com `size()`.
+
+</details>
+
 <a id="set"></a>
 
 ## Set
 
-### Quando pensar nisso?
+**Use quando:** Valores ativos entram e saem; Preciso de únicos ordenados, do primeiro >= X ou de um ativo em [L,R].
 
-- “Valores ativos entram e saem.”
-- “Preciso de únicos ordenados, do primeiro >= X ou de um ativo em [L,R].”
+**Precisa:** valores únicos; não tem s[i]. Para extremos, não pode estar vazio.
 
-### Ideia simples
-
-Mantém valores únicos e ordenados, mesmo após inserir/remover.
-É útil para pular diretamente para o próximo valor relevante sem varrer posições vazias.
-
-### Exemplo de contest
-
-Ativos {1,4,5,9}. Existe alguém em [3,7]?
-`lower_bound(3)` aponta para 4. Como 4 <= 7, existe; para [6,8], aponta para 9 e falha.
-
-### Operações que preciso lembrar
+### Template / operações
 
 <!-- example: set -->
 ```cpp
@@ -160,26 +162,30 @@ Vector de bits testa uma posição em O(1), mas varrer [L,R] custa O(R-L+1);
 se os bits são fixos, prefixos de contagem também resolvem existência.
 Set não permite `s[i]`. [Aplicação executável](set.cpp).
 
+<details>
+<summary>Entender melhor: ideia e exemplo</summary>
+
+### Ideia simples
+
+Mantém valores únicos e ordenados, mesmo após inserir/remover.
+É útil para pular diretamente para o próximo valor relevante sem varrer posições vazias.
+
+### Exemplo de contest
+
+Ativos {1,4,5,9}. Existe alguém em [3,7]?
+`lower_bound(3)` aponta para 4. Como 4 <= 7, existe; para [6,8], aponta para 9 e falha.
+
+</details>
+
 <a id="multiset"></a>
 
 ## Multiset
 
-### Quando pensar nisso?
+**Use quando:** Valores repetem, entram/saem, e preciso manter ordem; Preciso apagar um valor específico, não necessariamente o menor.
 
-- “Valores repetem, entram/saem, e preciso manter ordem.”
-- “Preciso apagar um valor específico, não necessariamente o menor.”
+**Precisa:** repetidos importam; erase(it) apaga uma cópia, erase(valor) apaga todas.
 
-### Ideia simples
-
-É como set, mas preserva cada cópia. Permite retirar um valor arbitrário
-e continuar consultando extremos/vizinhos; não dá acesso rápido ao item do meio.
-
-### Exemplo de contest
-
-[1,3,3,8]: sai UM 3 e entra 5 → [1,3,5,8].
-Usar `erase(3)` apagaria os dois 3, o que é errado se saiu só um item da janela.
-
-### Operações que preciso lembrar
+### Template / operações
 
 <!-- example: multiset -->
 ```cpp
@@ -205,25 +211,30 @@ Priority_queue retira só o topo. Multiset permite remoção arbitrária, mas
 Para mediana dinâmica, veja [dois multisets](../data-structures/README.md#median).
 [Aplicação executável](multiset.cpp).
 
+<details>
+<summary>Entender melhor: ideia e exemplo</summary>
+
+### Ideia simples
+
+É como set, mas preserva cada cópia. Permite retirar um valor arbitrário
+e continuar consultando extremos/vizinhos; não dá acesso rápido ao item do meio.
+
+### Exemplo de contest
+
+[1,3,3,8]: sai UM 3 e entra 5 → [1,3,5,8].
+Usar `erase(3)` apagaria os dois 3, o que é errado se saiu só um item da janela.
+
+</details>
+
 <a id="unordered-set"></a>
 
 ## Unordered_set
 
-### Quando pensar nisso?
+**Use quando:** Só preciso saber se um código já apareceu; Preciso de únicos, mas não quero vizinhos nem percurso ordenado.
 
-- “Só preciso saber se um código já apareceu.”
-- “Preciso de únicos, mas não quero vizinhos nem percurso ordenado.”
+**Precisa:** só presença, sem ordem/vizinhos; duplicatas não são contadas.
 
-### Ideia simples
-
-Guarda presença usando hash. Repetir o valor não cria cópia nem contagem.
-Não mantém ordem por valor e não oferece bounds.
-
-### Exemplo de contest
-
-Chegam códigos 3,8,3: o segundo 3 já estava presente; ficam dois distintos.
-
-### Operações que preciso lembrar
+### Template / operações
 
 <!-- example: unordered-set -->
 ```cpp
@@ -241,6 +252,20 @@ Insert/find/erase O(1) médio, O(N) pior caso; memória O(N).
 
 Unordered_map responde quantas vezes apareceu. Set mantém ordem e tem
 `lower_bound` em O(log N). `begin()` de unordered_set não significa menor valor.
+
+<details>
+<summary>Entender melhor: ideia e exemplo</summary>
+
+### Ideia simples
+
+Guarda presença usando hash. Repetir o valor não cria cópia nem contagem.
+Não mantém ordem por valor e não oferece bounds.
+
+### Exemplo de contest
+
+Chegam códigos 3,8,3: o segundo 3 já estava presente; ficam dois distintos.
+
+</details>
 
 ## Extremos e vizinhos
 

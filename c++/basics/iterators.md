@@ -1,32 +1,12 @@
 # Iteradores: posição, valor ou índice?
 
-[Mapa](../../MAPA-DE-RESOLUCAO.md) · [Estruturas](collections.md) ·
+[Consulta geral](../../README.md) · [Estruturas](collections.md) ·
 [Exemplo executável](iterators.cpp) · [Sort e índices](../algorithms/sorting.md)
 
-## Quando pensar nisso?
+**Iterador = cursor para uma posição.** `*it` lê o valor; `end()` é depois do último.
+**Regra:** confira `it != end()` antes de ler. Em vazio, begin == end.
 
-- “Find/lower_bound me devolveu um `it`. Como leio o resultado?”
-- “Como passo um trecho para sort ou apago o elemento encontrado?”
-- “Quero percorrer um set/map, que não tem índice.”
-
-## Ideia simples
-
-Iterador é um **cursor para uma posição** da estrutura. Não é o valor nem,
-necessariamente, um índice numérico. Os algoritmos usam esses cursores para
-percorrer trechos; a estrutura determina quais movimentos são permitidos.
-`auto` apenas deixa o compilador descobrir o tipo do iterador.
-
-## Exemplo: v = [10,20,30]
-
-```text
-posição:   0      1      2      3
-valor:    10     20     30     não existe
-          begin()             end()
-```
-
-`end()` é o limite **depois** do último, não o último elemento.
-`begin() == end()` significa vazio. `rbegin()` começa pelo último;
-`rend()` é o limite da travessia reversa, também não pode ser lido.
+[Ler](#ler) · [Percorrer](#percorrer) · [Buscar/índice](#buscar) · [Set](#set) · [Map](#map) · [Trecho](#trecho) · [Apagar](#apagar)
 
 ## Operações que preciso lembrar
 
@@ -49,6 +29,7 @@ O intervalo e o end usado na comparação precisam corresponder à mesma estrutu
 Recortes independentes, dentro de `main()`, com o [template](../template.cpp).
 `next/prev/advance/distance` vêm de `<iterator>`.
 
+<a id="ler"></a>
 ### 1. `it` é a posição; `*it` é o valor
 
 <!-- example: iterator-read -->
@@ -60,6 +41,7 @@ cout << *it; ++it; cout << ' ' << *it; // 10 20
 cout << ' ' << v[1]; // 7
 ```
 
+<a id="percorrer"></a>
 ### 2. Percorrer sem usar índices
 
 <!-- example: iterator-loop -->
@@ -74,6 +56,7 @@ Só precisa ler? `for (int x : v)` é mais simples.
 Quer alterar cada valor? `for (auto& x : v)` usa referência;
 `for (auto x : v)` copia o elemento e alterar x não altera v.
 
+<a id="buscar"></a>
 ### 3. Find/bounds: ler valor e obter índice no vector
 
 <!-- example: iterator-find -->
@@ -89,6 +72,7 @@ Lower/upper_bound retornam o mesmo tipo de resultado, mas exigem ordem compatív
 No vector, end - begin é size(): índice de inserção válido, **não** posição para ler.
 Veja [lower_bound](../algorithms/patterns.md#lower-bound).
 
+<a id="set"></a>
 ### 4. Set: há iterador, mas não `it - begin()`
 
 <!-- example: iterator-set -->
@@ -105,6 +89,7 @@ Use `++it` para o próximo. `distance` conta passos: ir ao meio de multiset é O
 mesmo que encontrar um valor com find seja O(log N).
 As chaves não podem ser alteradas por `*it = X`: remova e insira a nova chave.
 
+<a id="map"></a>
 ### 5. Map: o elemento é um pair(chave,informação)
 
 <!-- example: iterator-map -->
@@ -121,6 +106,7 @@ if (it != idade.end()) {
 Em vector de pair, a mesma sintaxe funciona, mas os dois campos são modificáveis.
 Não leia `it->...` se find retornou end.
 
+<a id="trecho"></a>
 ### 6. Saltos e intervalo [início,fim)
 
 <!-- example: iterator-range -->
@@ -138,6 +124,7 @@ prev não funciona, pois esses iteradores não voltam.
 Sort/find/bounds recebem [início,fim): incluem início, excluem fim.
 [Ordenar posições L até R](../algorithms/sorting.md#range).
 
+<a id="apagar"></a>
 ### 7. Apagar durante a travessia
 
 `erase(it)` invalida o cursor apagado. Em vector/set/multiset/map, o retorno
@@ -202,3 +189,33 @@ Mesmo sem realocação, `push_back` no vector muda o end antigo.
 Regra prática: depois de modificar a estrutura, não reutilize um cursor antigo
 sem saber se ainda vale. Comparar um iterador invalidado com end também não é seguro.
 Nunca leia `*end()`, faça `++end()`, `--begin()` ou `prev(begin())`.
+
+<details>
+<summary>Entender melhor: cursor, índice e desenho de begin/end</summary>
+
+## Quando pensar nisso?
+
+- “Find/lower_bound me devolveu um `it`. Como leio o resultado?”
+- “Como passo um trecho para sort ou apago o elemento encontrado?”
+- “Quero percorrer um set/map, que não tem índice.”
+
+## Ideia simples
+
+Iterador é um **cursor para uma posição** da estrutura. Não é o valor nem,
+necessariamente, um índice numérico. Os algoritmos usam esses cursores para
+percorrer trechos; a estrutura determina quais movimentos são permitidos.
+`auto` apenas deixa o compilador descobrir o tipo do iterador.
+
+## Exemplo: v = [10,20,30]
+
+```text
+posição:   0      1      2      3
+valor:    10     20     30     não existe
+          begin()             end()
+```
+
+`end()` é o limite **depois** do último, não o último elemento.
+`begin() == end()` significa vazio. `rbegin()` começa pelo último;
+`rend()` é o limite da travessia reversa, também não pode ser lido.
+
+</details>

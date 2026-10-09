@@ -1,39 +1,21 @@
 # Estruturas C++
 
-Ainda não sabe qual escolher? Consulte [QUAL ESTRUTURA USAR?](../../QUAL-ESTRUTURA-USAR.md):
-operação → candidata, custo e limitações.
+[Consulta geral](../../README.md) · [Qual estrutura usar?](../../QUAL-ESTRUTURA-USAR.md) · [Mapas/sets](maps-and-sets.md) · [Fila/pilha/heap](../data-structures/README.md)
 
-Aprendendo agora? Comece pela [comparação map, unordered_map, set e multiset](maps-and-sets.md).
-Fila/pilha/deque/heap ficam em [data-structures](../data-structures/), sem subpastas.
+[Vector](#vector) · [Array](#array) · [Pair](#pair) · [Frequências](#frequency-counting) · [Iteradores](iterators.md)
 
-[Vector](#vector) · [Array](#array) · [Pair](#pair) · [Frequências](#frequency-counting)
-
-Confundiu posição, valor e índice? [Iteradores: begin/end, *it e it->](iterators.md),
-com [exemplo executável](iterators.cpp).
-
-Snippets independentes, dentro de `main()`, com o [template](../template.cpp).
-Antes de `front/back/pop`, confira que não está vazio; nunca leia `*end()`.
+Recortes independentes dentro de main, com o [template](../template.cpp).
+Antes de front/back/pop, confira que não está vazio; nunca leia *end().
 
 <a id="vector"></a>
 
 ## Vector
 
-### Quando pensar nisso?
+**Use quando:** Preciso ler/alterar a posição i; Preciso guardar a sequência e preservar a ordem original.
 
-- “Preciso ler/alterar a posição i.”
-- “Preciso guardar a sequência e preservar a ordem original.”
+**Precisa:** índice válido; front/back/pop exigem não vazio.
 
-### Ideia simples
-
-Guarda uma sequência indexada e pode crescer no fim. É a primeira opção para
-dados de entrada que serão revisitados. Não torna busca por valor rápida.
-
-### Exemplo de contest
-
-Notas [3,1,3]: a posição 1 contém 1. Alterar essa posição para 7 produz [3,7,3];
-não é uma busca pelo valor 1.
-
-### Operações que preciso lembrar
+### Template / operações
 
 <!-- example: vector -->
 ```cpp
@@ -57,26 +39,30 @@ Set ordena por valor e perde duplicatas; vector mantém posições e duplicatas.
 Deque é melhor para retirar frequentemente da frente.
 [Aplicação executável](vector.cpp).
 
+<details>
+<summary>Entender melhor: ideia e exemplo</summary>
+
+### Ideia simples
+
+Guarda uma sequência indexada e pode crescer no fim. É a primeira opção para
+dados de entrada que serão revisitados. Não torna busca por valor rápida.
+
+### Exemplo de contest
+
+Notas [3,1,3]: a posição 1 contém 1. Alterar essa posição para 7 produz [3,7,3];
+não é uma busca pelo valor 1.
+
+</details>
+
 <a id="array"></a>
 
 ## Array
 
-### Quando pensar nisso?
+**Use quando:** Tenho sempre 26 letras ou 10 dígitos; O tamanho é conhecido antes de executar.
 
-- “Tenho sempre 26 letras ou 10 dígitos.”
-- “O tamanho é conhecido antes de executar.”
+**Precisa:** K conhecido ao compilar; frequência abaixo supõe letras de a até z.
 
-### Ideia simples
-
-`array<T,K>` é uma sequência de tamanho fixo, conhecido ao compilar.
-Útil para domínios pequenos; não pode crescer com `push_back`.
-
-### Exemplo de contest
-
-Contar as letras de “aba”: posição 0 representa 'a', posição 1 representa 'b'.
-Resultado: duas letras 'a' e uma 'b'.
-
-### Operações que preciso lembrar
+### Template / operações
 
 <!-- example: array -->
 ```cpp
@@ -96,26 +82,30 @@ Vector aceita N lido na entrada. `int a[N]` com N variável não é C++17 padrã
 `int a[26]{}` é válido, mas `array` oferece `size/begin/end/fill`.
 O exemplo supõe caracteres entre 'a' e 'z'.
 
+<details>
+<summary>Entender melhor: ideia e exemplo</summary>
+
+### Ideia simples
+
+`array<T,K>` é uma sequência de tamanho fixo, conhecido ao compilar.
+Útil para domínios pequenos; não pode crescer com `push_back`.
+
+### Exemplo de contest
+
+Contar as letras de “aba”: posição 0 representa 'a', posição 1 representa 'b'.
+Resultado: duas letras 'a' e uma 'b'.
+
+</details>
+
 <a id="pair"></a>
 
 ## Pair
 
-### Quando pensar nisso?
+**Use quando:** Preciso ordenar valores sem perder o índice original; Cada item tem duas informações: fim/início, custo/id...
 
-- “Preciso ordenar valores sem perder o índice original.”
-- “Cada item tem duas informações: fim/início, custo/id...”
+**Precisa:** dois campos; ordem padrão é first e depois second.
 
-### Ideia simples
-
-Junta dois campos em um item. Por padrão, compara `first` e desempata com `second`.
-Não armazena uma coleção sozinho: costuma ficar dentro de vector, set ou heap.
-
-### Exemplo de contest
-
-Valores [8,3,3] viram pares (8,0), (3,1), (3,2).
-Depois de ordenar, o primeiro par é (3,1): valor 3, índice original 1.
-
-### Operações que preciso lembrar
+### Template / operações
 
 <!-- example: pair -->
 ```cpp
@@ -135,26 +125,30 @@ quando usado em vector. Para ordenar por outro critério, veja
 [custom comparator](../algorithms/patterns.md#custom-comparator).
 [Aplicação executável](../data-structures/pair.cpp).
 
+<details>
+<summary>Entender melhor: ideia e exemplo</summary>
+
+### Ideia simples
+
+Junta dois campos em um item. Por padrão, compara `first` e desempata com `second`.
+Não armazena uma coleção sozinho: costuma ficar dentro de vector, set ou heap.
+
+### Exemplo de contest
+
+Valores [8,3,3] viram pares (8,0), (3,1), (3,2).
+Depois de ordenar, o primeiro par é (3,1): valor 3, índice original 1.
+
+</details>
+
 <a id="frequency-counting"></a>
 
 ## Frequency counting
 
-### Quando pensar nisso?
+**Use quando:** Quantas vezes cada valor apareceu?; Quantos valores diferentes existem dentro do trecho atual?.
 
-- “Quantas vezes cada valor apareceu?”
-- “Quantos valores diferentes existem dentro do trecho atual?”
+**Precisa:** apague chave com frequência zero para size() contar distintos.
 
-### Ideia simples
-
-Guarde uma contagem por valor em vez de recontar a sequência a cada pergunta.
-Domínio pequeno/denso → vector/array; chaves enormes/esparsas → mapa.
-
-### Exemplo de contest
-
-[3,3,8] dá frequência(3)=2 e frequência(8)=1. Se um 3 sai da janela, fica 1.
-`freq.size()` conta distintos apenas se não houver chaves com frequência zero.
-
-### Operações que preciso lembrar
+### Template / operações
 
 <!-- example: frequency -->
 ```cpp
@@ -176,6 +170,21 @@ Set responde presença, não frequência. `multiset.count(x)` anda pelas C cópi
 O(log N + C), não é O(log N) sozinho. Para consultar ausente sem inserir,
 use `find` no mapa. [Mapas](maps-and-sets.md),
 [janela com frequências](../algorithms/sliding-window-distinct.cpp).
+
+<details>
+<summary>Entender melhor: ideia e exemplo</summary>
+
+### Ideia simples
+
+Guarde uma contagem por valor em vez de recontar a sequência a cada pergunta.
+Domínio pequeno/denso → vector/array; chaves enormes/esparsas → mapa.
+
+### Exemplo de contest
+
+[3,3,8] dá frequência(3)=2 e frequência(8)=1. Se um 3 sai da janela, fica 1.
+`freq.size()` conta distintos apenas se não houver chaves com frequência zero.
+
+</details>
 
 ## Vector: índice e remoção
 
@@ -201,6 +210,9 @@ da posição removida. Obtenha o iterador novamente após modificar o vetor.
 Arrays: `int a[10]{};` tamanho fixo; `int a[n]` com n lido não é C++17 padrão.
 Use vector para tamanho de entrada. Para somar ou testar crescimento consecutivo,
 processe durante a leitura; armazene se for reordenar, revisitar ou consultar posições.
+
+<details>
+<summary>Comparar outras estruturas e operações entre conjuntos</summary>
 
 ## Escolha da estrutura
 
@@ -231,3 +243,5 @@ Operações entre conjuntos acima: O(N+M); exigem entradas ordenadas.
 Vector preserva ordem e duplicatas; set perde duplicatas; map associa valores.
 [Exemplos](../README.md) · [Deque](../data-structures/deque.cpp) ·
 [Pair](../data-structures/pair.cpp).
+
+</details>

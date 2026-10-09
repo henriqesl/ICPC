@@ -1,8 +1,6 @@
-# Python 3 — linguagem complementar
+# Python 3 — consulta rápida
 
-C++17 continua principal. Referências e implementações usam apenas biblioteca
-padrão. Exemplos funcionam em Python 3.8+; math.lcm exige 3.9, com alternativa
-fornecida. Custos de algoritmos assumem inteiros de tamanho moderado.
+[Consulta geral](../README.md) · [Template](templates/template.py) · [C++ × Python](cheatsheets/cpp-python.md)
 
 | Preciso... | Abra |
 |---|---|
@@ -13,12 +11,23 @@ fornecida. Custos de algoritmos assumem inteiros de tamanho moderado.
 | Fila / pilha / prioridade | [Deque](collections/queue.py), [delimitadores](collections/balanced.py), [heap](collections/heap.py) |
 | Leitura rápida | [I/O](basics/io.py) |
 | Algoritmos e aplicações | [Índice](algorithms/README.md) |
-| Aprender prefix sum e sliding window | [Passo a passo](../c++/algorithms/prefix-and-window.md), [janela fixa](algorithms/sliding_window_fixed.py), [janela variável](algorithms/sliding_window_variable.py) |
+| Somas em intervalos / melhor soma fixa / maior trecho limitado | [Prefix sum](algorithms/prefix_sum.py) · [janela fixa](algorithms/sliding_window_fixed.py) · [variável](algorithms/sliding_window_variable.py) (não negativos) |
 | Primos, divisores, MDC | [Matemática](math/README.md) |
 | Tempo e memória | [Performance](basics/performance.md) |
 | Diagnosticar erro | [Debugging e erros comuns](debugging/README.md) |
 | Começar uma solução | [Template](templates/template.py) |
 | Equivalências C++ | [Comparação](cheatsheets/cpp-python.md) |
+
+**Atenção:** set Python não mantém ordem; bisect exige lista ordenada.
+Entrada com leitura completa só termina após EOF (ou entrada redirecionada).
+
+<details>
+<summary>Fora do contest: versões, execução, entrada e testes</summary>
+
+C++17 continua principal. Referências e implementações usam apenas biblioteca
+padrão. Exemplos funcionam em Python 3.8+; math.lcm exige 3.9, com alternativa
+fornecida. Custos de algoritmos assumem inteiros de tamanho moderado.
+
 
 As funções podem ser copiadas isoladamente. Os arquivos .py têm demonstração
 protegida por `if __name__ == "__main__"`; podem ser importados sem ler entrada.
@@ -39,3 +48,5 @@ Também pode usar redirecionamento de arquivo no shell que o suporta ou
 `Get-Content entrada.txt | python python/algorithms/searching.py` no PowerShell.
 
 Testes: `python -B python/tests/test_library.py`.
+
+</details>

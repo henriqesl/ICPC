@@ -1,33 +1,24 @@
-# BUSCA EXAUSTIVA — tente todas as escolhas
+# BUSCA EXAUSTIVA — N pequeno, teste todas as escolhas
 
-[Índice](README.md) · [Pares/trios](#pares) · [Subconjuntos/bitmask](#subconjuntos) · [Permutações](#permutacoes)
+[Índice](README.md) · [Pares/trios](#pares) · [Bitmask](#subconjuntos) · [Permutações](#permutacoes) · [Backtracking](backtracking.md)
 
-## NECESSIDADE / RECONHECIMENTO
-
-N pequeno e não vejo como descartar escolhas com segurança. Estime o número de estados antes de codar.
-Também serve como solução lenta para testar uma solução mais rápida em entradas pequenas.
-**Complete search / exhaustive search** significa explorar todas as possibilidades relevantes;
-loops, máscaras e permutações são formas diferentes de fazer isso.
-
-| Escolhas | Técnica | Custo deste template |
+| Escolhas | Template | Custo |
 |---|---|---|
-| Dois índices distintos | Dois loops, i < j | O(N²) |
-| Três índices distintos | Três loops, i < j < k | O(N³) |
-| K posições fixas | K loops (K constante) | O(N^K) |
-| Pegar ou não cada elemento | Máscara de bits | O(N · 2^N) |
-| Todas as ordens | next_permutation | O(N · P), P <= N! |
+| Dois / três índices distintos | loops com i < j < k | O(N²) / O(N³) |
+| Cada elemento entra ou não | máscara de bits | O(N·2^N) |
+| Todas as ordens | next_permutation | O(N·P), P <= N! |
 
-N = 20 já dá cerca de 21 milhões de verificações de bits; 10! = 3.628.800 ordens.
-São estimativas, não garantias de tempo: o trabalho por estado e a saída também contam.
+Estime antes: N=20 dá ~1 milhão de máscaras (~21 milhões de testes de bits); 10! dá ~3,6 milhões de ordens.
+Conte também trabalho por estado, casos de teste e saída. São estimativas, não garantia de tempo.
 
 <a id="pares"></a>
-## A) LOOPS ANINHADOS — PARES
+## A) PARES / TRIOS — QUANTIDADE FIXA DE ÍNDICES
 
-### IDEIA / TEMPLATE C++
+**Use:** avaliar cada par uma vez, sem repetir índices. Não precisa ordenar.
 
-Teste cada par de índices uma vez: j começa em i+1.
-Entrada: N, alvo e N valores. Saída: quantidade de pares cuja soma é o alvo.
-Não precisa ordenar; a soma de qualquer par deve caber em long long.
+**Ideia:** j começa em i+1; para trios, k começa em j+1.
+
+Entrada: N, alvo, N valores. Saída: quantidade de pares somando alvo. Somas cabem em long long.
 
 <!-- search-example: exhaustive-pairs -->
 ```cpp
@@ -51,19 +42,11 @@ int main() {
 }
 ```
 
-```text
-Entrada: 3 4
-         2 2 2
-Saída:   3  (pares de índices: 0/1, 0/2, 1/2)
-```
+**Custo:** O(N²), O(1) extra além do vetor O(N).
 
-### COMPLEXIDADE / ARMADILHAS
+**Cuidado:** j=0 contaria i/j e j/i e permitiria i=j. Só achar um par? [Two pointers](two-pointers.md#par) pode reduzir.
 
-O(N²), O(1) extra além do vetor O(N). Com j = 0, você contaria i/j e j/i e poderia usar i = j.
-Só precisa achar um par e pode ordenar? [Two pointers](two-pointers.md#par) reduz a busca a O(N).
-
-Para trios, acrescente um terceiro loop começando em j+1; por exemplo, com quatro índices,
-há quatro trios distintos. Este trecho é independente do template de soma acima:
+Trios, recorte independente dentro do main:
 
 <!-- search-example: exhaustive-triples -->
 ```cpp
@@ -79,34 +62,26 @@ for (int i = 0; i < n; i++) {
 cout << triples << '\n'; // 4
 ```
 
-Loops escolhem uma **quantidade fixa** de índices/posições. Subconjuntos deixam cada elemento
-entrar ou não e podem ter tamanhos diferentes. Se posições puderem repetir ou a ordem importar,
-a regra i < j < k também precisa mudar.
+**Custo:** O(N³). Se ordem importa ou índices podem repetir, adapte i < j < k.
+
+<details>
+<summary>Entender melhor: exemplo</summary>
+
+`[2,2,2]`, alvo 4 → 3 pares de índices: (0,1), (0,2), (1,2).
+Loops escolhem uma quantidade fixa de índices; subconjuntos podem ter tamanhos diferentes.
+
+</details>
 
 <a id="subconjuntos"></a>
-## B) SUBCONJUNTOS — MÁSCARA DE BITS
+## B) SUBCONJUNTOS — BITMASK
 
-### IDEIA / TEMPLATE C++
+**Use:** cada item pode entrar ou não; não precisa ser consecutivo.
 
-Cada bit decide se um índice entra (1) ou não (0). Existem 2^N máscaras, inclusive o conjunto vazio.
+**Ideia:** mask representa um subconjunto; o bit i ligado significa que v[i] entra.
 
-| Nome / expressão | Significado |
-|---|---|
-| mask | qual subconjunto estou processando; é o conjunto de bits |
-| bit (ou i no código) | qual elemento da entrada estou olhando |
-| `1ULL << bit` | máscara com **apenas** o bit desse elemento ligado |
-| `mask & (1ULL << bit)` | resultado não zero se esse elemento está escolhido |
+**Precisa:** aqui 0 <= N <= 20; soma dos valores absolutos cabe em long long. Aceita negativos.
 
-```text
-N = 3; bits da direita para a esquerda correspondem aos índices 0, 1, 2:
-000 → vazio        001 → {0}       010 → {1}       011 → {0,1}
-100 → {2}          101 → {0,2}     110 → {1,2}     111 → {0,1,2}
-mask = 5 = 101; olhando bit = 2:
-1ULL << 2 = 100; 101 & 100 = 100 (não zero) → elemento 2 escolhido.
-```
-
-Entrada: N, alvo e N valores; **0 <= N <= 20** neste exemplo, soma dos valores absolutos cabe em long long.
-Saída: quantidade de subconjuntos de índices cuja soma é o alvo. Aceita valores negativos.
+Entrada: N, alvo, N valores. Saída: quantidade de subconjuntos de índices cuja soma é o alvo.
 
 <!-- search-example: exhaustive-subsets -->
 ```cpp
@@ -133,29 +108,43 @@ int main() {
 }
 ```
 
+**Custo:** O(N·2^N), O(1) extra além do vetor O(N).
+
+**Cuidado:** vazio conta se alvo=0 (para excluir, comece mask=1). Valores iguais em índices diferentes são escolhas diferentes.
+`1ULL << n` não permite shift >= 64; tipo maior não torna 2^N viável para N grande.
+
+<details>
+<summary>Entender melhor: mask, bit e exemplo</summary>
+
+| Nome / expressão | Significado |
+|---|---|
+| mask | qual subconjunto estou processando; é o conjunto de bits |
+| bit (ou i no código) | qual elemento da entrada estou olhando |
+| `1ULL << bit` | máscara com **apenas** o bit desse elemento ligado |
+| `mask & (1ULL << bit)` | resultado não zero se esse elemento está escolhido |
+
 ```text
-Entrada: 3 3
-         1 2 3
-Saída:   2  ([1,2] e [3])
+N = 3; bits da direita para a esquerda correspondem aos índices 0, 1, 2:
+000 → vazio        001 → {0}       010 → {1}       011 → {0,1}
+100 → {2}          101 → {0,2}     110 → {1,2}     111 → {0,1,2}
+mask = 5 = 101; olhando bit = 2:
+1ULL << 2 = 100; 101 & 100 = 100 (não zero) → elemento 2 escolhido.
 ```
 
-### COMPLEXIDADE / ARMADILHAS
 
-O(N · 2^N), O(1) extra além do vetor O(N).
-`1ULL` evita o limite de int, mas **não** permite shift >= 64 nem torna 2^N viável para N grande.
-`1LL << n` também amplia o tipo, mas é signed: mantenha n <= 62 para esse limite positivo.
-O template usa unsigned (`1ULL`) e N <= 20. Não confunda ampliar o tipo com reduzir o custo.
-Valores iguais em posições distintas geram escolhas distintas. Para alvo 0, o vazio também conta;
-se não puder, comece em mask = 1. Subconjunto não precisa ser consecutivo — não é janela.
+`[1,2,3]`, alvo 3 → 2 subconjuntos: [1,2] e [3].
+
+</details>
 
 <a id="permutacoes"></a>
 ## C) PERMUTAÇÕES — TODAS AS ORDENS
 
-### IDEIA / TEMPLATE C++
+**Use:** importa em qual ordem os itens aparecem.
 
-Ordene primeiro; next_permutation visita as próximas ordens lexicográficas.
-Use do/while para não perder a primeira. Entrada: string não vazia sem espaços.
-Saída: uma permutação distinta por linha; para vetor, use a mesma ideia com v.begin()/v.end().
+**Ideia:** sort primeiro; do/while visita a ordem inicial e todas as seguintes.
+
+Entrada: string não vazia sem espaços. Saída: uma permutação distinta por linha.
+Para vector, use v.begin()/v.end() da mesma forma.
 
 <!-- search-example: exhaustive-permutations -->
 ```cpp
@@ -173,22 +162,16 @@ int main() {
 }
 ```
 
-```text
-Entrada: aba
-Saída:   aab
-         aba
-         baa
-```
+**Custo:** O(N·P), P permutações distintas; pior caso O(N·N!), incluindo geração/saída.
+String O(N); geração O(1) extra; sort inicial O(N log N).
 
-### COMPLEXIDADE / ARMADILHAS
+**Cuidado:** sem sort perde ordens anteriores; sem do/while perde a primeira. Repetidos não duplicam a mesma sequência de valores.
 
-Para comprimento N e P permutações distintas, O(N · P) incluindo geração/saída;
-no pior caso, **O(N · N!)**. A geração usa O(1) extra, além da string O(N).
-Sort inicial: O(N log N).
+<details>
+<summary>Entender melhor: exemplo e quando podar</summary>
 
-- Sem ordenar primeiro, só visita as ordens seguintes e perde as anteriores.
-- Repetidos reduzem P; next_permutation não repete a mesma sequência de valores.
-- Imprimir todas as ordens pode custar mais do que avaliá-las. Geralmente o contest pede guardar a melhor.
-- Se restrições permitem podar escolhas antes de completar uma ordem, considere backtracking;
-  veja [como mapear retorno + escolhas](backtracking.md) e as [receitas C++](backtracking-templates.cpp).
-  Poda não elimina automaticamente o pior caso exponencial/fatorial.
+`aba` → `aab`, `aba`, `baa`.
+Em contest, normalmente avalie/guarde a melhor ordem em vez de imprimir todas.
+Se um prefixo já viola regras, [backtracking](backtracking.md#mapeamento) pode descartá-lo cedo; o pior caso continua exponencial/fatorial.
+
+</details>

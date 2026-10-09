@@ -1,8 +1,7 @@
 # Algoritmos — arquivos diretos nesta pasta
 
-Antes do código: [gatilhos → ideia → exemplo → comandos → custo → não confundir](patterns.md).
-Para reconhecer o pedido: [mapa geral](../../MAPA-DE-RESOLUCAO.md#o-que-o-enunciado-está-me-pedindo).
-Consulta das técnicas de study/: [buscas, two pointers, sweep line, compressão e enumeração](../search/README.md).
+Já sabe o padrão? Abra o .cpp abaixo. Para decidir a técnica: [consulta geral](../../README.md).
+Recortes sem entrada: [padrões](patterns.md). Buscas/eventos/enumeração: [search](../search/README.md).
 
 | Preciso... | Abra | Condição |
 |---|---|---|

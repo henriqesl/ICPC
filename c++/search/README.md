@@ -1,7 +1,6 @@
-# SEARCH — consulta rápida de C++ para contest
+# SEARCH — escolha pelo pedido
 
-**Enunciado/padrão → reconhecimento → ideia → template C++ → complexidade → armadilhas.**
-Todos os exemplos são neutros. Use os links para saltar ao padrão, sem ler o arquivo inteiro.
+[Consulta geral](../../README.md) · [Custos e pegadinhas](patterns.md#complexidades) · [Template base](../template.cpp)
 
 ## NECESSIDADE NO ENUNCIADO → TÉCNICA PROVÁVEL
 
@@ -26,60 +25,36 @@ Todos os exemplos são neutros. Use os links para saltar ao padrão, sem ler o a
 | Quantidade fixa de índices / pares / trios | [Nested loops](exhaustive-search.md#pares) |
 | Construir aos poucos, testar conflitos e desfazer escolhas | [Backtracking: retorno + escolhas](backtracking.md#mapeamento) |
 
-Custos e diferenças entre técnicas: [tabelas de consulta](patterns.md#complexidades).
-Os blocos com main são programas independentes; os trechos menores indicam o contexto necessário.
-
-## CHECKLIST DE 20 SEGUNDOS
-
-1. Estou procurando um valor existente ou uma resposta possível?
-2. Os dados estão ordenados? Posso ordenar sem destruir a informação necessária?
-3. Existe monotonicidade? Se x funciona, maiores ou menores também funcionam?
-4. Estou lidando com um segmento contínuo?
-5. Tenho dois índices que só precisam avançar?
-6. Tenho intervalos/eventos ao longo de uma linha ou do tempo?
-7. As coordenadas são enormes, mas poucas são relevantes?
-8. Preciso saber apenas **QUANTOS** estão ativos ou **QUAIS** estão ativos?
-9. N é pequeno o suficiente para testar todas as possibilidades e o trabalho por estado?
-10. Cada elemento é escolhido/não escolhido?
-11. A ordem dos elementos importa?
-
-“Menor”, “maior” e “contínuo” são pistas, não provas.
-Confira as hipóteses antes de copiar: monotonicidade, ordenação, sinal dos valores e extremos dos intervalos.
-
-## ARQUIVOS — GUIAS E RECEITAS SEM DUPLICAÇÃO
-
-| Abra | Conteúdo |
-|---|---|
-| [binary-search.md](binary-search.md) | Linear, tradicional, STL/bounds, first/last true, verify e limites. |
-| [two-pointers.md](two-pointers.md) | Sliding window, two sum, two difference, merge e variantes. |
-| [sweep-line.md](sweep-line.md) | Receita, eventos, consultas, empates, estado ativo e compressão. |
-| [exhaustive-search.md](exhaustive-search.md) | Complete search, pares/trios, subsets/bitmask e permutations. |
-| [backtracking.md](backtracking.md) | Enunciado → estado → escolhas → poda → base → retorno. |
-| [backtracking-templates.cpp](backtracking-templates.cpp) | Sete receitas: existe, conta, pega/não pega, opções, usados, melhor e grid. |
-| [patterns.md](patterns.md) | Gatilhos, comparações, complexidades e checklist de armadilhas. |
-
-O padrão visual vem de `maratona/study/`: títulos curtos, passos, exemplos pequenos
-e comentários que explicam a ação. Referências principais:
-`binary_search/binary_search_answer.cpp` e `sweep_line.cpp`, complementadas por
-`two_pointers.cpp`, `coord_compress.cpp`, `bounds/` e `exaustion_search/`.
-Não há um template Markdown separado em study/; adaptamos seu padrão de C++ comentado.
-
-Busca linear, bounds e busca na resposta foram unificadas em binary-search.md;
-compressão ficou em sweep-line.md, mas **não é sweep line**.
-Todos os templates existentes foram mantidos uma vez, e os links foram atualizados.
-
-Teste na raiz icpc/: `python -B c++/test_search.py`.
-Receitas de backtracking: `python -B c++/test_backtracking.py`.
-[Índice de C++](../README.md) · [Índice do repositório](../../README.md).
+Antes de copiar: **ordenado? negativos? condição monotônica? intervalo fechado?**
+As condições obrigatórias aparecem antes de cada template.
+Blocos com `main()` são programas separados; os menores indicam o contexto necessário.
 
 ## VI BINARY SEARCH NA RESPOSTA. E AGORA?
 
-1. Escreva: `mid = __________________` (tempo, capacidade, distância, tamanho?).
-2. Escreva: `verify(mid) = "__________________?"` (uma pergunta de viabilidade).
-3. Imagine mid crescendo: **FFFTTT** ou **TTTFFF**? Justifique, não apenas desenhe.
-4. **FFFTTT → primeiro true:** funciona? salve e tente MENOR.
-5. **TTTFFF → último true:** funciona? salve e tente MAIOR.
-6. Defina l e r, prove que contêm a resposta e sinalize “não existe”.
-7. Só depois copie [FIRST TRUE](binary-search.md#first-true) ou [LAST TRUE](binary-search.md#last-true).
+1. Defina `mid`: qual valor estou tentando?
+2. Defina `verify(mid)`: dá para fazer o que o problema pede com esse valor?
+3. Se funciona, maiores também funcionam? **FFFTTT → [first true](binary-search.md#first-true)**.
+4. Se funciona, menores também funcionam? **TTTFFF → [last true](binary-search.md#last-true)**.
+5. Justifique a regra e escolha limites que contenham a resposta. “Menor/maior” sozinho não basta.
 
-Não existe vetor obrigatório de respostas: l/r representam o intervalo.
+<details>
+<summary>Organização e testes (fora do contest)</summary>
+
+## ARQUIVOS — GUIAS E RECEITAS SEM DUPLICAÇÃO
+
+| Guia | Conteúdo |
+|---|---|
+| [binary-search.md](binary-search.md) | Linear, tradicional, bounds, first/last true e verify. |
+| [two-pointers.md](two-pointers.md) | Soma, diferença, janela e merge. |
+| [sweep-line.md](sweep-line.md) | Eventos, empates, consultas, estado e compressão. |
+| [exhaustive-search.md](exhaustive-search.md) | Loops, subsets e permutações. |
+| [backtracking.md](backtracking.md) | Escolher retorno + tipo de escolha. |
+| [backtracking-templates.cpp](backtracking-templates.cpp) | Sete receitas com funções, sem main. |
+| [patterns.md](patterns.md) | Comparações, custos e armadilhas. |
+
+Estilo adaptado de `maratona/study/`: títulos curtos, passos e exemplos pequenos.
+`study/` não foi alterada. Compressão está junto de sweep line, mas não é a mesma técnica.
+
+Na raiz icpc: `python -B c++/test_search.py` e `python -B c++/test_backtracking.py`.
+
+</details>
