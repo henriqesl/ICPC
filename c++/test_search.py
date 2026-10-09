@@ -30,6 +30,10 @@ class BuildDirectory(tempfile.TemporaryDirectory):
 
 def examples():
     result = {}
+    assert {path.name for path in DOCS.glob("*.md")} == {
+        "README.md", "binary-search.md", "two-pointers.md", "sweep-line.md",
+        "exhaustive-search.md", "patterns.md",
+    }
     for path in DOCS.glob("*.md"):
         document = path.read_text(encoding="utf-8")
         blocks = re.findall(
@@ -45,6 +49,8 @@ def examples():
         "two-pointers-pair", "two-pointers-window", "sweep-line",
         "coordinate-compression", "exhaustive-pairs", "exhaustive-subsets",
         "exhaustive-permutations",
+        "two-pointers-difference", "two-pointers-merge", "exhaustive-triples",
+        "sweep-base", "prefix-events", "sweep-query", "active-structures",
     }
     return result
 
@@ -153,12 +159,26 @@ def main():
                     "a = LLONG_MAX; b = 2;\n"
                     "assert(a / b + (a % b != 0) == LLONG_MAX / 2 + 1);\n}\n"
                 )
+            elif "int main(" not in source:
+                before, after = "", ""
+                if name == "prefix-events":
+                    # O trecho documentado depende de events já ordenado.
+                    before = "vector<pair<long long, int>> events = {{1,1},{3,1},{4,-1},{6,-1}};\n"
+                    after = "\nassert((accumulated == vector<long long>{1,2,1,0}));\n"
+                source = (
+                    "#include <bits/stdc++.h>\n#include <cassert>\nusing namespace std;\nint main() {\n" +
+                    before + source + after + "\n}\n"
+                )
             executables[name] = compile_source(compiler, directory, name, source)
             print(f"Compilou: {name}", flush=True)
 
         assert run(executables["bounds"]) == ["1", "1", "4", "3", "2", "5", "1"]
         assert run(executables["ceiling"]) == []
-        cases += 2
+        assert run(executables["sweep-base"]) == ["1", "2", "1", "0"]
+        assert run(executables["prefix-events"]) == []
+        assert run(executables["active-structures"]) == ["2", "7 7", "2 2 7", "9", "2"]
+        assert run(executables["exhaustive-triples"]) == ["4"]
+        cases += 6
 
         for values in [[], [2], [1, 2, 2, 2, 5, 8], [-5, -2, 0]] + [
             [rng.randrange(-5, 6) for _ in range(rng.randrange(9))] for _ in range(16)
@@ -256,6 +276,30 @@ def main():
             cases += 1
         print("Two pointers: pares e janelas comparados com força bruta OK", flush=True)
 
+        differences = [([], 0), ([2], 0), ([2, 2], 0), ([-5, -1, 0, 4], 4),
+                       ([1, 4, 9], 2), ([-10**18, 10**18], 2 * 10**18)]
+        differences += [(sorted(rng.randrange(-9, 10) for _ in range(rng.randrange(9))), rng.randrange(12))
+                        for _ in range(12)]
+        for values, target in differences:
+            expected = any(abs(a - b) == target for a, b in itertools.combinations(values, 2))
+            result = run(executables["two-pointers-difference"], input_case(values, target))[0]
+            if expected:
+                l, r = map(int, result.split())
+                assert 0 <= l < r < len(values) and values[r] - values[l] == target
+            else:
+                assert result == "-1"
+            cases += 1
+
+        merges = [([], []), ([], [1, 1]), ([1, 2], []), ([-LL_MAX - 1], [LL_MAX])]
+        merges += [(sorted(rng.randrange(-9, 10) for _ in range(rng.randrange(9))),
+                    sorted(rng.randrange(-9, 10) for _ in range(rng.randrange(9)))) for _ in range(12)]
+        for a, b in merges:
+            data = f"{len(a)} {len(b)}\n" + " ".join(map(str, a)) + "\n" + " ".join(map(str, b)) + "\n"
+            expected = [" ".join(map(str, sorted(a + b)))] if a or b else []
+            assert run(executables["two-pointers-merge"], data) == expected
+            cases += 1
+        print("Two difference e merge: diferença zero, negativos, vazios e extremos OK", flush=True)
+
         coordinate_cases = [[], [0], [100, 5, 100, 10**9], [-5, -5, -1, 0], [-LL_MAX - 1, LL_MAX]]
         coordinate_cases += [[rng.randrange(-9, 10) for _ in range(rng.randrange(9))] for _ in range(12)]
         for values in coordinate_cases:
@@ -282,16 +326,28 @@ def main():
                           [(-5, 3), (-1, 0), (2, 2)], [(-LL_MAX - 1, LL_MAX)]]
         interval_cases += [[tuple(sorted((rng.randrange(-9, 10), rng.randrange(-9, 10))))
                             for _ in range(rng.randrange(9))] for _ in range(12)]
+        # Compila exatamente as duas adaptações de empate explicadas para [L,R].
+        closed_source = sources["sweep-query"].replace(
+            "enum { END = 0, START = 1, QUERY = 2 };",
+            "enum { START = 0, QUERY = 1, END = 2 };",
+        ).replace("if (l == r) continue; // [l,l) é vazio", "")
+        assert closed_source != sources["sweep-query"]
+        closed_query = compile_source(compiler, directory, "sweep-query-closed", closed_source)
         for intervals in interval_cases:
             positions = sorted({x for pair in intervals for x in pair})
             queries = sorted(set([-LL_MAX - 1, LL_MAX, -10, -1, 0, 1, 3, 5, 10, *positions]))
+            queries += [0, 3] # repetidas e fora de ordem: resposta deve preservar ids
+            rng.shuffle(queries)
             active = lambda x: sum(l <= x < r for l, r in intervals)
             maximum = max(map(active, positions), default=0)
             data = f"{len(intervals)}\n" + "".join(f"{l} {r}\n" for l, r in intervals)
             data += f"{len(queries)}\n" + " ".join(map(str, queries)) + "\n"
             expected = [str(maximum), *[str(active(x)) for x in queries]]
             assert run(executables["sweep-line"], data) == expected
-            cases += 1
+            assert run(executables["sweep-query"], data) == expected[1:]
+            closed_expected = [str(sum(l <= x <= r for l, r in intervals)) for x in queries]
+            assert run(closed_query, data) == closed_expected
+            cases += 3
         print("Compressão, exaustiva e sweep line: duplicados, empates e extremos OK", flush=True)
     print(f"OK: {len(sources)} blocos C++, {cases} execuções e 2912 combinações de limites/monotonicidade.")
 
