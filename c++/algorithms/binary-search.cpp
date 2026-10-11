@@ -1,7 +1,6 @@
-// BUSCA BINÁRIA: primeiro índice com valor >= alvo em vetor ORDENADO.
-// Entrada: N, N inteiros e alvo. Ex.: 4 1 3 3 8 3 -> 1.
-// Se não existir valor >= alvo, imprime -1. Não é busca de igualdade!
-// Busca O(log N), O(1) auxiliar; leitura/armazenamento O(N).
+// BUSCA BINÁRIA: primeiro índice >= alvo; vetor crescente.
+// Entrada: n; n valores; alvo. Saída: índice base 0 ou -1.
+// O(log N) busca; O(N) leitura/memória. Limite não garante igualdade.
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -14,16 +13,16 @@ int main() {
     cin >> alvo;
 
     int esquerda = 0;
-    int direita = n; // limite EXCLUSIVO; nunca acessamos valores[n]
+    int direita = n; // [esquerda,direita)
     while (esquerda < direita) {
         int meio = esquerda + (direita - esquerda) / 2;
         if (valores[meio] >= alvo) {
-            direita = meio; // pode servir; procure um índice ainda menor
+            direita = meio; // tenta menor
         } else {
-            esquerda = meio + 1; // meio e anteriores são pequenos demais
+            esquerda = meio + 1; // descarta até meio
         }
     }
     if (esquerda == n) cout << -1 << '\n';
     else cout << esquerda << '\n';
-    // Para igualdade: confira também valores[esquerda] == alvo após validar índice.
+    // Igualdade: valide índice e compare valor com alvo.
 }

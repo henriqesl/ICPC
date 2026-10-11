@@ -1,8 +1,6 @@
-// PILHA: o último que entra é o primeiro que sai (LIFO).
-// Aplicação: delimitadores; o último aberto precisa fechar primeiro.
-// Entrada: uma sequência SEM espaços. ([{}]) -> balanceado; ([)] -> desbalanceado.
-// Se o enunciado fornecer N antes da sequência, leia N também.
-// Tempo O(N), memória O(N); saída pode ser adaptada para SIM/NAO.
+// STACK: última abertura fecha primeiro (LIFO).
+// Entrada: delimitadores sem espaços. Saída: balanceado / desbalanceado.
+// O(N) tempo/memória. Se houver N antes do texto, leia-o também.
 #include <iostream>
 #include <stack>
 #include <string>
@@ -16,14 +14,14 @@ int main() {
 
     for (char atual : texto) {
         if (atual == '(' || atual == '[' || atual == '{') {
-            abertos.push(atual); // guarda abertura ainda pendente
+            abertos.push(atual);
         } else if (atual == ')' || atual == ']' || atual == '}') {
-            if (abertos.empty()) { // tentou fechar sem ter aberto
+            if (abertos.empty()) { // sem abertura
                 valido = false;
                 break;
             }
 
-            char topo = abertos.top(); // última abertura pendente
+            char topo = abertos.top();
             bool combina = (topo == '(' && atual == ')') ||
                            (topo == '[' && atual == ']') ||
                            (topo == '{' && atual == '}');
@@ -32,10 +30,10 @@ int main() {
                 valido = false;
                 break;
             }
-            abertos.pop(); // fechou corretamente; remove a abertura
+            abertos.pop();
         }
     }
-    if (!abertos.empty()) valido = false; // sobraram aberturas
+    if (!abertos.empty()) valido = false; // faltou fechar
     if (valido) cout << "balanceado\n";
     else cout << "desbalanceado\n";
 }

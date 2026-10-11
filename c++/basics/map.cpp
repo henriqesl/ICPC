@@ -1,8 +1,6 @@
-// MAP: cada chave está associada a um valor. Aqui: número -> frequência.
-// Use para contar ocorrências e percorrer as chaves em ORDEM CRESCENTE.
-// Entrada: N e N inteiros. 4 3 3 8 3 -> 3: 3 / 8: 1.
-// Inserção/busca O(log(K+1)), memória O(K), K = chaves diferentes.
-// Após as frequências: menor e maior chave, ou "vazio".
+// MAP: chave -> frequência; chaves em ordem.
+// Entrada: n; n valores. Saída: chave: frequência; extremos ou "vazio".
+// O(log D) por chave, O(D) memória; D distintos. m[x] cria ausente.
 #include <iostream>
 #include <map>
 using namespace std;
@@ -10,41 +8,36 @@ using namespace std;
 int main() {
     int n;
     cin >> n;
-    map<int, int> frequencia; // chave int, valor int
+    map<int, int> frequencia;
 
     for (int i = 0; i < n; i++) {
         int numero;
         cin >> numero;
-        frequencia[numero]++; // chave nova começa em 0; depois soma 1
-        // Ao ler 3,3,8,3: {3:1} -> {3:2} -> {3:2,8:1} -> {3:3,8:1}
+        frequencia[numero]++; // ausente começa em 0
     }
 
     for (const auto& item : frequencia) {
-        // item é um pair. first = chave; second = valor associado.
+        // first = chave; second = frequência.
         cout << item.first << ": " << item.second << '\n';
     }
 
-    // Consultar SEM criar chave:
+    // Consulta sem inserir:
     // auto it = frequencia.find(7);
     // if (it != frequencia.end()) cout << it->second;
-    // Se não encontrou, it == end(); não acesse it->second nesse caso.
-    // frequencia[7] criaria a chave com zero mesmo numa simples consulta!
-    // frequencia.erase(7); remove a chave se existir.
-    // begin()->first = menor CHAVE; rbegin()->first = maior CHAVE.
-    // begin()->second é o valor da menor chave, NÃO a menor frequência.
-    // auto it = frequencia.lower_bound(5); // primeira chave >= 5
-    // auto it = frequencia.upper_bound(5); // primeira chave > 5
-    // if (it != frequencia.end()) cout << it->first << ": " << it->second;
+    // frequencia.erase(7); // remove chave
+    // auto it = frequencia.lower_bound(5); // chave >= 5
+    // Para chave > 5: frequencia.upper_bound(5); valide it != end().
+    // begin()->second NÃO é a menor frequência.
 
     if (!frequencia.empty()) {
         cout << "menor_chave=" << frequencia.begin()->first;
         cout << " maior_chave=" << frequencia.rbegin()->first << '\n';
     } else cout << "vazio\n";
 
-    // Remover frequências iguais a 1 durante um percurso:
+    // Remover durante percurso:
     // for (auto it = frequencia.begin(); it != frequencia.end(); ) {
     //     if (it->second == 1) it = frequencia.erase(it); // próximo
     //     else ++it;
     // }
-    // Não faça erase(it) e depois ++it: esse iterador já é inválido.
+    // Após erase, use o retorno; it antigo é inválido.
 }

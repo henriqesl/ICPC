@@ -33,6 +33,23 @@ Use Ctrl+F com palavras como `soma`, `janela`, `divisores`, `lower` ou `permuta�
 | Ordenar por campo, trecho, coluna ou índice | [Variantes de sort](c++/algorithms/sorting.md) | preserve índices originais, se pedidos |
 | Primos / divisores / MDC / potência módulo M | [Matemática](c++/math/README.md) | conferir limites e overflow |
 
+## Grafos
+
+| Preciso... | Abra o .cpp | Confira |
+|---|---|---|
+| Montar adjacência com/sem peso | [Representação](c++/grafos/graph_representation.cpp) | directed: ida; undirected: ida e volta |
+| Visitar / contar componentes | [DFS](c++/grafos/dfs.cpp) | recursão profunda pode estourar pilha |
+| Menor distância em número de arestas | [BFS](c++/grafos/bfs.cpp) | sem peso; -1 = inalcançável |
+| Menor caminho no labirinto | [BFS grid](c++/grafos/bfs_grid.cpp) | 4 direções; # = parede |
+| Separar vértices em dois grupos sem conflito | [Bipartido](c++/grafos/bipartite.cpp) | testar todas as componentes |
+| Ordenar tarefas/dependências | [Topological sort](c++/grafos/topological_sort.cpp) | direcionado; ciclo impede ordem completa |
+| Distância até a origem mais próxima | [BFS multisource](c++/grafos/bfs_multisource.cpp) | todas as fontes começam em 0; sem peso |
+| Saber se há ciclo não direcionado | [Ciclo](c++/grafos/cycle_undirected.cpp) | id da aresta do pai; aceita paralelas |
+| Maior distância entre nós de árvore | [Diâmetro](c++/grafos/tree_diameter.cpp) | árvore conexa, sem peso; distância em arestas |
+
+Entradas dos templates: vértices/células **1-based**, convertidos para 0-based.
+BFS não resolve pesos diferentes; Dijkstra/0-1 BFS ainda não estão incluídos.
+
 ## Estruturas e sintaxe
 
 | Preciso... | Abra direto |
@@ -57,5 +74,5 @@ extremos inclusivos/exclusivos e custo total de todos os casos. Exemplos demonst
 ## Dificuldade
 
 - **Básico:** entrada/saída, strings, vector/array, sort, pilha e fila.
-- **Intermediário:** mapas/sets, heap, bounds, prefix sum, janelas, two pointers, busca na resposta, sweep line, compressão, backtracking, estruturas monotônicas, mediana, guloso e teoria dos números.
-- **Avançado — futuro:** grafos, programação dinâmica e geometria.
+- **Intermediário:** mapas/sets, heap, bounds, prefix sum, janelas, two pointers, busca na resposta, sweep line, compressão, backtracking, estruturas monotônicas, mediana, guloso, teoria dos números e grafos básicos (DFS/BFS, bipartido, ciclos, topológica e diâmetro de árvore).
+- **Avançado — futuro:** grafos avançados, programação dinâmica e geometria.

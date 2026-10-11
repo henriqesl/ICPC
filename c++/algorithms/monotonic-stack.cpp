@@ -1,8 +1,6 @@
-// PADRÃO: primeiro MENOR ESTRITO à esquerda e à direita de cada posição.
-// Entrada: N e N inteiros. Ex.: 3 3 1 2
-// Saída (índices base zero; -1 se ausente): -1 -1 1 / 1 -1 -1.
-// Tempo O(N), memória O(N). Cada índice entra/sai uma vez em cada percurso.
-// Guarde ÍNDICES: os valores servem para comparar; as posições são a resposta.
+// PILHA MONOTÔNICA: menor estrito à esquerda/direita.
+// Entrada: n; n valores. Saída: índices base 0; -1 se ausente.
+// O(N) tempo/memória; guarda índices, não só valores.
 #include <iostream>
 #include <stack>
 #include <vector>
@@ -16,7 +14,7 @@ int main() {
 
     stack<int> candidatos;
     for (int i = 0; i < n; i++) {
-        // >= não serve como MENOR ESTRITO; descarte até sobrar um menor.
+        // Descarta >=; sobra menor estrito.
         while (!candidatos.empty() && valores[candidatos.top()] >= valores[i]) {
             candidatos.pop();
         }
@@ -24,7 +22,7 @@ int main() {
         candidatos.push(i);
     }
 
-    while (!candidatos.empty()) candidatos.pop(); // outro lado começa vazio
+    while (!candidatos.empty()) candidatos.pop(); // reinicia para o outro lado
     for (int i = n - 1; i >= 0; i--) {
         while (!candidatos.empty() && valores[candidatos.top()] >= valores[i]) {
             candidatos.pop();
@@ -37,9 +35,7 @@ int main() {
     cout << '\n';
     for (int i : direita) cout << i << ' ';
     cout << '\n';
-    // Maior estrito: troque >= por <=. Menor ou igual: troque >= por >.
-    // Para somar contribuições de mínimos, NÃO use estrito dos dois lados:
-    // empates precisam de menor estrito num lado e menor ou igual no outro.
-    // Nesse outro lado, a condição de DESCARTE seria >, não >=. Veja patterns.md.
-    // Este exemplo só encontra vizinhos; não resolve a soma de subarrays.
+    // Maior estrito: descarte <=. Menor ou igual: descarte >.
+    // Soma de mínimos: empate exige estrito num lado, não estrito no outro.
+    // Aqui só encontra vizinhos; não soma contribuições.
 }

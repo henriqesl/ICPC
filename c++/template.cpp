@@ -1,6 +1,5 @@
-// Template GCC C++17. Complete a solução conforme o enunciado.
-// Múltiplos casos: int t; cin >> t; while (t--) { ... }
-// Só leia t se o problema fornecer a quantidade de casos.
+// Template GCC C++17.
+// Vários casos, só se houver t na entrada: cin >> t; while (t--) { ... }
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -10,4 +9,3 @@ int main() {
 
     return 0;
 }
-

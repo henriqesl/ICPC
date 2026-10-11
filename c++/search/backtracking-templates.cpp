@@ -2,35 +2,20 @@
 using namespace std;
 using ll = long long;
 
-/*
-    CONSULTA RÁPIDA — RETORNO + ESCOLHAS (combine os dois!)
-
-    EXISTE?             -> TEMPLATE 1: bool, para no primeiro sucesso.
-    QUANTAS?            -> TEMPLATE 2: ll, soma chamadas; folha válida vale 1.
-    PEGA / NÃO PEGA?    -> TEMPLATE 3: duas chamadas por idx.
-    UMA ENTRE VÁRIAS?   -> TEMPLATE 4: for nas opções de cada etapa.
-    CADA ITEM UMA VEZ?  -> TEMPLATE 5: used[], marca / recursa / desmarca.
-    MELHOR?             -> TEMPLATE 6: min/max + limite seguro para poda.
-    GRID / CAMINHO?     -> TEMPLATE 7: vizinhos + visited do caminho atual.
-
-    FAZ -> RECURSA -> DESFAZ. Inclui retornos antecipados!
-    O estado PARCIAL compartilhado sai igual ao que entrou na chamada.
-    Melhor resposta/soluções salvas são resultados: não se desfazem.
-
-    Sem main: copie a receita, inicialize os dados e chame pelo seu main.
-    Namespaces apenas separam nomes para este arquivo compilar com -c.
-    Pode copiar só o interior do namespace, com includes/ll acima.
-    Contagens, somas e limites precisam caber em ll; profundidade cabe na pilha.
-    Guia: backtracking.md. Teste: python -B c++/test_backtracking.py
-*/
+// RETORNO + ESCOLHAS: combine; procure TEMPLATE N.
+// 1 existe; 2 conta; 3 pega/não pega; 4 opções; 5 usados; 6 melhor; 7 grid.
+// Sem main: copie uma receita + includes/ll; inicialize conforme seu cabeçalho.
+// FAZ -> RECURSA -> DESFAZ, inclusive no sucesso. Resultados não se desfazem.
+// Somas/contagens em ll; recursão precisa caber na pilha. Poda mantém pior caso.
+// Custo: subsets O(2^N), B opções/D etapas O(B^D) (B>=2), permutação O(N*N!).
+// Memória extra O(profundidade), além do estado. Guia: backtracking.md.
 
 namespace decisions {
-// Dado neutro: opções por posição; vizinhos não podem ter valores iguais.
-// Inicialize options e current.clear(); opções de cada posição são distintas.
+// Opções por posição (distintas); vizinhos diferentes. Inicialize options/current.clear().
 vector<vector<int>> options;
 vector<int> current;
 
-// TEMPLATE 1 — EXISTE ALGUMA SOLUÇÃO? bool + uma opção por posição.
+// TEMPLATE 1 — EXISTE? bool; uma opção por posição.
 bool exists(int pos) {
     if (pos == static_cast<int>(options.size())) return true;
 
@@ -45,7 +30,7 @@ bool exists(int pos) {
     return false;
 }
 
-// TEMPLATE 2 — QUANTAS SOLUÇÕES? Usa options/current acima, outro retorno.
+// TEMPLATE 2 — QUANTAS? Soma filhos; options/current acima.
 ll count(int pos) {
     if (pos == static_cast<int>(options.size())) return 1;
 
@@ -62,10 +47,9 @@ ll count(int pos) {
 } // namespace decisions
 
 namespace subsets {
-// TEMPLATE 3 — PEGA / NÃO PEGA: contar subconjuntos de índices com soma alvo.
-// Inicialize a, target e sum = 0; inicie em count(0).
-// Aceita negativos. Não pode podar sum > target sem outras hipóteses!
-// Soma dos valores absolutos e quantidade de soluções precisam caber em ll.
+// TEMPLATE 3 — PEGA / NÃO PEGA: soma alvo; conta subconjuntos de índices.
+// Inicialize a/target, sum=0; count(0). Absolutos/contagem cabem em ll.
+// Aceita negativos: não pode podar sum > target.
 vector<ll> a;
 ll target, sum = 0;
 
@@ -78,16 +62,13 @@ ll count(int idx) {
     ways += count(idx + 1);                        // não pega
     return ways;
 }
-// Para coverage: estado (idx, coverage), pega com coverage | mask[idx].
-// Passe coverage POR VALOR; folha válida: coverage == FULL. OR não se desfaz com XOR!
+// Coverage por valor: coverage | mask[idx]; folha coverage==FULL. OR não desfaz com XOR.
 } // namespace subsets
 
 namespace placements {
-// TEMPLATE 4 — UMA OPÇÃO ENTRE VÁRIAS: uma coluna por linha.
-// board: '.' livre, '#' bloqueada; proíbe coluna e diagonais compartilhadas.
-// Inicialize n = board.size(); col.assign(n,0);
-// diag1.assign(max(0,2*n-1),0); diag2.assign(max(0,2*n-1),0); chame count(0).
-// Para outras regras, troque a validade; o for e faz/recursa/desfaz continuam.
+// TEMPLATE 4 — OPÇÕES: uma coluna por linha, sem coluna/diagonal compartilhada.
+// board: '.' livre, '#' bloqueada; n=board.size(); col.assign(n,0).
+// diag1.assign(max(0,2*n-1),0); diag2.assign(max(0,2*n-1),0); count(0).
 int n;
 vector<string> board;
 vector<int> col, diag1, diag2;
@@ -111,9 +92,8 @@ ll count(int row) {
 } // namespace placements
 
 namespace permutations {
-// TEMPLATE 5 — PERMUTAÇÃO / USED[]: ordem importa, cada índice usado uma vez.
-// Inicialize a; current.resize(a.size()); used.assign(a.size(),0); chame generate(0).
-// Valores repetidos em índices distintos geram sequências repetidas por padrão.
+// TEMPLATE 5 — PERMUTAÇÃO: cada índice uma vez; repetidos podem duplicar saídas.
+// Inicialize a; current.resize(a.size()); used.assign(a.size(),0); generate(0).
 vector<ll> a, current;
 vector<int> used;
 
@@ -126,7 +106,7 @@ void generate(int pos) {
     }
     for (int i = 0; i < n; i++) {
         if (used[i]) continue;
-        // Para só sequências distintas: ordene a antes e ative a linha abaixo.
+        // Sem duplicatas: sort(a) antes + ative abaixo.
         // if (i > 0 && a[i] == a[i-1] && !used[i-1]) continue;
 
         ll previous = current[pos];
@@ -140,11 +120,9 @@ void generate(int pos) {
 } // namespace permutations
 
 namespace optimization {
-// TEMPLATE 6 — MELHOR SOLUÇÃO: escolher exatamente k índices com custo NÃO NEGATIVO.
-// Inicialize cost, k, current=0, found_min=found_max=false.
-// best_min=LLONG_MAX; best_max=LLONG_MIN.
-// Para maximize, prepare suffix[n]=0; suffix[i]=suffix[i+1]+cost[i].
-// A soma total cabe em ll. Flags distinguem ausência de um valor-limite válido.
+// TEMPLATE 6 — MELHOR: exatamente k índices, custos NÃO NEGATIVOS; soma cabe em ll.
+// Inicialize cost/k, current=0, found_min=found_max=false; best_min=LLONG_MAX, best_max=LLONG_MIN.
+// Max: suffix[n]=0; suffix[i]=suffix[i+1]+cost[i]. Flags distinguem ausência.
 vector<ll> cost, suffix;
 int k;
 ll current = 0, best_min = LLONG_MAX, best_max = LLONG_MIN;
@@ -174,8 +152,7 @@ void maximize(int idx, int chosen) {
     }
     int n = static_cast<int>(cost.size());
     if (idx == n || n - idx < k - chosen) return;
-    // Mesmo pegando TODOS os restantes, não supera a melhor resposta.
-    // É um teto otimista (pode nem respeitar k), nunca subestima o melhor possível.
+    // Teto otimista: nem pegando todos os restantes melhora.
     if (found_max && current + suffix[idx] <= best_max) return;
 
     current += cost[idx];
@@ -186,11 +163,10 @@ void maximize(int idx, int chosen) {
 } // namespace optimization
 
 namespace paths {
-// TEMPLATE 7 — GRID / CAMINHO: bool + escolha de vizinho não bloqueado/visitado.
-// Inicialize rows, cols, board, target_r/c; visited.assign(rows, vector<int>(cols,0)).
-// '#' bloqueia, '.' permite; chame exists(start_r,start_c).
-// visited aqui pertence AO CAMINHO, e é restaurado inclusive no sucesso.
-// Para APENAS alcance/componente, use visited global e NÃO desmarque: O(V+E).
+// TEMPLATE 7 — CAMINHO: visited local ao caminho; desfaz inclusive no sucesso.
+// Inicialize rows/cols/board/target_r/c; visited.assign(rows,vector<int>(cols,0)).
+// '#' bloqueada; exists(start_r,start_c). Pior O(4^V), memória O(V).
+// Só alcance/menor distância: ../grafos/dfs.cpp ou bfs.cpp; não enumere caminhos.
 int rows, cols, target_r, target_c;
 vector<string> board;
 vector<vector<int>> visited;

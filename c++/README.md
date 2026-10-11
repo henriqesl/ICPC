@@ -9,6 +9,7 @@ Durante o contest, comece pelo [índice por necessidade](../README.md).
 | [data-structures/](data-structures/README.md) | Fila, pilha, deque, heaps e recorte de mediana. |
 | [algorithms/](algorithms/README.md) | Sort/comparadores, prefix sum, janelas, diferenças, pilha/deque monotônicas e guloso. |
 | [search/](search/README.md) | Buscas/bounds, two pointers, sweep line, compressão, enumeração e backtracking. |
+| [grafos/](grafos/) | Nove .cpp: [atalhos por necessidade](../README.md#grafos); DFS/BFS, grid, bipartido, topológica, multisource, ciclos e diâmetro. |
 | [math/](math/README.md) | Divisores, primalidade, MDC/MMC e potência modular. |
 
 **Como copiar:** recortes dos guias vão no `main()` do template; programas com
@@ -16,6 +17,8 @@ Durante o contest, comece pelo [índice por necessidade](../README.md).
 As receitas de [backtracking](search/backtracking-templates.cpp) têm funções sem `main()`;
 copie só o namespace/receita necessário, inicialize o estado e chame sua função.
 `reference.cpp` e `math-reference.cpp` são consultas comentadas.
+Grafos: programas independentes, comentários breves; entrada/saída no topo de cada .cpp.
+`graph_representation.cpp` apenas constrói as três representações, sem imprimir.
 
 <details>
 <summary>Fora do contest: compilar, testar e ordem de estudo</summary>
@@ -35,6 +38,7 @@ Saída: Ana, Bia, Caio, uma pessoa por linha. Compile um programa por vez.
 python -B c++/test_library.py
 python -B c++/test_search.py
 python -B c++/test_backtracking.py
+python -B c++/test_graphs.py
 ```
 
 Estudo sugerido: basics → fila/pilha → prefix sum → janela fixa → janela variável

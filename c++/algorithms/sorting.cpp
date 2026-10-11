@@ -1,10 +1,6 @@
-// Aplicação: ordenar para facilitar buscas, agrupamentos, pareamentos
-// ou comparações entre valores vizinhos.
-// Complexidade: O(N log N) tempo.
-// Entrada: N e N inteiros. Ex.: 3 2 1 3 -> 1 2 3 / 3 2 1.
-// Vector usa O(N); sort não é estável. Para índices originais, guarde pair.
-// Trecho, coluna, second, índices e stable_sort: sorting.md / sorting-variants.cpp.
-// begin/end delimitam [início,fim); veja ../basics/iterators.md.
+// SORT: crescente / decrescente; muda a sequência.
+// Entrada: n; n valores. Saída: crescente, depois decrescente.
+// O(N log N) tempo, O(N) vetor. Sort não é estável; preserve (valor,id).
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -18,14 +14,10 @@ int main() {
     for (int x : v) cout << x << ' ';
     cout << '\n';
 
-    // sort(v.begin(), v.end(), greater<int>()) também ordena decrescente.
-    // Para ordenar apenas [L,R) (R exclusivo): sort(v.begin()+L, v.begin()+R).
-    // Exige 0 <= L <= R <= size(). O resto do vetor não muda.
-    // min_element/max_element encontram um extremo em O(N), sem ordenar.
-    // stable_sort preserva ordem anterior em empates; sort não garante isso.
-    // Em pair, compara first e depois second; veja ../data-structures/pair.cpp.
-    // Para remover duplicatas, ordene crescente e use erase(unique(...), end()).
-    // Exemplo executável completo: ../basics/vector.cpp.
+    // Trecho [L,R): sort(v.begin()+L,v.begin()+R), 0 <= L <= R <= N.
+    // Extremos: min_element/max_element O(N). Empates estáveis: stable_sort.
+    // Únicos: sort + erase(unique(...),end()); veja ../basics/vector.cpp.
+    // Coluna/second/índices: sorting-variants.cpp.
 
     sort(v.rbegin(), v.rend()); // decrescente
     for (int x : v) cout << x << ' ';

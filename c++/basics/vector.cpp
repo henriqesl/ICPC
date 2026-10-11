@@ -1,9 +1,7 @@
-// Aplicação: buscar, contar, ordenar ou obter o índice de um valor.
-// Entrada: n, os n valores e um valor x.
-// Complexidade: find/count O(N); sort O(N log N).
-// Ex.: 4 3 1 3 8 3 -> indice=0 / ocorrencias=2 / 1 3 3 8.
-// Índice ORIGINAL antes do sort; -1 se ausente. Memória O(N).
-// Depois: extremos ordenados, cópia sem X e cópia sem repetidos.
+// VECTOR: índice / contagem / sort / remoção / únicos.
+// Entrada: n; n valores; X. Saída demonstrativa com rótulos.
+// Find/count O(N); sort O(N log N); memória O(N).
+// Índice original antes do sort; -1 se ausente. Nunca leia *end().
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -17,9 +15,9 @@ int main() {
     for (int i = 0; i < n; i++) cin >> v[i];
     cin >> x;
 
-    // find retorna um iterador; a distância até begin() é o índice.
+    // Find -> iterador; it-begin() -> índice.
     auto it = find(v.begin(), v.end(), x);
-    // end() significa que não encontrou. Não podemos ler *end().
+
     int index = -1;
     if (it != v.end()) index = int(it - v.begin());
 
@@ -31,7 +29,7 @@ int main() {
     cout << '\n';
 
     if (!v.empty()) {
-        // front/back são primeiro/último. Só são min/max porque ordenamos!
+        // Só são min/max porque ordenamos.
         cout << "primeiro=" << v.front() << " ultimo=" << v.back() << '\n';
     } else cout << "vazio\n";
 
@@ -47,11 +45,9 @@ int main() {
     for (int valor : distintos) cout << ' ' << valor;
     cout << '\n';
 
-    // remove/unique reorganizam; erase realmente encolhe o vetor. Ambos O(N).
-    // Sem ordenar, unique elimina apenas repetições CONSECUTIVAS.
-    // Inserir em i (0 <= i <= size): v.insert(v.begin()+i, valor); O(N).
-    // Remover em i (0 <= i < size): v.erase(v.begin()+i); O(N).
-    // Remover último: if (!v.empty()) v.pop_back(); O(1).
-    // reserve(n) reserva capacidade, NÃO cria elementos; resize(n) muda size.
-    // push_back pode realocar e invalidar iteradores/referências.
+    // remove/unique + erase: O(N). Unique só junta iguais consecutivos.
+    // Insert: v.insert(v.begin()+i,x), 0 <= i <= size, O(N).
+    // Erase: v.erase(v.begin()+i), 0 <= i < size, O(N).
+    // Último: if (!v.empty()) v.pop_back(), O(1).
+    // Reserve não muda size; resize muda. Crescer/erase pode invalidar iteradores.
 }

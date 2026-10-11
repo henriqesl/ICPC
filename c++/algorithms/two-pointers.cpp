@@ -1,7 +1,7 @@
-// DOIS PONTEIROS: dois índices distintos cuja soma seja alvo.
-// Entrada: N, N valores ORDENADOS e alvo. Ex.: 4 1 3 5 8 9 -> 0 3.
-// Tempo O(N), estado O(1), vetor O(N). Soma deve caber em long long.
-// Aceita negativos. Não ordene sem preservar índices, se a saída exige os originais.
+// TWO POINTERS: um par de índices distintos com soma alvo.
+// Entrada: n; n valores ORDENADOS; alvo. Saída: i j (base 0) ou -1.
+// O(N) tempo/vetor; estado O(1). Soma em long long; aceita negativos.
+// Índices são do vetor ordenado; preserve (valor,id) se necessário.
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -24,9 +24,9 @@ int main() {
             encontrou = true;
             break;
         }
-        if (soma < alvo) esquerda++; // precisamos de uma soma maior
-        else direita--;             // precisamos de uma soma menor
+        if (soma < alvo) esquerda++;
+        else direita--;
     }
     if (!encontrou) cout << -1 << '\n';
-    // Diferente de sliding window: aqui escolhemos dois valores, não somamos um trecho.
+    // Um par, não um trecho inteiro.
 }

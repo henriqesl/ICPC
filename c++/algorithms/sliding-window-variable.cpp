@@ -1,8 +1,7 @@
-// SLIDING WINDOW VARIÁVEL: maior trecho consecutivo com soma <= LIMITE.
-// Entrada: N LIMITE e N valores NÃO NEGATIVOS. LIMITE >= 0.
-// Ex.: 5 7 2 1 5 1 3 -> 3 (o trecho [1,5,1]).
-// Tempo O(N), memória O(N) para entrada; estado da janela O(1).
-// Não use este algoritmo com negativos: retirar da esquerda pode aumentar a soma!
+// JANELA VARIÁVEL: maior trecho com soma <= limite.
+// Entrada: n limite; n valores NÃO NEGATIVOS; limite >= 0.
+// Saída: maior tamanho (0 se nenhum); somas cabem em long long.
+// O(N) tempo/memória; estado O(1). Não ordene; não use negativos.
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -19,10 +18,10 @@ int main() {
     long long soma = 0;
 
     for (int direita = 0; direita < n; direita++) {
-        soma += valores[direita]; // tenta ampliar a janela
+        soma += valores[direita];
 
         while (soma > limite && esquerda <= direita) {
-            soma -= valores[esquerda]; // encolhe até a soma caber
+            soma -= valores[esquerda];
             esquerda++;
         }
 
@@ -30,5 +29,5 @@ int main() {
         if (tamanho > melhor) melhor = tamanho;
     }
     cout << melhor << '\n';
-    // Apesar do while dentro do for, cada elemento entra e sai no máximo uma vez.
+    // Cada elemento entra/sai no máximo uma vez.
 }

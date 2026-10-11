@@ -1,8 +1,6 @@
-// Maior trecho CONSECUTIVO com no máximo K valores diferentes.
-// Entrada: N K e N inteiros. Ex.: 6 2 1 2 1 3 3 2 -> 3.
-// K >= 0; aceita valores negativos (a condição é frequência, não soma).
-// Tempo O(N) médio com hash, pior caso O(N²); memória O(N) com vetor.
-// Cada posição entra e sai uma vez; a tabela guarda frequências da janela atual.
+// JANELA: maior trecho com até K distintos; aceita negativos.
+// Entrada: n k; n valores (K >= 0). Saída: maior tamanho.
+// O(N) médio com hash, O(N²) pior; O(N) memória.
 #include <iostream>
 #include <unordered_map>
 #include <vector>
@@ -17,12 +15,12 @@ int main() {
     unordered_map<int, int> frequencia;
     int esquerda = 0, melhor = 0;
     for (int direita = 0; direita < n; direita++) {
-        frequencia[valores[direita]]++; // inclui o novo valor
+        frequencia[valores[direita]]++;
         while (int(frequencia.size()) > k) {
             int sai = valores[esquerda];
             frequencia[sai]--;
             if (frequencia[sai] == 0) {
-                frequencia.erase(sai); // zero NÃO pode contar como distinto!
+                frequencia.erase(sai); // zero não conta
             }
             esquerda++;
         }
@@ -30,5 +28,5 @@ int main() {
         if (tamanho > melhor) melhor = tamanho;
     }
     cout << melhor << '\n';
-    // Exatamente K distintos é outro objetivo: não troque apenas um sinal sem analisar.
+    // Exatamente K distintos exige outra adaptação.
 }

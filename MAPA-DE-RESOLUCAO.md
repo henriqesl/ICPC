@@ -17,6 +17,7 @@
 | Poucos valores enormes, mas preciso indexar? | [Compressão](c++/search/sweep-line.md#compression) |
 | N é pequeno e preciso testar escolhas/ordens? | [Enumeração](c++/search/exhaustive-search.md) · [backtracking com poda](c++/search/backtracking.md#mapeamento) |
 | O estado muda sempre do mesmo jeito? Há pares, ciclos ou paridade? | Faça casos pequenos e procure uma propriedade matemática antes de simular tudo. |
+| Há cidades/ligações, dependências ou células vizinhas? | [Grafos: escolha pelo pedido](README.md#grafos); sem peso → BFS, componentes → DFS, dependências → topológica. |
 
 Para localizar o código, use a [tabela principal](README.md#algoritmos-o-que-a-questão-pede).
 As pistas levantam hipóteses: confirme as condições do template.

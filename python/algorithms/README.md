@@ -18,7 +18,7 @@ O raciocínio é o mesmo nas duas linguagens.
 
 Os conceitos dos pares existentes são os mesmos; consulte os comentários C++
 para a ideia geral e o Python para sintaxe. Novas técnicas têm justificativa no
-próprio arquivo. Grafos/DFS/BFS ainda não estão implementados.
+próprio arquivo. Grafos/DFS/BFS estão na [trilha C++](../../README.md#grafos), ainda não nesta trilha Python.
 
 ## Bisect: limite não é presença
 

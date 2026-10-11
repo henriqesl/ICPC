@@ -81,7 +81,7 @@ Minimizar usa piso seguro; maximizar usa teto seguro. Para contar soluções ót
 ## GRID / CAMINHO — QUAL visited?
 
 - **Enumerar caminhos simples/regras dependentes do caminho:** marca ao entrar, desmarca ao sair.
-- **Só alcance/componente:** DFS/BFS com visited permanente, O(V+E); não precisa enumerar caminhos.
+- **Só alcance/componente:** [DFS](../grafos/dfs.cpp) com visited permanente; [BFS](../grafos/bfs.cpp) também dá menor distância sem peso, O(V+E). [Labirinto](../grafos/bfs_grid.cpp). Não enumere caminhos.
 
 Não conte caminhos com visited permanente. Memorizar só a célula/posição pode ser insuficiente se o histórico muda o futuro.
 

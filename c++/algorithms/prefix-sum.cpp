@@ -1,8 +1,7 @@
-// PREFIX SUM: soma de muitos intervalos em uma sequência que não muda.
-// Entrada: N, N valores, Q e Q pares L R (inclusivos, começando em ZERO).
-// Ex.: 4 2 3 5 1 2 1 2 0 3 -> saídas 8 e 11.
-// Exige 0 <= L <= R < N; somas intermediárias cabem em long long.
-// Construção O(N), cada consulta O(1), memória O(N).
+// PREFIX SUM: somas em array fixo; aceita negativos.
+// Entrada: n; n valores; q; q pares L R (base 0, inclusivos).
+// O(N) preparo/memória; O(1) consulta. 0 <= L <= R < N.
+// Somas em long long; atualização deixa prefixos desatualizados.
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -11,16 +10,13 @@ int main() {
     int n;
     cin >> n;
     vector<long long> prefixo(n + 1, 0);
-    // Uma posição extra: prefixo[0] = 0 (não somou nada).
 
     for (int i = 0; i < n; i++) {
         long long valor;
         cin >> valor;
         prefixo[i + 1] = prefixo[i] + valor;
     }
-    // valores:        [2, 3, 5, 1]
-    // prefixo:     [0, 2, 5,10,11]
-    // prefixo[i] = soma dos PRIMEIROS i elementos (não inclui posição i).
+    // prefixo[i] = soma de [0,i).
 
     int consultas;
     cin >> consultas;
@@ -28,18 +24,12 @@ int main() {
         int esquerda, direita;
         cin >> esquerda >> direita;
 
-        // Soma até direita MENOS tudo que veio antes de esquerda.
-        // [1,2] => prefixo[3] - prefixo[1] => 10 - 2 => 8.
+        // [L,R] inclusivo: p[R+1] - p[L].
         long long soma = prefixo[direita + 1] - prefixo[esquerda];
         cout << soma << '\n';
         consultas--;
     }
-    // Se a entrada usar índices a partir de 1: subtraia 1 de ambos antes.
-    // Se os valores forem alterados, os prefixos precisam ser atualizados.
-    // Para contar PARES em intervalos, armazene 1 se valor%2==0, senão 0:
-    // prefixo[i+1] = prefixo[i] + (valor%2 == 0);
-    // A mesma subtração devolve quantidade, não soma dos valores originais.
-    // Para média: double media = double(soma) / (direita-esquerda+1);
-    // Não substitua + por min: mínimos não permitem "desfazer" com subtração.
-    // Muitas adições em intervalos, só resultado final? Veja difference-array.cpp.
+    // Input 1-based: --L; --R. Contar pares: acumule (valor%2 == 0).
+    // Média: double(soma)/(R-L+1). Não funciona para mínimo.
+    // Atualizar intervalos, só ver final: difference-array.cpp.
 }
