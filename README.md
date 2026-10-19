@@ -48,7 +48,7 @@ Use Ctrl+F com palavras como `soma`, `janela`, `divisores`, `lower` ou `permuta�
 | Maior distância entre nós de árvore | [Diâmetro](c++/grafos/tree_diameter.cpp) | árvore conexa, sem peso; distância em arestas |
 
 Entradas dos templates: vértices/células **1-based**, convertidos para 0-based.
-BFS não resolve pesos diferentes; Dijkstra/0-1 BFS ainda não estão incluídos.
+BFS não resolve pesos diferentes. [Grafos 2](c++/grafos/grafos-2.md): Dijkstra, Floyd-Warshall, Bellman-Ford, estados, DSU e Kruskal/MST. 0-1 BFS ainda não está incluída.
 
 ## Estruturas e sintaxe
 
