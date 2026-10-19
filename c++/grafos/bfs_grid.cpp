@@ -6,13 +6,19 @@
 using namespace std;
 
 int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
     int n, m;
     cin >> n >> m;
     vector<string> grid(n);
     for (auto &row : grid) cin >> row;
     int sr, sc, tr, tc;
     cin >> sr >> sc >> tr >> tc;
-    --sr; --sc; --tr; --tc;
+    --sr;
+    --sc;
+    --tr;
+    --tc;
     if (grid[sr][sc] == '#' || grid[tr][tc] == '#') {
         cout << -1 << '\n';
         return 0;

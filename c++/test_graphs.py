@@ -206,6 +206,9 @@ def main():
         edges = [(u-1, u) for u in range(1, n)]
         data = graph_input(n, edges)
         expect("bfs", data + "1\n", range(n))
+        expect("dfs", data, [1])
+        expect("cycle_undirected", data, ["NAO"])
+        expect("cycle_undirected", graph_input(n, edges + [(0, n-1)]), ["SIM"])
         expect("bfs_multisource", data + f"2\n1 {n}\n", [min(u, n-1-u) for u in range(n)])
         expect("topological_sort", data, range(1, n+1))
         expect("tree_diameter", f"{n}\n" + data.split("\n", 1)[1], [n-1])

@@ -14,11 +14,16 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int n, m, s, t;
-    cin >> n >> m >> s >> t; --s; --t;
+    cin >> n >> m >> s >> t;
+    --s;
+    --t;
     vector<vector<pair<int, ll>>> adj(n);
     for (int i = 0; i < m; i++) {
-        int u, v; ll w;
-        cin >> u >> v >> w; --u; --v;
+        int u, v;
+        ll w;
+        cin >> u >> v >> w;
+        --u;
+        --v;
         adj[u].push_back({v, w});
     }
 
@@ -28,7 +33,8 @@ int main() {
     dist[s][0] = 0;
     pq.push({0, s, 0});
     while (!pq.empty()) {
-        auto [d, u, used] = pq.top(); pq.pop();
+        auto [d, u, used] = pq.top();
+        pq.pop();
         if (d != dist[u][used]) continue;
         for (auto [v, w] : adj[u]) {
             if (d + w < dist[v][used]) {

@@ -1,5 +1,5 @@
 // MST: conecta todos com menor soma; N-1 arestas. Não é shortest path.
-// KRUSKAL = sort das arestas + DSU; pula arestas que fechariam ciclo.
+// KRUSKAL = sort + DSU (compressão + tamanho); pula ciclos.
 // O(E log E + E*alpha(V) + V) tempo, O(V+E) memória.
 // Entrada: n m; m arestas u v w, NÃO direcionadas, 1-based.
 // Saída: custo ou IMPOSSIVEL se desconectado. Aceita pesos negativos.
@@ -9,19 +9,39 @@ using namespace std;
 using ll = long long;
 
 struct DSU {
-    vector<int> parent, sz;
-    explicit DSU(int n) : parent(n), sz(n, 1) {
-        iota(parent.begin(), parent.end(), 0);
+    vector<int> pai, sz;
+
+    DSU(int n) {
+        pai.resize(n + 1);
+        sz.assign(n + 1, 1);
+        for (int i = 0; i <= n; i++) {
+            pai[i] = i;
+        }
     }
+
     int find(int u) {
-        return parent[u] == u ? u : parent[u] = find(parent[u]);
+        if (pai[u] == u) {
+            return u;
+        }
+        pai[u] = find(pai[u]);
+        return pai[u];
     }
-    bool same(int u, int v) { return find(u) == find(v); }
-    bool unite(int u, int v) {
-        u = find(u); v = find(v);
-        if (u == v) return false;
-        if (sz[u] < sz[v]) swap(u, v);
-        parent[v] = u;
+
+    bool same(int u, int v) {
+        return find(u) == find(v);
+    }
+
+    bool join(int u, int v) {
+        u = find(u);
+        v = find(v);
+
+        if (u == v) {
+            return false;
+        }
+        if (sz[u] < sz[v]) {
+            swap(u, v);
+        }
+        pai[v] = u;
         sz[u] += sz[v];
         return true;
     }
@@ -35,8 +55,9 @@ int main() {
     cin >> n >> m;
     vector<tuple<ll, int, int>> edges; // {peso,u,v}
     for (int i = 0; i < m; i++) {
-        int u, v; ll w;
-        cin >> u >> v >> w; --u; --v;
+        int u, v;
+        ll w;
+        cin >> u >> v >> w; // mantém 1-based, como DSU no slide
         edges.push_back({w, u, v});
     }
     sort(edges.begin(), edges.end());
@@ -44,10 +65,13 @@ int main() {
     ll cost = 0;
     int used = 0;
     for (auto [w, u, v] : edges) {
-        if (!dsu.unite(u, v)) continue; // fecharia ciclo
+        if (!dsu.join(u, v)) continue; // fecharia ciclo
         cost += w;
         if (++used == n - 1) break;
     }
-    if (used != n - 1) cout << "IMPOSSIVEL\n";
-    else cout << cost << '\n';
+    if (used != n - 1) {
+        cout << "IMPOSSIVEL\n";
+    } else {
+        cout << cost << '\n';
+    }
 }

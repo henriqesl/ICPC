@@ -10,7 +10,7 @@ Durante o contest, comece pelo [índice por necessidade](../README.md).
 | [algorithms/](algorithms/README.md) | Sort/comparadores, prefix sum, janelas, diferenças, pilha/deque monotônicas e guloso. |
 | [search/](search/README.md) | Buscas/bounds, two pointers, sweep line, compressão, enumeração e backtracking. |
 | [grafos/](grafos/) | Nove .cpp: [atalhos por necessidade](../README.md#grafos); DFS/BFS, grid, bipartido, topológica, multisource, ciclos e diâmetro. |
-| [../grafos 2/](../grafos%202/) | Na raiz: seis .cpp com caminhos ponderados, estados e MST/DSU. |
+| [grafos 2/](grafos%202/) | Sete .cpp: caminhos ponderados, estados, MST e DSU separado por otimização (compressão / tamanho). |
 | [math/](math/README.md) | Divisores, primalidade, MDC/MMC e potência modular. |
 
 **Como copiar:** recortes dos guias vão no `main()` do template; programas com
@@ -40,6 +40,7 @@ python -B c++/test_library.py
 python -B c++/test_search.py
 python -B c++/test_backtracking.py
 python -B c++/test_graphs.py
+python -B c++/test_graphs_2.py
 ```
 
 Estudo sugerido: basics → fila/pilha → prefix sum → janela fixa → janela variável

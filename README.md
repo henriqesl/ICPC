@@ -38,7 +38,7 @@ Use Ctrl+F com palavras como `soma`, `janela`, `divisores`, `lower` ou `permuta�
 | Preciso... | Abra o .cpp | Confira |
 |---|---|---|
 | Montar adjacência com/sem peso | [Representação](c++/grafos/graph_representation.cpp) | directed: ida; undirected: ida e volta |
-| Visitar / contar componentes | [DFS](c++/grafos/dfs.cpp) | recursão profunda pode estourar pilha |
+| Visitar / contar componentes | [DFS](c++/grafos/dfs.cpp) | pilha explícita; aceita grafos profundos |
 | Menor distância em número de arestas | [BFS](c++/grafos/bfs.cpp) | sem peso; -1 = inalcançável |
 | Menor caminho no labirinto | [BFS grid](c++/grafos/bfs_grid.cpp) | 4 direções; # = parede |
 | Separar vértices em dois grupos sem conflito | [Bipartido](c++/grafos/bipartite.cpp) | testar todas as componentes |
@@ -47,17 +47,17 @@ Use Ctrl+F com palavras como `soma`, `janela`, `divisores`, `lower` ou `permuta�
 | Saber se há ciclo não direcionado | [Ciclo](c++/grafos/cycle_undirected.cpp) | id da aresta do pai; aceita paralelas |
 | Maior distância entre nós de árvore | [Diâmetro](c++/grafos/tree_diameter.cpp) | árvore conexa, sem peso; distância em arestas |
 
-Entradas dos templates: vértices/células **1-based**, convertidos para 0-based.
-BFS não resolve pesos diferentes. [Grafos 2](grafos%202/): códigos com comentários curtos na pasta da raiz. 0-1 BFS ainda não está incluída.
+Entradas **1-based**; os códigos convertem para 0-based, exceto DSU e Kruskal, que mantêm 1-based.
+BFS não resolve pesos diferentes. [Grafos 2](c++/grafos%202/): códigos com comentários curtos dentro de c++. 0-1 BFS ainda não está incluída.
 
 | Grafos 2: preciso... | Abra o .cpp | Confira |
 |---|---|---|
-| Menor caminho, uma origem | [Dijkstra](grafos%202/dijkstra.cpp) | pesos não negativos |
-| Todos os pares / N pequeno + muitas queries | [Floyd-Warshall](grafos%202/floyd_warshall.cpp) | O(V³); sem ciclo negativo |
-| Uma origem, pesos negativos | [Bellman-Ford](grafos%202/bellman_ford.cpp) | ciclo negativo alcançável impede mínimo nos destinos afetados |
-| Unir/testar componentes | [DSU](grafos%202/dsu.cpp) | só adições; não calcula distância |
-| Conectar todos com menor custo total | [Kruskal / MST](grafos%202/kruskal.cpp) | não direcionado; não é shortest path |
-| Vértice + cupom/combustível/chave | [Modelagem por estados](grafos%202/modelagem_estados.cpp) | exemplo com um cupom; não basta dist[v] |
+| Menor caminho, uma origem | [Dijkstra](c++/grafos%202/dijkstra.cpp) | pesos não negativos |
+| Todos os pares / N pequeno + muitas queries | [Floyd-Warshall](c++/grafos%202/floyd_warshall.cpp) | O(V³); sem ciclo negativo |
+| Uma origem, pesos negativos | [Bellman-Ford](c++/grafos%202/bellman_ford.cpp) | ciclo negativo alcançável impede mínimo nos destinos afetados |
+| Unir/testar componentes | [Compressão](c++/grafos%202/dsu_path_compression.cpp) / [tamanho](c++/grafos%202/dsu_union_by_size.cpp) | otimizações separadas; Kruskal usa ambas |
+| Conectar todos com menor custo total | [Kruskal / MST](c++/grafos%202/kruskal.cpp) | não direcionado; não é shortest path |
+| Vértice + cupom/combustível/chave | [Modelagem por estados](c++/grafos%202/modelagem_estados.cpp) | exemplo com um cupom; não basta dist[v] |
 
 ## Estruturas e sintaxe
 

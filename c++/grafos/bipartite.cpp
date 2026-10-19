@@ -6,13 +6,17 @@
 using namespace std;
 
 int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
     int n, m;
     cin >> n >> m;
     vector<vector<int>> adj(n);
     for (int i = 0; i < m; i++) {
         int u, v;
         cin >> u >> v;
-        --u; --v;
+        --u;
+        --v;
         adj[u].push_back(v);
         adj[v].push_back(u);
     }
@@ -28,7 +32,7 @@ int main() {
             q.pop();
             for (int v : adj[u]) {
                 if (color[v] == -1) {
-                    color[v] = color[u] ^ 1;
+                    color[v] = 1 - color[u]; // alterna 0 e 1
                     q.push(v);
                 } else if (color[v] == color[u]) {
                     cout << "NAO\n";

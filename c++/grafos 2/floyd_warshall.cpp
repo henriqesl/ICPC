@@ -18,8 +18,11 @@ int main() {
     vector<vector<ll>> dist(n, vector<ll>(n, INF));
     for (int i = 0; i < n; i++) dist[i][i] = 0;
     for (int e = 0; e < m; e++) {
-        int u, v; ll w;
-        cin >> u >> v >> w; --u; --v;
+        int u, v;
+        ll w;
+        cin >> u >> v >> w;
+        --u;
+        --v;
         dist[u][v] = min(dist[u][v], w);
         // dist[v][u] = min(dist[v][u], w); // não direcionado
     }
@@ -33,7 +36,9 @@ int main() {
         }
     while (q--) {
         int u, v;
-        cin >> u >> v; --u; --v;
+        cin >> u >> v;
+        --u;
+        --v;
         if (dist[u][v] == INF) cout << "INF\n";
         else cout << dist[u][v] << '\n';
     }

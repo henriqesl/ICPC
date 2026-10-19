@@ -6,6 +6,9 @@
 using namespace std;
 
 int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
     int n, m;
     cin >> n >> m;
     vector<vector<int>> adj(n);
@@ -13,7 +16,8 @@ int main() {
     for (int i = 0; i < m; i++) {
         int u, v;
         cin >> u >> v;
-        --u; --v;
+        --u;
+        --v;
         adj[u].push_back(v); // apenas u -> v
         indegree[v]++;
     }

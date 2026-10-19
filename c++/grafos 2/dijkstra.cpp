@@ -17,8 +17,11 @@ int main() {
     --s;
     vector<vector<pair<int, ll>>> adj(n);
     for (int i = 0; i < m; i++) {
-        int u, v; ll w;
-        cin >> u >> v >> w; --u; --v;
+        int u, v;
+        ll w;
+        cin >> u >> v >> w;
+        --u;
+        --v;
         adj[u].push_back({v, w}); // direcionado
         // adj[v].push_back({u, w}); // não direcionado
     }
@@ -27,7 +30,8 @@ int main() {
     dist[s] = 0;
     pq.push({0, s});
     while (!pq.empty()) {
-        auto [d, u] = pq.top(); pq.pop();
+        auto [d, u] = pq.top();
+        pq.pop();
         if (d != dist[u]) continue; // entrada antiga
         for (auto [v, w] : adj[u]) {
             ll nd = d + w;

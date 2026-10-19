@@ -86,7 +86,8 @@ def main():
         ("grafos 2/bellman_ford.cpp", "3 2 1 1 2 -4 2 3 1", "0 -4 -3"),
         ("grafos 2/bellman_ford.cpp", "2 2 1 1 2 -1 2 1 0", "CICLO NEGATIVO"),
         ("grafos 2/bellman_ford.cpp", "3 1 1 2 2 -1", "0 INF INF"),
-        ("grafos 2/dsu.cpp", "3 5 2 1 2 1 1 2 2 1 2 1 2 3 2 1 3", "NAO SIM SIM"),
+        ("grafos 2/dsu_path_compression.cpp", "3 5 2 1 2 1 1 2 2 1 2 1 2 3 2 1 3", "NAO SIM SIM"),
+        ("grafos 2/dsu_union_by_size.cpp", "3 5 2 1 2 1 1 2 2 1 2 1 2 3 2 1 3", "NAO SIM SIM"),
         ("grafos 2/kruskal.cpp", "3 3 1 2 -8 2 3 3 1 3 9", "-5"),
         ("grafos 2/kruskal.cpp", "3 0", "IMPOSSIVEL"),
         ("grafos 2/modelagem_estados.cpp", "3 3 1 3 1 2 8 2 3 2 1 3 20", "6"),
@@ -96,10 +97,9 @@ def main():
     checks = 0
     with tempfile.TemporaryDirectory(prefix="icpc-cpp-") as temp:
         binaries = {}
-        sources = sorted([*ROOT.rglob("*.cpp"), *(ROOT.parent / "grafos 2").glob("*.cpp")])
+        sources = sorted(ROOT.rglob("*.cpp"))
         for i, source in enumerate(sources):
-            relative = (source.relative_to(ROOT).as_posix() if ROOT in source.parents
-                        else "grafos 2/" + source.name)
+            relative = source.relative_to(ROOT).as_posix()
             executable = "int main(" in source.read_text(encoding="utf-8")
             output = Path(temp) / (str(i) + (".exe" if executable else ".o"))
             command = [compiler, "-std=c++17", "-Wall", "-Wextra", "-Wpedantic",

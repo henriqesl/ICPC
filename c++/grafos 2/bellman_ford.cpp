@@ -14,11 +14,15 @@ int main() {
     cin.tie(nullptr);
 
     int n, m, s;
-    cin >> n >> m >> s; --s;
+    cin >> n >> m >> s;
+    --s;
     vector<tuple<int, int, ll>> edges;
     for (int i = 0; i < m; i++) {
-        int u, v; ll w;
-        cin >> u >> v >> w; --u; --v;
+        int u, v;
+        ll w;
+        cin >> u >> v >> w;
+        --u;
+        --v;
         edges.push_back({u, v, w}); // direcionado
     }
     vector<ll> dist(n, INF);

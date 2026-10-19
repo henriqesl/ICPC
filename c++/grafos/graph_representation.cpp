@@ -1,18 +1,22 @@
 // LISTA DE ADJACÊNCIA: copie só a representação necessária.
 // O(V + E) tempo/memória; vértices 1-based -> 0-based.
-// Demo: n m; m linhas u v w (peso int). Só constrói, sem saída.
+// Demo: n m; m linhas u v w (peso long long). Só constrói, sem saída.
 // Problema sem peso: leia apenas u v e retire weighted.
 #include <bits/stdc++.h>
 using namespace std;
 
 int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
     int n, m;
     cin >> n >> m;
     vector<vector<int>> adj(n), directed(n);
-    vector<vector<pair<int, int>>> weighted(n);
+    vector<vector<pair<int, long long>>> weighted(n);
 
     for (int i = 0; i < m; i++) {
-        int u, v, w;
+        int u, v;
+        long long w;
         cin >> u >> v >> w;
         --u;
         --v;
