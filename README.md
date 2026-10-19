@@ -48,7 +48,16 @@ Use Ctrl+F com palavras como `soma`, `janela`, `divisores`, `lower` ou `permuta�
 | Maior distância entre nós de árvore | [Diâmetro](c++/grafos/tree_diameter.cpp) | árvore conexa, sem peso; distância em arestas |
 
 Entradas dos templates: vértices/células **1-based**, convertidos para 0-based.
-BFS não resolve pesos diferentes. [Grafos 2](c++/grafos/grafos-2.md): Dijkstra, Floyd-Warshall, Bellman-Ford, estados, DSU e Kruskal/MST. 0-1 BFS ainda não está incluída.
+BFS não resolve pesos diferentes. [Grafos 2](grafos%202/): códigos com comentários curtos na pasta da raiz. 0-1 BFS ainda não está incluída.
+
+| Grafos 2: preciso... | Abra o .cpp | Confira |
+|---|---|---|
+| Menor caminho, uma origem | [Dijkstra](grafos%202/dijkstra.cpp) | pesos não negativos |
+| Todos os pares / N pequeno + muitas queries | [Floyd-Warshall](grafos%202/floyd_warshall.cpp) | O(V³); sem ciclo negativo |
+| Uma origem, pesos negativos | [Bellman-Ford](grafos%202/bellman_ford.cpp) | ciclo negativo alcançável impede mínimo nos destinos afetados |
+| Unir/testar componentes | [DSU](grafos%202/dsu.cpp) | só adições; não calcula distância |
+| Conectar todos com menor custo total | [Kruskal / MST](grafos%202/kruskal.cpp) | não direcionado; não é shortest path |
+| Vértice + cupom/combustível/chave | [Modelagem por estados](grafos%202/modelagem_estados.cpp) | exemplo com um cupom; não basta dist[v] |
 
 ## Estruturas e sintaxe
 

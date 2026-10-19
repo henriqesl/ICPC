@@ -9,7 +9,8 @@ Durante o contest, comece pelo [índice por necessidade](../README.md).
 | [data-structures/](data-structures/README.md) | Fila, pilha, deque, heaps e recorte de mediana. |
 | [algorithms/](algorithms/README.md) | Sort/comparadores, prefix sum, janelas, diferenças, pilha/deque monotônicas e guloso. |
 | [search/](search/README.md) | Buscas/bounds, two pointers, sweep line, compressão, enumeração e backtracking. |
-| [grafos/](grafos/) | Nove .cpp: [atalhos por necessidade](../README.md#grafos); DFS/BFS, grid, bipartido, topológica, multisource, ciclos e diâmetro. [Grafos 2](grafos/grafos-2.md): caminhos ponderados, estados e MST/DSU. |
+| [grafos/](grafos/) | Nove .cpp: [atalhos por necessidade](../README.md#grafos); DFS/BFS, grid, bipartido, topológica, multisource, ciclos e diâmetro. |
+| [../grafos 2/](../grafos%202/) | Na raiz: seis .cpp com caminhos ponderados, estados e MST/DSU. |
 | [math/](math/README.md) | Divisores, primalidade, MDC/MMC e potência modular. |
 
 **Como copiar:** recortes dos guias vão no `main()` do template; programas com

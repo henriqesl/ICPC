@@ -7,6 +7,7 @@ import re
 import subprocess
 import sys
 import unittest
+from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[2]
 PYTHON = ROOT / "python"
@@ -169,6 +170,7 @@ class LibraryTests(unittest.TestCase):
             for target in re.findall(r"\]\(([^)]+)\)", document):
                 if "://" not in target:
                     filename, _, fragment = target.partition("#")
+                    filename = unquote(filename)
                     destination = path.parent / filename if filename else path
                     self.assertTrue(destination.exists(), f"{path}: {target}")
                     if fragment:

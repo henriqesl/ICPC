@@ -80,12 +80,26 @@ def main():
         ("algorithms/monotonic-deque.cpp", "5 3 -5 -2 -7 -1 -1", "-2 -1 -1"),
         ("algorithms/monotonic-deque.cpp", "3 1 4 -2 4", "4 -2 4"),
         ("algorithms/monotonic-deque.cpp", "3 3 4 -2 4", "4"),
+        ("grafos 2/dijkstra.cpp", "3 2 1 1 2 4000000000 2 3 5000000000", "0 4000000000 9000000000"),
+        ("grafos 2/dijkstra.cpp", "2 0 1", "0 INF"),
+        ("grafos 2/floyd_warshall.cpp", "3 3 3 1 2 9 1 2 3 2 3 -1 1 3 3 1 2 2", "2 INF 0"),
+        ("grafos 2/bellman_ford.cpp", "3 2 1 1 2 -4 2 3 1", "0 -4 -3"),
+        ("grafos 2/bellman_ford.cpp", "2 2 1 1 2 -1 2 1 0", "CICLO NEGATIVO"),
+        ("grafos 2/bellman_ford.cpp", "3 1 1 2 2 -1", "0 INF INF"),
+        ("grafos 2/dsu.cpp", "3 5 2 1 2 1 1 2 2 1 2 1 2 3 2 1 3", "NAO SIM SIM"),
+        ("grafos 2/kruskal.cpp", "3 3 1 2 -8 2 3 3 1 3 9", "-5"),
+        ("grafos 2/kruskal.cpp", "3 0", "IMPOSSIVEL"),
+        ("grafos 2/modelagem_estados.cpp", "3 3 1 3 1 2 8 2 3 2 1 3 20", "6"),
+        ("grafos 2/modelagem_estados.cpp", "1 0 1 1", "0"),
+        ("grafos 2/modelagem_estados.cpp", "2 0 1 2", "INF"),
     ]
     checks = 0
     with tempfile.TemporaryDirectory(prefix="icpc-cpp-") as temp:
         binaries = {}
-        for i, source in enumerate(sorted(ROOT.rglob("*.cpp"))):
-            relative = source.relative_to(ROOT).as_posix()
+        sources = sorted([*ROOT.rglob("*.cpp"), *(ROOT.parent / "grafos 2").glob("*.cpp")])
+        for i, source in enumerate(sources):
+            relative = (source.relative_to(ROOT).as_posix() if ROOT in source.parents
+                        else "grafos 2/" + source.name)
             executable = "int main(" in source.read_text(encoding="utf-8")
             output = Path(temp) / (str(i) + (".exe" if executable else ".o"))
             command = [compiler, "-std=c++17", "-Wall", "-Wextra", "-Wpedantic",
