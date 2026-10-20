@@ -181,7 +181,39 @@ def main():
     assert(d.sz[d.find(4)] == 4); // união repetida não altera tamanho
     """
         }
+        size_probe = """
+    DSU sizes(12);
+    for (int u = 1; u <= 12; u++) assert(sizes.size(u) == 1);
+    sizes.join(1, 2);
+    sizes.join(3, 4);
+    sizes.join(1, 3);
+    assert(sizes.size(4) == 4); // consulta por um vértice que não é raiz
+    sizes.join(4, 2);
+    sizes.join(4, 4);
+    assert(sizes.size(4) == 4); // uniões repetidas não contam novamente
+    assert(sizes.size(12) == 1);
+    assert(sizes.sz.size() == 13); // tamanho do vetor não é do componente
+
+    mt19937 rng(20261020);
+    DSU random_dsu(12);
+    vector<int> group(13);
+    iota(group.begin(), group.end(), 0);
+    for (int rep = 0; rep < 100; rep++) {
+        int u = 1 + rng() % 12, v = 1 + rng() % 12;
+        random_dsu.join(u, v);
+        int old_group = group[v], new_group = group[u];
+        for (int x = 1; x <= 12; x++) {
+            if (group[x] == old_group) group[x] = new_group;
+        }
+        for (int x = 1; x <= 12; x++) {
+            int expected = count(group.begin() + 1, group.end(), group[x]);
+            assert(random_dsu.size(x) == expected);
+        }
+    }
+    """
         for index, probe in probes.items():
+            if index in (4, 6):
+                probe += size_probe
             definition = sources[index].split("int main()", 1)[0]
             harness = definition + "\n#include <cassert>\nint main() {\n" + probe + "\n}\n"
             executable = compile_source(compiler, Path(tmp), f"dsu-invariants-{index}", harness)

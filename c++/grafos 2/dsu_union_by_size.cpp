@@ -29,6 +29,12 @@ struct DSU {
         return find(u) == find(v);
     }
 
+    // dsu.size(u): quantidade de vértices no componente de u.
+    // Busca a raiz; sz.size() seria o número de posições do vetor.
+    int size(int u) {
+        return sz[find(u)];
+    }
+
     void join(int u, int v) {
         u = find(u);
         v = find(v);
