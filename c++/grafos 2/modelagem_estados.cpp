@@ -1,7 +1,8 @@
 // ESTADOS: mesmo vértice, situações diferentes -> dist[v][estado].
-// Exemplo: caminho mínimo com ATÉ um cupom de 50% (w/2, piso).
-// (u,usado)->(v,usado): custo w; (u,0)->(v,1): custo w/2.
-// Dijkstra: O(V + E log(E+1)) tempo, O(V+E) memória, para 2 camadas.
+// Como no slide: ATÉ 10 cupons de 50% (custo/2, piso); um por travessia.
+// (cur,cupons)->(viz,cupons): custo; usar cupom leva a cupons+1.
+// K cupons = K+1 camadas (inclui zero). Aqui, K=10; altere MAX_CUPONS.
+// V'=(K+1)V, E'=O((K+1)E); Dijkstra O(V'+E' log(E'+1)), memória O(V'+E').
 // Entrada: n m s t; m arestas u v w, direcionadas, 1-based; w >= 0.
 // Saída: menor custo ou INF. Pesos/distâncias finitas < INF.
 // Outros estados: combustível, obstáculos, máscara de chaves, dia/noite.
@@ -9,45 +10,57 @@
 using namespace std;
 using ll = long long;
 constexpr ll INF = numeric_limits<ll>::max() / 4;
+constexpr int MAX_CUPONS = 10;
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int n, m, s, t;
     cin >> n >> m >> s >> t;
-    --s;
-    --t;
-    vector<vector<pair<int, ll>>> adj(n);
+    vector<vector<pair<int, ll>>> adj(n + 1);
     for (int i = 0; i < m; i++) {
         int u, v;
         ll w;
         cin >> u >> v >> w;
-        --u;
-        --v;
         adj[u].push_back({v, w});
     }
 
-    vector<array<ll, 2>> dist(n, {INF, INF});
-    using State = tuple<ll, int, int>; // {distância,vértice,usado}
-    priority_queue<State, vector<State>, greater<State>> pq;
+    vector<vector<ll>> dist(n + 1, vector<ll>(MAX_CUPONS + 1, INF));
+    priority_queue<tuple<ll, int, int>> pq; // {-distância,vértice,cupons usados}
     dist[s][0] = 0;
     pq.push({0, s, 0});
     while (!pq.empty()) {
-        auto [d, u, used] = pq.top();
+        auto [total, cur, cupons] = pq.top();
         pq.pop();
-        if (d != dist[u][used]) continue;
-        for (auto [v, w] : adj[u]) {
-            if (d + w < dist[v][used]) {
-                dist[v][used] = d + w;
-                pq.push({dist[v][used], v, used});
+        total = -total;
+
+        if (total > dist[cur][cupons]) {
+            continue;
+        }
+
+        for (auto [viz, custo] : adj[cur]) {
+            // Sem cupom: permanece na mesma camada.
+            if (dist[viz][cupons] > total + custo) {
+                dist[viz][cupons] = total + custo;
+                pq.push({-dist[viz][cupons], viz, cupons});
             }
-            if (!used && d + w / 2 < dist[v][1]) {
-                dist[v][1] = d + w / 2;
-                pq.push({dist[v][1], v, 1});
+
+            // Com cupom: avança uma camada.
+            if (cupons < MAX_CUPONS && dist[viz][cupons + 1] > total + custo / 2) {
+                dist[viz][cupons + 1] = total + custo / 2;
+                pq.push({-dist[viz][cupons + 1], viz, cupons + 1});
             }
         }
     }
-    ll answer = min(dist[t][0], dist[t][1]); // obrigatório: só dist[t][1]
-    if (answer == INF) cout << "INF\n";
-    else cout << answer << '\n';
+
+    ll resp = INF;
+    for (int cupons = 0; cupons <= MAX_CUPONS; cupons++) {
+        resp = min(resp, dist[t][cupons]); // ATÉ K: melhor entre as camadas
+    }
+    // Exatamente K cupons: use somente dist[t][MAX_CUPONS].
+    if (resp == INF) {
+        cout << "INF\n";
+    } else {
+        cout << resp << '\n';
+    }
 }

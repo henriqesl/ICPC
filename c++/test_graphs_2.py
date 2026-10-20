@@ -91,7 +91,9 @@ def main():
             d=floyd(n,edges)
             cycle=any(d[s][v] is not None and d[v][v]<0 for v in range(n))
             expect(2,input_graph(n,edges,s),["CICLO","NEGATIVO"] if cycle else output(d[s]))
-        trees=[(1,[]),(3,[]),(3,[(0,1,4000000000),(1,2,5000000000)]),
+        trees=[(1,[]),(1,[(0,0,-99)]),(3,[]),
+               (4,[(0,1,1),(1,2,1),(2,3,1),(3,0,1),(0,1,1)]),
+               (3,[(0,1,4000000000),(1,2,5000000000)]),
                (3,[(0,1,-8),(0,1,-4),(1,2,3),(0,2,9),(2,2,-99)])]
         for _ in range(40):
             n=rng.randint(1,6)
@@ -119,30 +121,41 @@ def main():
             expect(3,data,expected)
             expect(6,data,expected)
         coupon_cases=[(1,[],0,0),(2,[],0,1),(2,[(0,1,7)],0,1),
-                      (3,[(0,1,8),(1,2,2),(0,2,20)],0,2)]
+                      (3,[(0,1,8),(1,2,2),(0,2,20)],0,2),
+                      (12,[(u,u+1,3) for u in range(11)],0,11),
+                      (3,[(0,0,0),(0,1,9),(1,2,5)],0,2),
+                      (3,[(0,1,4000000000),(1,2,5000000000)],0,2)]
         for _ in range(45):
             n=rng.randint(1,6)
             edges=[(rng.randrange(n),rng.randrange(n),rng.randrange(30)) for _ in range(rng.randrange(16))]
             coupon_cases.append((n,edges,rng.randrange(n),rng.randrange(n)))
         for n,edges,s,t in coupon_cases:
+            layers=11 # 0 a 10 cupons, como no slide
             expanded=[]
             for u,v,w in edges:
-                expanded.extend([(2*u,2*v,w),(2*u+1,2*v+1,w),(2*u,2*v+1,w//2)])
-            ds=floyd(2*n,expanded)[2*s]
-            reachable=[ds[2*t+c] for c in (0,1) if ds[2*t+c] is not None]
+                for c in range(layers):
+                    expanded.append((layers*u+c,layers*v+c,w))
+                    if c+1 < layers:
+                        expanded.append((layers*u+c,layers*v+c+1,w//2))
+            ds=floyd(layers*n,expanded)[layers*s]
+            reachable=[ds[layers*t+c] for c in range(layers) if ds[layers*t+c] is not None]
             expected=[str(min(reachable))] if reachable else ["INF"]
             data=f"{n} {len(edges)} {s+1} {t+1}\n"+"".join(f"{u+1} {v+1} {w}\n" for u,v,w in edges)
             expect(5,data,expected)
 
         probes = {
             3: """
-    DSU d(20000);
-    assert(d.pai.size() == 20001);
-    for (int i = 1; i < 20000; i++) assert(d.join(i + 1, i));
+    // A versão recursiva isolada tem profundidade linear antes de comprimir.
+    DSU d(1000);
+    assert(d.pai.size() == 1001);
+    static_assert(is_same_v<decltype(d.join(1, 2)), void>);
+    for (int i = 1; i < 1000; i++) d.join(i + 1, i);
     assert(d.pai[1] == 2);
-    assert(d.find(1) == 20000);
-    for (int i = 1; i <= 20000; i++) assert(d.pai[i] == 20000);
-    assert(!d.join(1, 20000));
+    assert(d.find(1) == 1000);
+    for (int i = 1; i <= 1000; i++) assert(d.pai[i] == 1000);
+    auto before = d.pai;
+    d.join(1, 1000);
+    assert(d.pai == before);
     """,
             6: """
     DSU d(8);
@@ -153,7 +166,7 @@ def main():
     assert(d.pai == before); // sem compressao
     assert(d.sz[d.find(4)] == 4);
     DSU large(20000);
-    for (int i = 1; i < 20000; i++) assert(large.join(i + 1, i));
+    for (int i = 1; i < 20000; i++) large.join(i + 1, i);
     assert(large.same(1, 20000));
     assert(large.sz[large.find(20000)] == 20000);
     """,
@@ -164,7 +177,8 @@ def main():
     assert(d.find(4) == 1);
     assert(d.pai[4] == 1); // comprime
     assert(d.sz[d.find(4)] == 4);
-    assert(!d.join(4, 2));
+    d.join(4, 2);
+    assert(d.sz[d.find(4)] == 4); // união repetida não altera tamanho
     """
         }
         for index, probe in probes.items():
@@ -178,11 +192,11 @@ def main():
         edges = [(u, u+1, 1) for u in range(n-1)]
         expect(0, input_graph(n, edges), list(map(str, range(n))))
         data = f"{n} {len(edges)} 1 {n}\n" + "".join(f"{u+1} {v+1} {w}\n" for u,v,w in edges)
-        expect(5, data, [str(n-2)])
+        expect(5, data, [str(n-1-10)])
         data = f"{n} {len(edges)}\n" + "".join(f"{u+1} {v+1} {w}\n" for u,v,w in edges)
         expect(4, data, [str(n-1)])
 
-    print(f"OK: 7 programas, {checks} execucoes; DSU separado, caminhos, MST e estados.", flush=True)
+    print(f"OK: 7 programas, {checks} execucoes; DSU separado, caminhos, MST e estados (10 cupons).", flush=True)
 
 
 if __name__ == "__main__":

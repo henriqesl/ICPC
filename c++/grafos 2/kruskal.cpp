@@ -31,21 +31,29 @@ struct DSU {
         return find(u) == find(v);
     }
 
-    bool join(int u, int v) {
+    void join(int u, int v) {
         u = find(u);
         v = find(v);
 
         if (u == v) {
-            return false;
+            return;
         }
-        if (sz[u] < sz[v]) {
+        if (sz[v] > sz[u]) {
             swap(u, v);
         }
         pai[v] = u;
         sz[u] += sz[v];
-        return true;
     }
 };
+
+struct Aresta {
+    int u, v;
+    ll c; // custo
+};
+
+bool compAresta(const Aresta& a, const Aresta& b) {
+    return a.c < b.c;
+}
 
 int main() {
     ios::sync_with_stdio(false);
@@ -53,25 +61,30 @@ int main() {
 
     int n, m;
     cin >> n >> m;
-    vector<tuple<ll, int, int>> edges; // {peso,u,v}
+    vector<Aresta> arestas;
     for (int i = 0; i < m; i++) {
         int u, v;
         ll w;
         cin >> u >> v >> w; // mantém 1-based, como DSU no slide
-        edges.push_back({w, u, v});
+        arestas.push_back({u, v, w});
     }
-    sort(edges.begin(), edges.end());
+
+    sort(arestas.begin(), arestas.end(), compAresta);
     DSU dsu(n);
-    ll cost = 0;
-    int used = 0;
-    for (auto [w, u, v] : edges) {
-        if (!dsu.join(u, v)) continue; // fecharia ciclo
-        cost += w;
-        if (++used == n - 1) break;
+    ll resp = 0;
+    int escolhidas = 0;
+
+    for (auto a : arestas) {
+        if (dsu.find(a.u) != dsu.find(a.v)) { // não forma ciclo
+            resp += a.c;
+            dsu.join(a.u, a.v);
+            escolhidas++;
+        }
     }
-    if (used != n - 1) {
+
+    if (escolhidas != n - 1) {
         cout << "IMPOSSIVEL\n";
     } else {
-        cout << cost << '\n';
+        cout << resp << '\n';
     }
 }

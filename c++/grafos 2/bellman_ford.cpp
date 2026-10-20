@@ -27,26 +27,33 @@ int main() {
     }
     vector<ll> dist(n, INF);
     dist[s] = 0;
-    for (int it = 0; it < n - 1; it++) {
-        bool changed = false;
+    for (int rep = 0; rep < n - 1; rep++) {
         for (auto [u, v, w] : edges) {
-            if (dist[u] == INF) continue;
-            if (dist[u] + w < dist[v]) {
-                dist[v] = dist[u] + w;
-                changed = true;
+            if (dist[u] == INF) {
+                continue; // não propague de um vértice inalcançável
             }
+            dist[v] = min(dist[v], dist[u] + w);
         }
-        if (!changed) break;
     }
+
+    bool cicloNegativo = false;
     for (auto [u, v, w] : edges) { // iteração extra
         if (dist[u] != INF && dist[u] + w < dist[v]) {
-            cout << "CICLO NEGATIVO\n";
-            return 0;
+            cicloNegativo = true;
         }
     }
+
+    if (cicloNegativo) {
+        cout << "CICLO NEGATIVO\n";
+        return 0;
+    }
+
     for (ll d : dist) {
-        if (d == INF) cout << "INF ";
-        else cout << d << ' ';
+        if (d == INF) {
+            cout << "INF ";
+        } else {
+            cout << d << ' ';
+        }
     }
     cout << '\n';
 }

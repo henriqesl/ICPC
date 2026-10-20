@@ -47,7 +47,8 @@ Use Ctrl+F com palavras como `soma`, `janela`, `divisores`, `lower` ou `permuta�
 | Saber se há ciclo não direcionado | [Ciclo](c++/grafos/cycle_undirected.cpp) | id da aresta do pai; aceita paralelas |
 | Maior distância entre nós de árvore | [Diâmetro](c++/grafos/tree_diameter.cpp) | árvore conexa, sem peso; distância em arestas |
 
-Entradas **1-based**; os códigos convertem para 0-based, exceto DSU e Kruskal, que mantêm 1-based.
+Entradas **1-based**. Em `grafos/` e Bellman-Ford, os códigos convertem para 0-based.
+Os demais de `grafos 2/` mantêm 1-based, como nos slides.
 BFS não resolve pesos diferentes. [Grafos 2](c++/grafos%202/): códigos com comentários curtos dentro de c++. 0-1 BFS ainda não está incluída.
 
 | Grafos 2: preciso... | Abra o .cpp | Confira |
@@ -55,9 +56,9 @@ BFS não resolve pesos diferentes. [Grafos 2](c++/grafos%202/): códigos com com
 | Menor caminho, uma origem | [Dijkstra](c++/grafos%202/dijkstra.cpp) | pesos não negativos |
 | Todos os pares / N pequeno + muitas queries | [Floyd-Warshall](c++/grafos%202/floyd_warshall.cpp) | O(V³); sem ciclo negativo |
 | Uma origem, pesos negativos | [Bellman-Ford](c++/grafos%202/bellman_ford.cpp) | ciclo negativo alcançável impede mínimo nos destinos afetados |
-| Unir/testar componentes | [Compressão](c++/grafos%202/dsu_path_compression.cpp) / [tamanho](c++/grafos%202/dsu_union_by_size.cpp) | otimizações separadas; Kruskal usa ambas |
+| Unir/testar componentes | [Compressão](c++/grafos%202/dsu_path_compression.cpp) / [tamanho](c++/grafos%202/dsu_union_by_size.cpp) | separadas; compressão recursiva isolada pode ter pilha profunda; Kruskal usa ambas |
 | Conectar todos com menor custo total | [Kruskal / MST](c++/grafos%202/kruskal.cpp) | não direcionado; não é shortest path |
-| Vértice + cupom/combustível/chave | [Modelagem por estados](c++/grafos%202/modelagem_estados.cpp) | exemplo com um cupom; não basta dist[v] |
+| Vértice + cupom/combustível/chave | [Modelagem por estados](c++/grafos%202/modelagem_estados.cpp) | até 10 cupons como na aula; altere MAX_CUPONS; não basta dist[v] |
 
 ## Estruturas e sintaxe
 

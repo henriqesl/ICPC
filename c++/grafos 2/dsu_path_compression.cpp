@@ -1,7 +1,8 @@
 // DSU: otimização 1 do slide; SOMENTE compressão de caminhos.
 // Find encurta caminhos; join apenas liga as raízes, sem comparar tamanhos.
 // O(log V) amortizado; find isolado pode custar O(V). Memória O(V).
-// Find iterativo: não depende da pilha de recursão.
+// Find recursivo como no slide; cadeias profundas podem estourar a pilha.
+// Para N grande, prefira também união por tamanho (DSU de kruskal.cpp).
 // Entrada: n q; q comandos tipo u v, 1-based: 1=join, 2=same.
 // Saída: SIM/NAO nas consultas. DSU não remove arestas.
 #include <bits/stdc++.h>
@@ -18,32 +19,25 @@ struct DSU {
     }
 
     int find(int u) {
-        int raiz = u;
-        while (pai[raiz] != raiz) {
-            raiz = pai[raiz];
+        if (pai[u] == u) {
+            return u;
         }
-
-        while (u != raiz) { // aponta o caminho inteiro para a raiz
-            int proximo = pai[u];
-            pai[u] = raiz;
-            u = proximo;
-        }
-        return raiz;
+        pai[u] = find(pai[u]); // salva a raiz: compressão de caminhos
+        return pai[u];
     }
 
     bool same(int u, int v) {
         return find(u) == find(v);
     }
 
-    bool join(int u, int v) {
+    void join(int u, int v) {
         u = find(u);
         v = find(v);
 
         if (u == v) {
-            return false;
+            return;
         }
         pai[v] = u;
-        return true;
     }
 };
 

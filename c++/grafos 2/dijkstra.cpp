@@ -1,5 +1,6 @@
 // DIJKSTRA: menor caminho de uma origem; pesos >= 0. Não aceita negativos.
-// O(V + E log(E+1)) tempo, O(V+E) memória; min-heap.
+// O(V + E log(E+1)) tempo, O(V+E) memória.
+// Como no slide: priority_queue padrão + distância negativa simula min-heap.
 // Entrada: n m s; m arestas u v w, direcionadas; vértices 1-based.
 // Saída: distâncias ou INF. Peso e distâncias finitas < INF.
 // Negativos: bellman_ford.cpp. Todos os pares, N pequeno: floyd_warshall.cpp.
@@ -14,36 +15,40 @@ int main() {
 
     int n, m, s;
     cin >> n >> m >> s;
-    --s;
-    vector<vector<pair<int, ll>>> adj(n);
+    vector<vector<pair<int, ll>>> adj(n + 1);
     for (int i = 0; i < m; i++) {
         int u, v;
         ll w;
         cin >> u >> v >> w;
-        --u;
-        --v;
         adj[u].push_back({v, w}); // direcionado
         // adj[v].push_back({u, w}); // não direcionado
     }
-    vector<ll> dist(n, INF);
-    priority_queue<pair<ll, int>, vector<pair<ll, int>>, greater<pair<ll, int>>> pq;
+    vector<ll> dist(n + 1, INF);
+    priority_queue<pair<ll, int>> pq; // {-distância, vértice}
     dist[s] = 0;
     pq.push({0, s});
     while (!pq.empty()) {
-        auto [d, u] = pq.top();
+        auto [total, cur] = pq.top();
         pq.pop();
-        if (d != dist[u]) continue; // entrada antiga
-        for (auto [v, w] : adj[u]) {
-            ll nd = d + w;
-            if (nd < dist[v]) {
-                dist[v] = nd;
-                pq.push({nd, v});
+        total = -total; // volta à distância real
+
+        if (dist[cur] < total) {
+            continue; // já encontramos um caminho melhor
+        }
+
+        for (auto [viz, custo] : adj[cur]) {
+            if (dist[viz] > total + custo) {
+                dist[viz] = total + custo;
+                pq.push({-dist[viz], viz});
             }
         }
     }
-    for (ll d : dist) {
-        if (d == INF) cout << "INF ";
-        else cout << d << ' ';
+    for (int u = 1; u <= n; u++) {
+        if (dist[u] == INF) {
+            cout << "INF ";
+        } else {
+            cout << dist[u] << ' ';
+        }
     }
     cout << '\n';
 }

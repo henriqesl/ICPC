@@ -90,7 +90,7 @@ def main():
         ("grafos 2/dsu_union_by_size.cpp", "3 5 2 1 2 1 1 2 2 1 2 1 2 3 2 1 3", "NAO SIM SIM"),
         ("grafos 2/kruskal.cpp", "3 3 1 2 -8 2 3 3 1 3 9", "-5"),
         ("grafos 2/kruskal.cpp", "3 0", "IMPOSSIVEL"),
-        ("grafos 2/modelagem_estados.cpp", "3 3 1 3 1 2 8 2 3 2 1 3 20", "6"),
+        ("grafos 2/modelagem_estados.cpp", "3 3 1 3 1 2 8 2 3 2 1 3 20", "5"),
         ("grafos 2/modelagem_estados.cpp", "1 0 1 1", "0"),
         ("grafos 2/modelagem_estados.cpp", "2 0 1 2", "INF"),
     ]

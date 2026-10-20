@@ -19,29 +19,28 @@ struct DSU {
     }
 
     int find(int u) {
-        while (pai[u] != u) {
-            u = pai[u];
+        if (pai[u] == u) {
+            return u;
         }
-        return u;
+        return find(pai[u]); // sem salvar: NÃO comprime caminhos
     }
 
     bool same(int u, int v) {
         return find(u) == find(v);
     }
 
-    bool join(int u, int v) {
+    void join(int u, int v) {
         u = find(u);
         v = find(v);
 
         if (u == v) {
-            return false;
+            return;
         }
-        if (sz[u] < sz[v]) {
+        if (sz[v] > sz[u]) {
             swap(u, v);
         }
         pai[v] = u;
         sz[u] += sz[v];
-        return true;
     }
 };
 
