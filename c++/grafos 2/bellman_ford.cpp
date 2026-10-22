@@ -57,3 +57,19 @@ int main() {
     }
     cout << '\n';
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. --s, --u e --v convertem os vértices da entrada para índices 0..n-1.
+   edges guarda {origem, destino, peso}; auto [u, v, w] separa esses campos.
+2. dist começa em INF, exceto na origem s, onde vale zero.
+3. Cada passagem percorre TODAS as arestas. Se conseguimos chegar a u,
+   testamos dist[u]+w como novo custo de v e guardamos o menor com min.
+4. Sem ciclo negativo alcançável, n-1 passagens bastam: um caminho mínimo
+   pode ser escolhido sem repetir vértices, usando até n-1 arestas.
+5. Se uma aresta ainda melhorar na verificação extra, existe ciclo negativo
+   alcançável da origem. O programa avisa e não imprime as distâncias.
+Exemplo: 1->2 custa 4 e 2->3 custa -7. O custo de 1 até 3 fica 4-7=-3.
+O teste de INF impede que um ciclo em outra componente gere um falso aviso.
+Um ciclo negativo só impede mínimo nos destinos alcançáveis a partir dele.
+*/

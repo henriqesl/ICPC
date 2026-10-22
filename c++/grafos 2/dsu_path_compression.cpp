@@ -65,3 +65,18 @@ int main() {
         }
     }
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. DSU dsu(n) começa com n componentes separados: pai[i]=i.
+   A raiz representa o componente e é o único nó que aponta para si mesmo.
+2. find(u) segue os pais até a raiz. Ao voltar da recursão, pai[u] recebe
+   essa raiz: as próximas buscas pulam os nós intermediários (compressão).
+3. same(u,v) compara as RAÍZES, não os pais imediatos dos dois vértices.
+4. join(u,v) primeiro encontra as duas raízes. Se forem iguais, nada muda;
+   se forem diferentes, pai[v]=u liga a raiz de v à raiz de u.
+5. No main, comando 1 faz uma união; comando 2 imprime SIM ou NAO.
+Exemplo: numa cadeia 3->2->1, find(3) retorna 1 e muda pai[3] para 1.
+Aqui NÃO há união por tamanho. Para size(u) e as duas otimizações juntas,
+use o DSU de kruskal.cpp. Cadeias profundas exigem cuidado com a recursão.
+*/

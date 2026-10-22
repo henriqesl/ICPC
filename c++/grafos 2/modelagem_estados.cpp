@@ -64,3 +64,22 @@ int main() {
         cout << resp << '\n';
     }
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. dist[u][cupons] guarda o menor custo para chegar a u usando exatamente
+   aquela quantidade de cupons. São situações diferentes no mesmo vértice.
+2. MAX_CUPONS=10 permite 0..10 cupons: 11 camadas. Para um cupom, use 1.
+   Só dist[s][0] começa em zero: partimos da origem sem gastar cupons.
+3. A fila guarda {-distância, vértice, cupons usados}; auto separa os três.
+   Negamos total de volta e ignoramos registros piores que dist[cur][cupons].
+4. Sem desconto, pagamos custo e mantemos cupons: mesma camada.
+   Com desconto, pagamos custo/2 e vamos para cupons+1, se ainda houver cupom.
+   A divisão é inteira: 7/2=3. Não dá para usar dois cupons na mesma travessia.
+5. Chegar mais barato gastando mais cupons não permite descartar o estado
+   com menos cupons: guardar um desconto pode melhorar o restante da viagem.
+6. Como podemos usar ATÉ K cupons, pegamos o menor dist[t][c] entre 0 e K.
+   Se fossem EXATAMENTE K, a resposta seria apenas dist[t][K].
+Exemplo: arestas de custos 8 e 2. Com um cupom, mínimo 4+2=6;
+com dois, 4+1=5. O Dijkstra é o mesmo; o estado agora inclui os cupons.
+*/

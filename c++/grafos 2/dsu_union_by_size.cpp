@@ -74,3 +74,19 @@ int main() {
         }
     }
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. pai[i]=i e sz[i]=1: cada vértice começa como um componente de tamanho 1.
+2. find(u) segue os pais até a raiz. Não altera pai: aqui NÃO há compressão.
+3. same(u,v) verifica se os dois vértices têm a mesma raiz.
+4. join busca as raízes. Se iguais, retorna sem somar tamanhos novamente.
+   Se sz[v]>sz[u], swap troca u e v para deixar o maior componente em u.
+5. pai[v]=u liga o menor ao maior; sz[u]+=sz[v] soma seus tamanhos.
+   Isso mantém as árvores baixas: os caminhos têm comprimento O(log V).
+6. size(x) usa sz[find(x)], pois o tamanho atualizado fica na RAIZ.
+   sz.size() é outra coisa: número de posições do vetor (n+1).
+Exemplo: unir componentes de 5 e 2 vértices produz um de 7.
+Consultar size(x) por qualquer um dos 7 vértices retorna 7.
+No main, comando 1 une componentes; comando 2 consulta se estão juntos.
+*/

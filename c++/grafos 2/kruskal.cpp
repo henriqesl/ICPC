@@ -94,3 +94,21 @@ int main() {
         cout << resp << '\n';
     }
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. Aresta guarda os extremos u, v e o custo c. compAresta compara a.c<b.c;
+   sort usa essa comparação para ordenar da aresta mais barata à mais cara.
+2. DSU começa com cada vértice separado. find retorna a raiz do componente;
+   raízes diferentes significam que a aresta pode entrar sem criar ciclo.
+3. Ao escolher uma aresta, somamos a.c em resp, unimos seus componentes
+   com join e aumentamos escolhidas. Arestas que fechariam ciclo são puladas.
+4. No DSU, find comprime caminhos. join usa sz para ligar o menor grupo
+   ao maior e atualizar o tamanho. size(u) consulta sz na raiz de u.
+5. Se conseguimos n-1 arestas, resp é o custo da MST. Se faltam arestas,
+   o grafo é desconectado e não existe árvore que conecte todos os vértices.
+Exemplo: arestas 1-2 (2), 2-3 (3), 1-3 (8). Escolhemos 2 e 3: total 5.
+A de custo 8 fecharia ciclo. O programa imprime só o custo; para guardar
+a árvore, salve também cada aresta escolhida dentro do if.
+MST minimiza a soma para conectar todos, NÃO o caminho a partir de uma origem.
+*/
