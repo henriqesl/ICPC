@@ -33,3 +33,14 @@ int main() {
     // Média: double(soma)/(R-L+1). Não funciona para mínimo.
     // Atualizar intervalos, só ver final: difference-array.cpp.
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. prefixo tem n+1 posições: prefixo[0]=0 e prefixo[i] soma [0,i).
+2. Ao ler valor do índice i, prefixo[i+1]=prefixo[i]+valor.
+3. Para [L,R] inclusivo, prefixo[R+1]-prefixo[L] cancela tudo antes de L.
+Exemplo: valores [2,-1,4] -> prefixo [0,2,1,5]. Consulta [1,2]: 5-2=3.
+O +1 em R vem da convenção de prefixo, não de a entrada ser base 1.
+Não precisa ordenar e aceita negativos. Se valores mudarem, refaça os prefixos
+ou use uma estrutura de atualização; o vetor antigo não se atualiza sozinho.
+*/

@@ -30,6 +30,16 @@ bool exists(int pos) {
     return false;
 }
 
+/*
+COMO LER ESTE CÓDIGO — TEMPLATE 1
+1. pos é a posição a preencher; current guarda o prefixo já escolhido.
+2. Para cada choice permitido, pulamos se repetir o último valor do prefixo.
+3. push_back escolhe; exists(pos+1) explora; pop_back desfaz antes de testar found.
+4. Chegar ao fim retorna true. Basta um filho verdadeiro; sem opções válidas, false.
+Exemplo: opções {1,2} em duas posições -> pode formar [1,2].
+A resposta é só existência; para mostrar a sequência, salve-a antes de desfazer.
+*/
+
 // TEMPLATE 2 — QUANTAS? Soma filhos; options/current acima.
 ll count(int pos) {
     if (pos == static_cast<int>(options.size())) return 1;
@@ -45,6 +55,14 @@ ll count(int pos) {
     return ways;
 }
 } // namespace decisions
+
+/*
+COMO LER ESTE CÓDIGO — TEMPLATE 2
+As escolhas e o desfazer são os mesmos de exists, mas o retorno é quantidade.
+Uma construção completa retorna 1; ways soma todos os filhos, sem parar cedo.
+Exemplo: opções {1,2} em duas posições -> [1,2] e [2,1], total 2.
+current volta ao estado anterior a cada chamada; ways é resultado e não se desfaz.
+*/
 
 namespace subsets {
 // TEMPLATE 3 — PEGA / NÃO PEGA: soma alvo; conta subconjuntos de índices.
@@ -64,6 +82,16 @@ ll count(int idx) {
 }
 // Coverage por valor: coverage | mask[idx]; folha coverage==FULL. OR não desfaz com XOR.
 } // namespace subsets
+
+/*
+COMO LER ESTE CÓDIGO — TEMPLATE 3
+1. idx é o próximo item; sum guarda a soma escolhida até agora.
+2. O primeiro ramo pega a[idx]: soma, recursa e subtrai para restaurar.
+   O segundo ramo não pega o item, mas também avança para idx+1.
+3. No fim, sum==target retorna 1 ou 0; ways soma as duas quantidades.
+Exemplo: [1,2,3], alvo 3 -> {1,2} e {3}, total 2.
+Não pode podar só porque sum passou do alvo se houver números negativos.
+*/
 
 namespace placements {
 // TEMPLATE 4 — OPÇÕES: uma coluna por linha, sem coluna/diagonal compartilhada.
@@ -90,6 +118,17 @@ ll count(int row) {
     return ways;
 }
 } // namespace placements
+
+/*
+COMO LER ESTE CÓDIGO — TEMPLATE 4
+1. row escolhe a linha; o for tenta uma coluna c livre nessa linha.
+2. col[c], diag1[row+c] e diag2[row-c+n-1] guardam conflitos em O(1).
+   O deslocamento n-1 evita índice negativo na segunda diagonal.
+3. Marca Q e ocupações, conta a próxima linha e desfaz TODAS as marcas.
+4. row==n significa tabuleiro completo válido: retorna 1.
+Exemplo: tabuleiro 4x4 sem bloqueios -> duas soluções de 4 rainhas.
+Inicialize board, n e os vetores como no cabeçalho antes de chamar count(0).
+*/
 
 namespace permutations {
 // TEMPLATE 5 — PERMUTAÇÃO: cada índice uma vez; repetidos podem duplicar saídas.
@@ -118,6 +157,17 @@ void generate(int pos) {
     }
 }
 } // namespace permutations
+
+/*
+COMO LER ESTE CÓDIGO — TEMPLATE 5
+1. pos é a posição da ordem; used[i] diz se o índice i já foi escolhido.
+2. Tenta cada índice livre, marca, preenche current[pos] e avança.
+   Ao voltar, restaura previous e libera used[i] para outra alternativa.
+3. pos==n imprime uma ordem completa; não imprime prefixos incompletos.
+Exemplo: [1,2] -> ordens [1,2] e [2,1].
+Valores repetidos podem duplicar saídas; o comentário dentro do for mostra
+como ordenar e pular cópias. Só ordenar, sem ativar o teste, não basta.
+*/
 
 namespace optimization {
 // TEMPLATE 6 — MELHOR: exatamente k índices, custos NÃO NEGATIVOS; soma cabe em ll.
@@ -162,6 +212,20 @@ void maximize(int idx, int chosen) {
 }
 } // namespace optimization
 
+/*
+COMO LER ESTE CÓDIGO — TEMPLATE 6
+1. idx é o próximo item; chosen conta os já escolhidos; current soma seus custos.
+2. Os dois ramos pegam ou não pegam idx. Quando chosen==k, atualizamos
+   o melhor resultado e found indica que existe solução (inclusive custo zero).
+3. Se faltam mais escolhas que itens disponíveis, o ramo é impossível.
+4. No mínimo, current>=best_min pode podar porque custos não negativos
+   não vão diminuir a soma. Não copie essa poda para custos negativos.
+5. No máximo, suffix[idx] soma TODOS os restantes: é um teto otimista.
+   Se nem esse teto vence best_max, não adianta continuar nesse ramo.
+Exemplo: custos [2,5,1], k=2 -> mínimo 3, máximo 7.
+Inicialize flags, somas e suffix; reinicie o estado entre casos de teste.
+*/
+
 namespace paths {
 // TEMPLATE 7 — CAMINHO: visited local ao caminho; desfaz inclusive no sucesso.
 // Inicialize rows/cols/board/target_r/c; visited.assign(rows,vector<int>(cols,0)).
@@ -189,3 +253,14 @@ bool exists(int r, int c) {
     return false;
 }
 } // namespace paths
+
+/*
+COMO LER ESTE CÓDIGO — TEMPLATE 7
+1. exists(r,c) rejeita fora do grid, parede ou célula já usada no caminho.
+2. Se chegou ao destino, retorna true; senão marca visited e tenta as 4 direções.
+3. Ao voltar, desmarca a célula, inclusive antes de retornar sucesso:
+   visited vale só para o CAMINHO ATUAL, não para a busca inteira.
+Exemplo: uma tentativa entra num beco e volta; outra pode reutilizar as células
+liberadas. Isso permite explorar caminhos, mas pode custar tempo exponencial.
+Para só saber alcance ou menor distância sem restrições do caminho, use DFS/BFS.
+*/

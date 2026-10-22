@@ -39,3 +39,15 @@ int main() {
     // Soma de mínimos: empate exige estrito num lado, não estrito no outro.
     // Aqui só encontra vizinhos; não soma contribuições.
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. candidatos guarda ÍNDICES; valores[candidatos.top()] lê o valor do topo.
+2. Ao olhar i, removemos valores >=valores[i], que não servem como menor
+   estrito e ficam dominados por i nas próximas consultas daquele sentido.
+3. Se sobrou topo, ele é o menor estrito mais próximo daquele lado.
+   Salvamos seu índice e empilhamos i. Pilha vazia mantém resposta -1.
+4. Limpamos a pilha e repetimos da direita para a esquerda para o outro lado.
+Exemplo: [3,1,2] -> menores à esquerda [-1,-1,1], em índices.
+Cada índice entra e sai no máximo uma vez por passagem: O(N).
+*/

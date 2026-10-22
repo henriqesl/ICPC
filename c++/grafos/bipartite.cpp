@@ -43,3 +43,15 @@ int main() {
     }
     cout << "SIM\n";
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. color=-1 significa sem cor; cada nova componente começa com cor 0.
+2. A BFS tenta pintar cada vizinho com 1-color[u]: alterna entre 0 e 1.
+3. Vizinho já pintado com a mesma cor de u revela um conflito: imprime NAO.
+4. O for externo começa buscas nas componentes ainda não visitadas;
+   testar só a primeira componente poderia esconder um conflito em outra.
+Exemplo: caminho 1-2-3 aceita cores 0,1,0; um triângulo não aceita duas cores.
+SIM significa que todo o grafo pode ser separado em dois grupos sem
+arestas internas a um grupo. Uma aresta de um nó para si impede isso.
+*/

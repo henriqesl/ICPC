@@ -27,6 +27,15 @@ for (auto event : events) {
     active += event.second;
     cout << active << '\n'; // 1, 2, 1, 0: prefix sum das mudanças
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. Cada par guarda {posição,mudança}: +1 entra, -1 sai.
+2. sort ordena pela posição e desempata pela mudança; o for soma as mudanças.
+Exemplo: [1,4) e [3,6) -> contagens 1,2,1,0 nos eventos.
+Este recorte imprime por evento. Em posições empatadas, agrupe as mudanças
+antes de registrar o estado real, como no programa completo abaixo.
+*/
 ```
 
 **Custo:** E eventos → O(E log E) para ordenar; contador O(1) por evento; memória O(E).
@@ -89,6 +98,18 @@ int main() {
         }
     }
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. Cada [L,R) gera +1 em L e -1 em R; L==R é vazio.
+2. Após ordenar, o while interno junta todas as mudanças na mesma posição.
+   positions guarda a posição e counts guarda quantos ficaram ativos nela.
+3. maximum acompanha a maior contagem. Para consultar x, upper_bound acha
+   a primeira posição >x; voltamos um índice para a última mudança <=x.
+4. Antes do primeiro evento, a resposta é zero; não tente recuar begin().
+Exemplo: [1,4) e [3,6), consulta 4 -> 1 ativo; o primeiro já terminou.
+As coordenadas podem ser enormes: só percorremos eventos, não cada posição.
+*/
 ```
 
 **Custo:** O(N log N + Q log N), memória O(N). Só máximo? Não precisa guardar histórico.
@@ -118,6 +139,14 @@ vector<long long> accumulated(events.size());
 for (size_t i = 0; i < events.size(); i++) {
     accumulated[i] = (i == 0 ? 0 : accumulated[i - 1]) + events[i].second;
 }
+
+/*
+COMO LER ESTE CÓDIGO
+accumulated[i] soma as mudanças até o evento i, em ordem já preparada.
+O ternário usa 0 na primeira posição; nas demais, usa o acumulado anterior.
+Mudanças +1,+1,-1,-1 produzem 1,2,1,0. Este histórico é por EVENTO;
+eventos na mesma coordenada ainda precisam ser agrupados para consultas por ponto.
+*/
 ```
 
 **Custo:** O(E) para acumular, O(E) memória adicional.
@@ -176,6 +205,17 @@ int main() {
     }
     for (ll count : answer) cout << count << '\n';
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. Cada evento guarda {posição,{tipo,id}}; os pares são ordenados nessa ordem.
+2. Para [L,R), END=0 vem antes de START=1 e QUERY=2 no mesmo ponto.
+   Assim removemos quem acaba, incluímos quem começa e só depois consultamos.
+3. START aumenta active; END diminui; QUERY salva active em answer[id].
+4. O id conserva a ordem original das perguntas, mesmo após ordenar eventos.
+Exemplo: [1,3) e [3,5), consultas 5,3,1 -> respostas 0,1,1.
+Os números de tipo definem PRIORIDADE, não o incremento da contagem.
+*/
 ```
 
 **Custo:** E=2N+Q → O(E log E), memória O(E).
@@ -254,6 +294,17 @@ using ll = long long;
     if (it != frequency.end() && --it->second == 0) frequency.erase(it);
     cout << frequency.at(7) << '\n'; // 2 ocorrências restantes
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. Os blocos mostram estados alternativos: contador, set, multiset, soma e frequências.
+2. set guarda valores distintos; multiset mantém cópias. find retorna um iterador;
+   erase(it) remove só essa cópia, enquanto erase(valor) removeria todas.
+3. begin/rbegin apontam ao menor/maior, mas só podem ser lidos se não vazio.
+4. No map, it->second é a frequência; se zerar, apagamos a chave.
+Exemplo: multiset {2,2,7}, removendo uma cópia de 2 -> {2,7}.
+Escolha só o estado necessário para o sweep, não mantenha todos por padrão.
+*/
 ```
 
 **Cuidado:** set de valores perde repetidos; use ids, pares (valor,id) ou multiset.
@@ -290,6 +341,17 @@ int main() {
         // compressed[index] recupera o valor original desse índice.
     }
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. Copiamos values para preservar a ordem de entrada; sort organiza a cópia.
+2. unique junta os valores distintos no começo e retorna o novo fim lógico.
+   erase remove o resto fisicamente: unique sozinho não reduz size().
+3. lower_bound acha x nessa lista; subtrair begin transforma o iterador em id.
+Exemplo: [100,5,100] -> lista [5,100] -> ids [1,0,1].
+compressed[id] recupera o original. A compressão mantém ordem e igualdade,
+mas não distâncias: ids vizinhos não significam coordenadas consecutivas.
+*/
 ```
 
 **Custo:** O(N log N) para preparar/mapear, O(N) memória; conversão posterior O(log M), M distintos.

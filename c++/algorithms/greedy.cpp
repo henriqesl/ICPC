@@ -32,3 +32,14 @@ int main() {
     }
     cout << quantidade << '\n';
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. Guardamos {fim,início}; sort de pair compara primeiro fim, depois início.
+2. Escolhemos a primeira atividade e depois só as que começam >=ultimoFim.
+3. Ao escolher, atualizamos ultimoFim. A que termina antes deixa mais espaço
+   disponível para as próximas: essa é a justificativa da escolha gulosa.
+Exemplo: [0,2], [1,4], [2,3] -> escolhemos [0,2] e [2,3], total 2.
+O teste quantidade==0 permite que a primeira atividade tenha horário negativo.
+Maximiza quantidade sem pesos; pagamentos diferentes exigem outra solução.
+*/

@@ -66,3 +66,18 @@ int main() {
     // Comparação estrita: iguais -> false.
     // Não altere itens/chaves durante sort.
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. Cada bloco entre chaves é um exemplo separado; copie só o necessário.
+   begin()+1 até begin()+4 ordena os índices 1,2,3, sem incluir 4.
+2. pair ordena por first e desempata por second. Os pares {valor,id}
+   preservam de onde o valor veio, mesmo depois de mudar de posição.
+3. As lambdas são comparadores: retornam true se a deve vir antes de b.
+   Os exemplos trocam a prioridade para second ou para uma coluna da linha.
+4. iota cria 0,1,2...; ordenar ordem muda só os índices. [&valores] permite
+   ao comparador consultar o vetor externo sem copiá-lo.
+5. stable_sort preserva a chegada nos empates da chave comparada.
+Exemplo: valores [8,3,3] -> ordem [1,2,0]; valores continua [8,3,3].
+Compare com < ou >, nunca <=: dois itens equivalentes não vêm antes um do outro.
+*/

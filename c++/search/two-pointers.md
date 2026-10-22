@@ -47,6 +47,15 @@ int main() {
     }
     cout << -1 << '\n';
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. left/right começam nas pontas do vetor crescente; left<right evita repetir índice.
+2. Soma pequena: avance left para aumentar. Soma grande: reduza right.
+3. Na igualdade, imprime um par e return encerra o programa; sem par, imprime -1.
+Exemplo: [1,3,5,8], alvo 9 -> índices 0 e 3.
+Pode usar valores negativos; o que justifica descartar candidatos é a ordenação.
+*/
 ```
 
 **Custo:** O(N), O(1) extra; vetor O(N). Sort prévio: O(N log N).
@@ -96,6 +105,16 @@ int main() {
     }
     cout << answer << '\n';
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. right inclui um elemento na soma da janela; left marca seu início.
+2. Enquanto a soma passa de limit, retiramos pela esquerda até ficar válida.
+3. Só então right-left+1 pode atualizar o maior tamanho answer.
+Exemplo: [2,1,3,1,1], limite 5 -> maior tamanho 3.
+Com não negativos, cada ponteiro avança no máximo N vezes: O(N).
+Não ordene nem use esta regra com negativos: o trecho é consecutivo na entrada.
+*/
 ```
 
 **Custo:** O(N), mesmo com while; O(1) extra, vetor O(N).
@@ -153,6 +172,15 @@ int main() {
     }
     cout << -1 << '\n';
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. l/r avançam para a direita no vetor crescente; a diferença é v[r]-v[l].
+2. Diferença pequena: avance r; grande: avance l. Se l==r, avance r antes
+   de comparar, pois os índices devem ser distintos.
+Exemplo: [1,2,4,8], alvo 3 -> índices 0 e 2.
+Alvo zero precisa de duas ocorrências iguais; não basta comparar o item com ele mesmo.
+*/
 ```
 
 **Custo:** O(N), O(1) extra; vetor O(N). Sort prévio: O(N log N).
@@ -202,6 +230,16 @@ int main() {
     for (ll x : result) cout << x << ' ';
     cout << '\n';
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. i acompanha a e j acompanha b, ambos já ordenados.
+2. Copiamos o menor dos dois elementos atuais e avançamos só seu índice.
+   a[i++] usa a[i] primeiro e incrementa i depois.
+3. Quando um vetor acaba, os dois últimos while copiam o restante do outro.
+Exemplo: [1,4,4] e [2,4] -> [1,2,4,4,4].
+Mantém todas as cópias; não é união de conjuntos que remove repetidos.
+*/
 ```
 
 **Custo:** O(N+M); resultado O(N+M), ponteiros O(1).

@@ -30,3 +30,15 @@ int main() {
         // weighted[v].push_back({u, w}); // acrescente para não direcionado
     }
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. Cada posição do vetor externo representa um vértice; o vetor interno
+   contém seus vizinhos. push_back acrescenta uma ligação nessa lista.
+2. adj guarda ida e volta, pois o grafo é não direcionado.
+   directed guarda só u->v: ter essa aresta não permite voltar de v para u.
+3. weighted guarda pares {vizinho, peso}; auto [v,w] pode separar o par.
+4. --u e --v transformam rótulos 1..n em índices 0..n-1.
+Exemplo: entrada 1 2 7 cria weighted[0] com o par {1,7}.
+O exemplo constrói três representações, sem imprimir; copie só a necessária.
+*/

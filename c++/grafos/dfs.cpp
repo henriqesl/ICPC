@@ -52,3 +52,15 @@ int main() {
     }
     cout << components << '\n';
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. vis[u] informa se u já foi descoberto; adj guarda as ligações.
+2. dfs(u) marca u e o coloca em pending, uma pilha (último a entrar sai).
+3. top/pop retiram um vértice; seus vizinhos novos são marcados e empilhados.
+   Marcar ao inserir evita empilhar o mesmo vértice várias vezes.
+4. Uma chamada alcança toda a componente. No main, cada nó ainda não
+   visitado inicia outra chamada e aumenta components, incluindo isolados.
+Exemplo: aresta 1-2 e vértice 3 isolado -> duas componentes.
+A pilha explícita evita recursão profunda; DFS não garante menor distância.
+*/

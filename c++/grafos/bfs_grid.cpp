@@ -44,3 +44,15 @@ int main() {
     }
     cout << dist[tr][tc] << '\n';
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. Cada célula livre é um vértice; não é preciso montar adjacências.
+   dist[r][c]=-1 indica célula ainda não alcançada; '#' não pode entrar.
+2. dr/dc combinados dão cima, baixo, esquerda e direita.
+3. A fila começa em {sr,sc}. auto [r,c] separa a célula retirada.
+4. Para cada direção, calculamos nr/nc e descartamos fora do grid,
+   paredes e células já visitadas. As demais recebem dist[r][c]+1.
+Exemplo: grid livre 2x2, de (1,1) a (2,2), tem distância 2.
+A resposta conta movimentos, não células. Cada movimento deve custar igual.
+*/

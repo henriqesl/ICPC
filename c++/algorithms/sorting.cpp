@@ -23,3 +23,14 @@ int main() {
     for (int x : v) cout << x << ' ';
     cout << '\n';
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. sort(begin,end) reorganiza o próprio vetor em ordem crescente.
+   end fica depois do último: os intervalos da STL são [início,fim).
+2. rbegin/rend percorrem ao contrário; ordenar nesse sentido deixa v decrescente.
+3. Os dois for imprimem valores, não índices originais.
+Exemplo: [3,1,2] imprime 1 2 3 e depois 3 2 1.
+Ordenar não remove repetições e perde a ordem original; preserve uma cópia
+ou pares {valor,índice} se o problema precisar recuperar as posições.
+*/

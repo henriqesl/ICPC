@@ -48,3 +48,15 @@ int main() {
     for (int d : dist) cout << d << ' ';
     cout << '\n';
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. É a BFS comum, mas TODAS as origens entram na fila com distância zero.
+   Uma origem repetida é ignorada para não duplicar trabalho.
+2. A fila expande as fontes por camadas; a primeira que alcança um nó
+   garante a menor distância até alguma das fontes, não até todas elas.
+3. dist[v]!=-1 impede revisitar; nós inalcançáveis permanecem com -1.
+Exemplo: caminho 1-2-3-4-5, fontes 1 e 5 -> distâncias 0 1 2 1 0.
+Útil para distância ao hospital/inimigo/fogo mais próximo, sem pesos.
+Não é necessário rodar uma BFS separada para cada origem.
+*/

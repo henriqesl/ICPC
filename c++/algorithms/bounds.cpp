@@ -60,3 +60,16 @@ int main() {
     // Nunca prev(begin()) ou *end(). distance no multiset: O(K) passos.
     // lower_bound genérico em set/multiset pode andar O(N).
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. sort prepara os valores para busca. lower_bound aponta ao primeiro >=x;
+   upper_bound aponta ao primeiro >x. Podem retornar end(), fora dos dados.
+2. No vector, it-begin dá índice; superior-inferior conta cópias de x.
+   upper_bound(R)-lower_bound(L) conta os valores no intervalo inclusivo [L,R].
+3. No multiset, os métodos fazem as mesmas buscas, mas não subtraia iteradores.
+   prev(it) pega o anterior: antes de lower temos <x; antes de upper, <=x.
+4. Antes de prev, confira begin(); antes de ler *it, confira end().
+Exemplo: [1,3,3,8], x=3 -> lower=1, upper=3, duas ocorrências.
+Se x=4, lower aponta para 8: encontrar um limite não comprova igualdade.
+*/

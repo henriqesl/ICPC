@@ -52,3 +52,15 @@ int main() {
     }
     cout << "NAO\n";
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. adj[u] guarda {vizinho,id}; ida e volta compartilham o MESMO id.
+2. pending guarda {vértice,aresta pela qual ele foi descoberto}.
+3. Na expansão de u, pulamos só essa aresta do pai. Se outra aresta leva
+   a um vértice já descoberto, existe ciclo. Os novos são marcados e empilhados.
+4. O main inicia uma busca por componente; um único ciclo basta para SIM.
+Exemplo: 1-2-3-1 tem ciclo. Duas arestas distintas entre 1 e 2 também têm;
+pular o vértice pai, em vez do id da aresta, esconderia esse segundo caso.
+Este teste é para grafo NÃO direcionado; não copie para detectar ciclo em DAG.
+*/

@@ -31,3 +31,15 @@ int main() {
     // Mínimo: <= vira >= só no segundo while; não mude expiração.
     // Cada índice entra/sai uma vez.
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. candidatos guarda índices; os valores ficam decrescentes da frente ao fundo.
+2. O primeiro while remove da frente índices que saíram da janela [r-k+1,r].
+3. O segundo remove do fundo valores <=ao novo: o novo é tão bom ou melhor
+   e expira depois. Guardar os antigos não ajudaria nas próximas janelas.
+4. Inserimos r. Quando já existem k elementos, a frente aponta para o máximo.
+Exemplo: [2,1,5,1,3], k=3 -> máximos 5 5 5.
+É máximo de cada janela, não maior soma. Para mínimo, inverta só a comparação
+de valores; a regra de expiração dos índices continua igual.
+*/

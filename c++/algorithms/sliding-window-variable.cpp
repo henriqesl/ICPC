@@ -31,3 +31,14 @@ int main() {
     cout << melhor << '\n';
     // Cada elemento entra/sai no máximo uma vez.
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. direita expande o trecho, somando o elemento que entra.
+2. Enquanto soma>limite, retiramos valores[esquerda] e avançamos esquerda.
+3. Depois de corrigir, [esquerda,direita] é válido; guardamos seu tamanho.
+   Se nenhum elemento couber, a janela pode ficar vazia e ter tamanho zero.
+Exemplo: [2,1,3,1,1], limite 5 -> maior tamanho 3, como [3,1,1].
+Cada índice só avança; o while interno não torna o algoritmo quadrático.
+Não ordene nem use negativos: retirar valores deixaria de reduzir a soma.
+*/

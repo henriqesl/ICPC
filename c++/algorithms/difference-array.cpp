@@ -27,3 +27,14 @@ int main() {
     }
     cout << '\n';
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. diferenca registra só as ALTERAÇÕES, inicialmente zero.
+2. Somar x em [L,R] vira +x em L e -x em R+1: a mudança começa e termina.
+   A posição extra permite escrever R+1==n sem sair do vetor.
+3. acumulado soma essas mudanças enquanto percorre os índices.
+   valores[i]+acumulado aplica todas as atualizações que cobrem i.
+Exemplo: [1,2,3], somar 5 em [0,1] -> [6,7,3].
+Serve para fazer várias alterações e olhar só o final, não consultas intercaladas.
+*/

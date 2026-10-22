@@ -42,3 +42,15 @@ int main() {
         cout << '\n';
     }
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. Uma aresta u->v significa que u precisa vir antes de v.
+   indegree[v] conta quantas dependências de v ainda não foram removidas.
+2. Todos com indegree zero entram na fila: já podem ser processados.
+3. Retiramos u, colocamos em order e descontamos uma dependência de cada
+   vizinho. --indegree[v] decrementa antes de comparar com zero.
+4. Se order tem menos de n vértices, sobrou um ciclo e não há ordem válida.
+Exemplo: 1->3 e 2->3 permitem 1,2,3 ou 2,1,3.
+u+1 na saída volta à numeração da entrada. Não garante ordem lexicográfica.
+*/

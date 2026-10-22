@@ -40,6 +40,15 @@ int main() {
     }
     cout << answer << '\n';
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. i escolhe o primeiro índice; j começa em i+1 para garantir i<j.
+2. Testamos cada par uma vez e somamos 1 em answer se a soma for target.
+Exemplo: [2,2,2], alvo 4 -> pares (0,1),(0,2),(1,2), total 3.
+Valores iguais em posições distintas contam como escolhas diferentes.
+Não exige ordenar, mas custa O(N²): estime N antes de usar.
+*/
 ```
 
 **Custo:** O(N²), O(1) extra além do vetor O(N).
@@ -60,6 +69,13 @@ for (int i = 0; i < n; i++) {
     }
 }
 cout << triples << '\n'; // 4
+
+/*
+COMO LER ESTE CÓDIGO
+i<j<k escolhe três índices distintos e evita recontar outras ordens do trio.
+Com n=4 há quatro escolhas: 012,013,023,123.
+Substitua triples++ pelo teste da questão; o custo é O(N³).
+*/
 ```
 
 **Custo:** O(N³). Se ordem importa ou índices podem repetir, adapte i < j < k.
@@ -106,6 +122,16 @@ int main() {
     }
     cout << answer << '\n';
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. 1ULL<<n é 2^n, a quantidade de escolhas pega/não pega.
+2. mask representa uma escolha; (mask & (1ULL<<i)) testa se o índice i entrou.
+3. Recalculamos sum dos índices presentes e contamos se igual a target.
+Exemplo: n=3, mask=5 é 101 em binário: escolhe índices 0 e 2.
+mask=0 é o conjunto vazio e conta quando target=0; iguais em índices diferentes
+são escolhas distintas. N precisa ser pequeno: o número de máscaras é exponencial.
+*/
 ```
 
 **Custo:** O(N·2^N), O(1) extra além do vetor O(N).
@@ -160,6 +186,16 @@ int main() {
         cout << s << '\n'; // troque pela avaliação dessa ordem
     } while (next_permutation(s.begin(), s.end()));
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. sort começa na menor ordem lexicográfica para não perder permutações.
+2. do processa a ordem atual antes do primeiro avanço; next_permutation
+   altera s para a próxima e retorna false quando não há outra.
+Exemplo: aba -> aab, aba, baa; as mesmas sequências de valores não se repetem.
+Normalmente troque cout pelo cálculo da questão. O custo pode chegar a N*N!,
+então só serve para poucos elementos.
+*/
 ```
 
 **Custo:** O(N·P), P permutações distintas; pior caso O(N·N!), incluindo geração/saída.

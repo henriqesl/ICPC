@@ -101,6 +101,8 @@ def main():
         for (auto [v, w] : weighted[u]) cout << ' ' << u << ' ' << v << ' ' << w;
     cout << '\n';
 '''
+                # A explicação final pode conter chaves; inspecione só o código.
+                source = source.split("\n/*\nCOMO LER ESTE CÓDIGO", 1)[0]
                 head, tail = source.rsplit("}", 1)
                 source = head + probe + "}" + tail
             binaries[name] = compile_source(compiler, Path(temporary), name, source)

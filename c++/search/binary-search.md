@@ -48,6 +48,14 @@ int main() {
 
     cout << answer << '\n';
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. answer=-1 representa ausência; i percorre os índices na ordem original.
+2. Ao encontrar v[i]==target, salvamos i e break encerra a busca.
+Exemplo: [4,7,1,7,9], alvo 7 -> índice 1, a primeira ocorrência.
+Não exige ordenar. Para contar todas, não pare no primeiro acerto.
+*/
 ```
 
 **Custo:** O(N) por busca; O(1) extra, além do vetor O(N).
@@ -105,6 +113,16 @@ int main() {
 
     cout << answer << '\n';
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. left/right delimitam candidatos incluindo as duas pontas; mid é o meio.
+2. Se v[mid] é menor que target, descartamos até mid; se maior, de mid em diante.
+3. Ao encontrar igualdade, salvamos mid e paramos. Sem acerto, answer fica -1.
+Exemplo: [1,2,5,8], alvo 5 -> índice 2.
+Exige vetor crescente. Com repetidos, pode achar qualquer ocorrência;
+não confunda com o template [left,right) que procura o primeiro >=alvo.
+*/
 ```
 
 **Custo:** O(log N) na busca; O(1) extra, vetor O(N). Sort prévio soma O(N log N).
@@ -163,6 +181,16 @@ int main() {
     bool exact = lower != v.end() && *lower == x;
     cout << exact << '\n';                  // 1 (true)
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. binary_search retorna bool; lower/upper são iteradores, não valores.
+2. lower aponta ao primeiro >=x; upper ao primeiro >x. *it lê o valor;
+   it-v.begin() dá o índice no vector; upper-lower conta cópias de x.
+3. exact exige iterador válido E valor igual: lower pode apontar a outro valor.
+Exemplo: x=2 -> lower=1, upper=4, três cópias; x=3 -> ambos no índice 4.
+end() é a posição depois do último: pode subtrair no vector, mas nunca ler *end().
+*/
 ```
 
 **Custo:** O(log N) por chamada; O(1) extra. Sort inicial, se necessário: O(N log N).
@@ -269,6 +297,18 @@ int main() {
 
     cout << ans << '\n';
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. mid é a capacidade de cada grupo; verify tenta dividir a sequência em até k.
+   current acumula o grupo; groups conta quantos foram abertos.
+2. current>mid-x equivale a current+x>mid sem arriscar overflow.
+   Se o próximo item não cabe, abre outro grupo; se já usou k, falha.
+3. Mais capacidade só facilita: false...true. Funcionou? Salve ans e tente
+   uma capacidade MENOR (r=mid-1); falhou? Aumente l.
+Exemplo: [2,3,5], k=2 -> capacidade 5, grupos [2,3] e [5].
+O verify é específico deste problema e exige não negativos; adapte-o ao enunciado.
+*/
 ```
 
 **Custo:** O(N log R), R = quantidade de capacidades candidatas; vetor O(N), teste O(1) extra.
@@ -345,6 +385,17 @@ int main() {
 
     cout << ans << '\n';
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. mid é o tamanho positivo do pedaço; x/mid conta pedaços inteiros de x.
+2. verify soma quantidades e retorna true ao atingir k. O teste made>=k-pieces
+   evita somar além do necessário e protege contra overflow.
+3. Pedaços maiores dificultam: true...false. Funcionou? Salve ans e tente
+   tamanho MAIOR (l=mid+1); falhou? Reduza r.
+Exemplo: comprimentos [5,8], k=3 -> tamanho 4 produz 1+2 pedaços.
+l começa em 1 para não dividir por zero; sobras de comprimentos distintos não se juntam.
+*/
 ```
 
 **Custo:** O(N log R), R = quantidade de tamanhos candidatos; vetor O(N), teste O(1) extra.
@@ -400,6 +451,12 @@ Divisão teto para a >= 0, b > 0 (sem somar a+b):
 ```cpp
 long long a = 10, b = 3;
 long long ceiling = a / b + (a % b != 0); // 4, sem somar a + b
+
+/*
+COMO LER ESTE CÓDIGO
+a/b dá o piso; (a%b!=0) vale 1 se sobrou algo, senão 0.
+Assim 10/3 vira 3+1=4. Exige a>=0, b>0; não use essa regra para negativos.
+*/
 ```
 
 <details>

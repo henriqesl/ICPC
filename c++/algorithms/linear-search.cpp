@@ -21,3 +21,12 @@ int main() {
     }
     cout << indice << '\n';
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. indice começa em -1, marcador de que o alvo ainda não apareceu.
+2. O for testa valores[i] em ordem de índice, sem exigir vetor ordenado.
+3. Ao encontrar, salva i e break encerra o laço: garante a primeira ocorrência.
+Exemplo: [8,1,8], alvo 8 -> índice 0; alvo 7 -> -1.
+O resultado é uma posição base 0, não o valor. Não acesse valores[-1].
+*/

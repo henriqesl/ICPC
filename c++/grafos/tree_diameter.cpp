@@ -43,3 +43,15 @@ int main() {
     int diameter = bfs(a, adj).second;
     cout << diameter << '\n';
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. bfs(start,adj) retorna um par {vértice mais distante,distância até ele}.
+   far é atualizado quando aparece um vértice com distância maior.
+2. A primeira BFS parte de um nó qualquer e encontra um extremo a.
+3. A segunda parte de a; a maior distância encontrada é o diâmetro.
+   .first lê o vértice do par; .second lê sua distância.
+Exemplo: caminho 1-2-3-4 -> diâmetro 3 arestas; árvore de um nó -> 0.
+A propriedade das duas BFS exige árvore conexa sem peso neste template.
+Em grafo geral, duas BFS não garantem o maior caminho/distância.
+*/

@@ -30,3 +30,14 @@ int main() {
     if (!encontrou) cout << -1 << '\n';
     // Um par, não um trecho inteiro.
 }
+
+/*
+COMO LER ESTE CÓDIGO
+1. esquerda e direita começam nas pontas do vetor já ordenado.
+2. Se a soma é pequena, descartamos a ponta menor: esquerda++.
+   Se é grande, descartamos a maior: direita--. A ordem justifica o descarte.
+3. esquerda<direita impede usar o mesmo elemento duas vezes.
+4. Encontrou a soma: imprime um par e para; sem par, imprime -1.
+Exemplo: [1,3,5,8], alvo 9 -> índices 0 e 3.
+Aceita números negativos; não conta todos os pares nem procura janela contínua.
+*/
