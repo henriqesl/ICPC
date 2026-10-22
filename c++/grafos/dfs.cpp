@@ -1,5 +1,5 @@
 // DFS: componentes / alcance; não calcula menor distância.
-// O(V + E) tempo/memória; pilha explícita para grafos profundos.
+// O(V + E) tempo/memória. Recursão profunda pode estourar a pilha.
 // Entrada: n m; m arestas u v, 1-based, não direcionadas.
 // Saída: número de componentes (inclui isolados).
 #include <bits/stdc++.h>
@@ -9,20 +9,9 @@ vector<vector<int>> adj;
 vector<bool> vis;
 
 void dfs(int u) {
-    stack<int> pending;
     vis[u] = true;
-    pending.push(u);
-
-    while (!pending.empty()) {
-        u = pending.top();
-        pending.pop();
-
-        for (int v : adj[u]) {
-            if (!vis[v]) {
-                vis[v] = true;
-                pending.push(v);
-            }
-        }
+    for (int v : adj[u]) {
+        if (!vis[v]) dfs(v);
     }
 }
 
@@ -56,11 +45,12 @@ int main() {
 /*
 COMO LER ESTE CÓDIGO
 1. vis[u] informa se u já foi descoberto; adj guarda as ligações.
-2. dfs(u) marca u e o coloca em pending, uma pilha (último a entrar sai).
-3. top/pop retiram um vértice; seus vizinhos novos são marcados e empilhados.
-   Marcar ao inserir evita empilhar o mesmo vértice várias vezes.
+2. dfs(u) marca u e chama dfs(v) para cada vizinho ainda não visitado.
+3. A chamada explora o vizinho e depois volta para continuar o for de u.
+   Marcar antes de explorar impede voltar infinitamente pelos ciclos.
 4. Uma chamada alcança toda a componente. No main, cada nó ainda não
    visitado inicia outra chamada e aumenta components, incluindo isolados.
 Exemplo: aresta 1-2 e vértice 3 isolado -> duas componentes.
-A pilha explícita evita recursão profunda; DFS não garante menor distância.
+DFS não garante menor distância. Um caminho muito profundo exige cuidado
+com o limite de recursão do ambiente; aqui mantemos a versão recursiva curta.
 */

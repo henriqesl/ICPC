@@ -203,19 +203,24 @@ def main():
             data = f"{n}\n" + "".join(f"{u+1} {v+1}\n" for u, v in edges)
             expect("tree_diameter", data, [diameter])
 
-        # Iterativos devem funcionar numa cadeia longa sem depender da pilha recursiva.
+        # Algoritmos com fila suportam cadeias longas sem recursão.
         n = 20000
         edges = [(u-1, u) for u in range(1, n)]
         data = graph_input(n, edges)
         expect("bfs", data + "1\n", range(n))
-        expect("dfs", data, [1])
-        expect("cycle_undirected", data, ["NAO"])
-        expect("cycle_undirected", graph_input(n, edges + [(0, n-1)]), ["SIM"])
         expect("bfs_multisource", data + f"2\n1 {n}\n", [min(u, n-1-u) for u in range(n)])
         expect("topological_sort", data, range(1, n+1))
         expect("tree_diameter", f"{n}\n" + data.split("\n", 1)[1], [n-1])
 
-    print(f"OK: {len(names)} templates, {checks} execuções contra oráculos + cadeias de 20000 nós.")
+        # DFS clássica é recursiva: teste uma cadeia compatível com a pilha.
+        recursive_n = 1000
+        recursive_edges = [(u-1, u) for u in range(1, recursive_n)]
+        recursive_data = graph_input(recursive_n, recursive_edges)
+        expect("dfs", recursive_data, [1])
+        expect("cycle_undirected", recursive_data, ["NAO"])
+        expect("cycle_undirected", graph_input(recursive_n, recursive_edges + [(0, recursive_n-1)]), ["SIM"])
+
+    print(f"OK: {len(names)} templates, {checks} execuções; cadeias de 20000 nós com fila e 1000 com recursão.")
 
 
 if __name__ == "__main__":

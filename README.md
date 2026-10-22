@@ -38,7 +38,7 @@ Use Ctrl+F com palavras como `soma`, `janela`, `divisores`, `lower` ou `permuta�
 | Preciso... | Abra o .cpp | Confira |
 |---|---|---|
 | Montar adjacência com/sem peso | [Representação](c++/grafos/graph_representation.cpp) | directed: ida; undirected: ida e volta |
-| Visitar / contar componentes | [DFS](c++/grafos/dfs.cpp) | pilha explícita; aceita grafos profundos |
+| Visitar / contar componentes | [DFS](c++/grafos/dfs.cpp) | recursiva; atenção à profundidade |
 | Menor distância em número de arestas | [BFS](c++/grafos/bfs.cpp) | sem peso; -1 = inalcançável |
 | Menor caminho no labirinto | [BFS grid](c++/grafos/bfs_grid.cpp) | 4 direções; # = parede |
 | Separar vértices em dois grupos sem conflito | [Bipartido](c++/grafos/bipartite.cpp) | testar todas as componentes |
