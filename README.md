@@ -68,11 +68,11 @@ BFS não resolve pesos diferentes. [Grafos 2](c++/grafos%202/): códigos com com
 |---|---|---|
 | Entender bruto / memo / tabulação | [Fibonacci](c++/dp/dp-1.md#fibonacci) · [Dice](c++/dp/dp-1.md#dice) | memo evita repetir estados; não elimina a pilha |
 | Saber se itens somam exatamente T | [Subset Sum](c++/dp/subset_sum.cpp) | não negativos; tabela O(NT) |
-| Menor custo de saltos / contar caminhos | [Frog](c++/dp/frog_1.cpp) · [Grid Paths](c++/dp/grid_paths.cpp) | mínimo no Frog, soma com MOD no grid |
-| Melhor escolha com restrição anterior | [Vacation](c++/dp/vacation.cpp) | estado inclui última atividade |
+| Menor custo de saltos / contar caminhos | [Frog](c++/dp/exercises/frog_1.cpp) · [Grid Paths](c++/dp/exercises/grid_paths.cpp) | mínimo no Frog, soma com MOD no grid |
+| Melhor escolha com restrição anterior | [Vacation](c++/dp/exercises/vacation.cpp) | estado inclui última atividade |
 | Escolher itens limitados por capacidade | [Knapsack 0/1](c++/dp/knapsack_01.cpp) | cada índice uma vez; tabela O(NW) |
 | Melhor trecho / subsequência comum | [Kadane](c++/dp/kadane.cpp) · [LCS](c++/dp/lcs.cpp) · [reconstrução](c++/dp/lcs_reconstruct.cpp) | trecho é contíguo; subsequência não |
-| Cortar em quadrados / subárvore / esperança / jogo | [Rectangle](c++/dp/rectangle_cutting.cpp) · [Subordinates](c++/dp/subordinates.cpp) · [Pou](c++/dp/expected_moves.cpp) · [Jogos](c++/dp/winning_states.cpp) | base e operação dependem do significado do estado |
+| Cortar em quadrados / subárvore / esperança / jogo | [Rectangle](c++/dp/exercises/rectangle_cutting.cpp) · [Subordinates](c++/dp/exercises/subordinates.cpp) · [Pou](c++/dp/exercises/expected_moves.cpp) · [Jogos](c++/dp/exercises/winning_states.cpp) | base e operação dependem do significado do estado |
 | Maior subsequência estritamente crescente | [LIS da aula](c++/dp/lis.cpp) | DP O(N²); não exige elementos consecutivos |
 
 ## Estruturas e sintaxe

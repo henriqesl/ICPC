@@ -5,22 +5,22 @@
 **DP = estado + transições + casos base + resultados guardados.**
 Pergunta principal: quais informações do passado ainda influenciam o futuro?
 
+## Códigos-base — diretamente em dp/
+
 | Preciso... | Estado / condição | Abra o código |
 |---|---|---|
 | Entender recursão virando DP | Fibonacci; bruto só N pequeno; DP sem MOD até N=92 | [Bruto](fibonacci_bruteforce.cpp) · [memo](fibonacci_memo.cpp) · [iterativo](fibonacci_iterative.cpp) |
-| Contar sequências de faces somando N | soma restante; ordem importa; MOD | [Bruto](dice_combinations_bruteforce.cpp) · [memo](dice_combinations_memo.cpp) · [iterativo](dice_combinations_iterative.cpp) |
-| Contar subordinados de cada chefe | tamanho da subárvore; árvore enraizada em 1 | [Subordinates](subordinates.cpp) |
-| Calcular jogadas esperadas | Pou; isole a dependência do próprio estado | [Valor esperado](expected_moves.cpp) |
-| Saber se o jogador da vez vence | leva o adversário a perdedor; regras da aula | [Jogos](winning_states.cpp) |
 | Saber se alguma escolha soma exatamente T | índice + soma restante; valores não negativos | [Subset Sum](subset_sum.cpp) |
-| Menor custo de saltos de 1 ou 2 pedras | posição; alturas fixas | [Frog memo](frog_1.cpp) · [iterativo](frog_1_iterative.cpp) |
-| Contar caminhos com obstáculos | linha + coluna; só baixo/direita; MOD | [Grid Paths](grid_paths.cpp) |
-| Maximizar pontos sem repetir atividade seguida | dia + atividade anterior; pontos não negativos | [Vacation memo](vacation.cpp) · [iterativo](vacation_iterative.cpp) |
-| Cortar retângulo em quadrados | altura + largura; mínimo | [Rectangle Cutting](rectangle_cutting.cpp) |
 | Maior soma de trecho consecutivo não vazio | melhor soma terminando aqui; aceita negativos | [Kadane](kadane.cpp) |
 | Escolher itens com maior valor dentro da capacidade | índice + capacidade; cada item no máximo uma vez | [Knapsack 0/1](knapsack_01.cpp) |
 | Maior subsequência comum entre duas strings | dois índices; preserva ordem, pode pular | [LCS tamanho](lcs.cpp) · [reconstrução](lcs_reconstruct.cpp) |
 | Maior subsequência estritamente crescente | índice + anterior; versão O(N²) da aula | [LIS](lis.cpp) |
+
+## Exercícios — exercises/
+
+[Índice dos exercícios](exercises/README.md): Dice Combinations, Subordinates,
+Pou (valor esperado), jogo da aula, Frog 1, Grid Paths, Vacation e Rectangle Cutting.
+As soluções completas desses problemas ficam separadas dos algoritmos-base.
 
 ## Antes de copiar
 

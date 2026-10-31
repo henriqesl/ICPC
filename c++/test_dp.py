@@ -12,13 +12,17 @@ from test_search import BuildDirectory, compile_source
 
 ROOT = Path(__file__).resolve().parent / "dp"
 MOD = 1000000007
-NAMES = {
+BASE_NAMES = {
     "fibonacci_bruteforce", "fibonacci_memo", "fibonacci_iterative",
-    "dice_combinations_bruteforce", "dice_combinations_memo", "dice_combinations_iterative",
-    "subordinates", "expected_moves", "winning_states", "subset_sum",
-    "frog_1", "frog_1_iterative", "grid_paths", "vacation", "vacation_iterative",
-    "rectangle_cutting", "kadane", "knapsack_01", "lcs", "lcs_reconstruct", "lis",
+    "subset_sum", "kadane", "knapsack_01", "lcs", "lcs_reconstruct", "lis",
 }
+EXERCISE_NAMES = {
+    "dice_combinations_bruteforce", "dice_combinations_memo", "dice_combinations_iterative",
+    "subordinates", "expected_moves", "winning_states",
+    "frog_1", "frog_1_iterative", "grid_paths", "vacation", "vacation_iterative",
+    "rectangle_cutting",
+}
+NAMES = BASE_NAMES | EXERCISE_NAMES
 
 
 def subsequence(small, large):
@@ -78,14 +82,17 @@ def game_oracle(n):
 def main():
     compiler = shutil.which("g++")
     assert compiler, "g++ precisa estar no PATH"
-    assert {path.stem for path in ROOT.glob("*.cpp")} == NAMES
+    assert {path.stem for path in ROOT.glob("*.cpp")} == BASE_NAMES
+    assert {path.stem for path in (ROOT / "exercises").glob("*.cpp")} == EXERCISE_NAMES
+    assert len(list(ROOT.rglob("*.cpp"))) == len(NAMES)
     rng = random.Random(20261030)
     checks = 0
     with BuildDirectory(prefix="icpc-dp-") as temp:
         directory = Path(temp)
         binaries = {}
         for name in sorted(NAMES):
-            source = (ROOT / (name + ".cpp")).read_text(encoding="utf-8")
+            folder = ROOT if name in BASE_NAMES else ROOT / "exercises"
+            source = (folder / (name + ".cpp")).read_text(encoding="utf-8")
             assert "COMO LER ESTE CÓDIGO" in source
             binaries[name] = compile_source(compiler, directory, name, source)
             print("Compilou:", name, flush=True)

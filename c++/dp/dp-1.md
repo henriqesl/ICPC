@@ -4,6 +4,7 @@
 
 Base: Aula 5 — DP 1 da MaratonaCIn, rev. 1.1, com os exercícios clássicos complementares solicitados.
 Os programas completos ficam nos `.cpp`; os trechos abaixo destacam só o núcleo.
+Algoritmos-base ficam em `dp/`; soluções dos exercícios, em [exercises/](exercises/README.md).
 
 <a id="ideia"></a>
 ## 1. Ideia central
@@ -95,7 +96,7 @@ C(0) = 1   [a sequência já foi completada]
 C(sum < 0) = 0
 ```
 
-[Bruto completo](dice_combinations_bruteforce.cpp): O(6^N), limite superior; pilha O(N).
+[Bruto completo](exercises/dice_combinations_bruteforce.cpp): O(6^N), limite superior; pilha O(N).
 
 <!-- dp-example: dice-brute -->
 ```cpp
@@ -109,7 +110,7 @@ int solve(int sum) {
 }
 ```
 
-[Memo completo](dice_combinations_memo.cpp): mesmas chamadas, cache por soma.
+[Memo completo](exercises/dice_combinations_memo.cpp): mesmas chamadas, cache por soma.
 
 <!-- dp-example: dice-memo -->
 ```cpp
@@ -125,7 +126,7 @@ int solve(int sum) {
 }
 ```
 
-[Iterativo completo](dice_combinations_iterative.cpp): trecho dentro do `main`, com `n` lido.
+[Iterativo completo](exercises/dice_combinations_iterative.cpp): trecho dentro do `main`, com `n` lido.
 
 <!-- dp-example: dice-iterative -->
 ```cpp
@@ -147,7 +148,7 @@ N grande, como 10^6, pede a versão iterativa: memo não elimina a pilha O(N).
 <a id="arvore"></a>
 ## 4. DP em árvore — Subordinates
 
-[Código: DFS recursiva + memo](subordinates.cpp).
+[Código: DFS recursiva + memo](exercises/subordinates.cpp).
 
 - **Estado:** `dp[u]` = tamanho da subárvore de u, **incluindo u**.
 - **Base:** folha vale 1.
@@ -161,7 +162,7 @@ cada nó uma vez: DP em árvore não precisa necessariamente ter estados recompu
 <a id="probabilidade"></a>
 ## 5. DP com probabilidade — Pou
 
-[Código](expected_moves.cpp). Estado `E(i)` = jogadas esperadas restantes até n.
+[Código](exercises/expected_moves.cpp). Estado `E(i)` = jogadas esperadas restantes até n.
 Em cada jogada, fica em i com probabilidade `1/k`, ou avança a i+1.
 
 ```text
@@ -179,7 +180,7 @@ O(N) tempo/memória na DP; neste exemplo específico, a fórmula fechada é `n*k
 <a id="jogos"></a>
 ## 6. DP em jogos
 
-[Código direto da regra da aula](winning_states.cpp): de i, retire entre 1 e `floor((i+1)/2)`.
+[Código direto da regra da aula](exercises/winning_states.cpp): de i, retire entre 1 e `floor((i+1)/2)`.
 
 - **Estado:** `dp[i]` indica se quem joga agora consegue vencer.
 - **Base:** `dp[0]=0`, perdedor: sem jogada, perde.
@@ -211,7 +212,7 @@ Ex.: `[3,34,4,12,5,2]`, T=9 → SIM (4+5). O vazio é válido para alvo 0.
 <a id="frog"></a>
 ## 8. Frog — minimização
 
-[Top-down](frog_1.cpp) · [bottom-up](frog_1_iterative.cpp).
+[Top-down](exercises/frog_1.cpp) · [bottom-up](exercises/frog_1_iterative.cpp).
 
 **Estado:** `dp[i]` = menor custo para chegar à pedra i (base 0).
 **Base:** `dp[0]=0`. Para i>=1:
@@ -228,7 +229,7 @@ O último índice é n-1: chame `solve(n-1)`, não `solve(n)`.
 <a id="grid"></a>
 ## 9. Grid Paths
 
-[Código](grid_paths.cpp): grid quadrado, `*` bloqueado, movimentos baixo/direita.
+[Código](exercises/grid_paths.cpp): grid quadrado, `*` bloqueado, movimentos baixo/direita.
 
 - **Estado:** `dp[row][col]` = caminhos dessa célula até o destino.
 - **Bases, nessa ordem:** fora → 0; obstáculo → 0; destino livre → 1.
@@ -241,7 +242,7 @@ não conta caminho. Grid 2x2 livre → 2; grid 1x1 livre → 1.
 <a id="vacation"></a>
 ## 10. Vacation
 
-[Memoização recursiva](vacation.cpp) · [alternativa iterativa](vacation_iterative.cpp).
+[Memoização recursiva](exercises/vacation.cpp) · [alternativa iterativa](exercises/vacation_iterative.cpp).
 
 **Estado:** `dp[day][last]` = maior felicidade a partir de day, sabendo a atividade anterior.
 **Base:** `day==n` → 0.
@@ -255,7 +256,7 @@ Os templates assumem pontos não negativos. Escolher o maior ponto de cada dia i
 <a id="rectangle"></a>
 ## 11. Rectangle Cutting
 
-[Código](rectangle_cutting.cpp). **Estado:** `dp[a][b]` = mínimo de cortes para obter quadrados.
+[Código](exercises/rectangle_cutting.cpp). **Estado:** `dp[a][b]` = mínimo de cortes para obter quadrados.
 **Base:** `a==b` → 0.
 
 ```text

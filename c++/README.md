@@ -11,7 +11,7 @@ Durante o contest, comece pelo [índice por necessidade](../README.md).
 | [search/](search/README.md) | Buscas/bounds, two pointers, sweep line, compressão, enumeração e backtracking. |
 | [grafos/](grafos/) | Nove .cpp: [atalhos por necessidade](../README.md#grafos); DFS/BFS, grid, bipartido, topológica, multisource, ciclos e diâmetro. |
 | [grafos 2/](grafos%202/) | Sete .cpp: caminhos ponderados, estados, MST e DSU separado por otimização (compressão / tamanho). |
-| [dp/](dp/README.md) | [DP 1](dp/dp-1.md): estados, top-down/bottom-up, árvore, probabilidade, jogos, mochila, LCS/LIS e reconstrução. |
+| [dp/](dp/README.md) | [DP 1](dp/dp-1.md): códigos-base na raiz; [exercícios de aplicação](dp/exercises/README.md) separados, com variantes top-down/bottom-up. |
 | [math/](math/README.md) | Divisores, primalidade, MDC/MMC e potência modular. |
 
 **Como copiar:** recortes dos guias vão no `main()` do template; programas com
