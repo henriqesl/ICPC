@@ -60,6 +60,21 @@ BFS não resolve pesos diferentes. [Grafos 2](c++/grafos%202/): códigos com com
 | Conectar todos com menor custo total | [Kruskal / MST](c++/grafos%202/kruskal.cpp) | não direcionado; não é shortest path |
 | Vértice + cupom/combustível/chave | [Modelagem por estados](c++/grafos%202/modelagem_estados.cpp) | até 10 cupons como na aula; altere MAX_CUPONS; não basta dist[v] |
 
+## Programação dinâmica — DP 1
+
+[Guia e reconhecimento](c++/dp/dp-1.md) · [Índice de todos os códigos](c++/dp/README.md)
+
+| Preciso... | Abra direto | Confira |
+|---|---|---|
+| Entender bruto / memo / tabulação | [Fibonacci](c++/dp/dp-1.md#fibonacci) · [Dice](c++/dp/dp-1.md#dice) | memo evita repetir estados; não elimina a pilha |
+| Saber se itens somam exatamente T | [Subset Sum](c++/dp/subset_sum.cpp) | não negativos; tabela O(NT) |
+| Menor custo de saltos / contar caminhos | [Frog](c++/dp/frog_1.cpp) · [Grid Paths](c++/dp/grid_paths.cpp) | mínimo no Frog, soma com MOD no grid |
+| Melhor escolha com restrição anterior | [Vacation](c++/dp/vacation.cpp) | estado inclui última atividade |
+| Escolher itens limitados por capacidade | [Knapsack 0/1](c++/dp/knapsack_01.cpp) | cada índice uma vez; tabela O(NW) |
+| Melhor trecho / subsequência comum | [Kadane](c++/dp/kadane.cpp) · [LCS](c++/dp/lcs.cpp) · [reconstrução](c++/dp/lcs_reconstruct.cpp) | trecho é contíguo; subsequência não |
+| Cortar em quadrados / subárvore / esperança / jogo | [Rectangle](c++/dp/rectangle_cutting.cpp) · [Subordinates](c++/dp/subordinates.cpp) · [Pou](c++/dp/expected_moves.cpp) · [Jogos](c++/dp/winning_states.cpp) | base e operação dependem do significado do estado |
+| Maior subsequência estritamente crescente | [LIS da aula](c++/dp/lis.cpp) | DP O(N²); não exige elementos consecutivos |
+
 ## Estruturas e sintaxe
 
 | Preciso... | Abra direto |
@@ -85,4 +100,5 @@ extremos inclusivos/exclusivos e custo total de todos os casos. Exemplos demonst
 
 - **Básico:** entrada/saída, strings, vector/array, sort, pilha e fila.
 - **Intermediário:** mapas/sets, heap, bounds, prefix sum, janelas, two pointers, busca na resposta, sweep line, compressão, backtracking, estruturas monotônicas, mediana, guloso, teoria dos números e grafos básicos (DFS/BFS, bipartido, ciclos, topológica e diâmetro de árvore).
-- **Avançado — futuro:** grafos avançados, programação dinâmica e geometria.
+- **DP 1:** estados, memoização/tabulação, contagem, mínimo/máximo, mochila, LCS e reconstrução.
+- **Avançado — futuro:** grafos avançados, DP avançada e geometria.
